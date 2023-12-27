@@ -91,6 +91,55 @@ function cekUrl(current_url, nomor=1){
 				title_admin.closest('.menu-item').after(aksi_admin);
 			}
 
+			// Data RAK SIPD
+			else if(current_url.indexOf('/penatausahaan/penatausahaan/pengeluaran/dpa/validasi/belanja') != -1)
+			{
+				console.log('VALIDASI RAK Belanja');
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_sipd_lokal">Singkron ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.page-title').append(btn);
+				jQuery('#singkron_rak_sipd_lokal').on('click', function(){
+					singkron_rak_sipd_lokal();
+				});
+			}
+
+			// Data Master User
+			else if(current_url.indexOf('/penatausahaan/user') != -1)
+			{
+				console.log('halaman User');	
+				// level = "8";
+				// model = "penyelia";
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_user_lokal">Singkron User ke DB Lokal</button>'
+					+'</div>';
+				jQuery('.page-title').append(btn);
+				jQuery('#singkron_user_lokal').on('click', function(){
+					singkron_user_lokal();
+				});
+			}
+
+			// Data Master Pegawai
+			else if(current_url.indexOf('/penatausahaan/setting/pegawai') != -1)
+			{
+				console.log('halaman Pegawai');	
+				// level = "8";
+				// model = "penyelia";
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_pegawai_lokal">Singkron User ke DB Lokal</button>'
+					+'</div>';
+				jQuery('.page-title').append(btn);
+				jQuery('#singkron_pegawai_lokal').on('click', function(){
+					singkron_pegawai_lokal();
+				});
+			}
+
 			if(current_url.indexOf('/perencanaan/rpjpd/cascading/') != -1){
 				var modal = ''
 					+'<div class="modal fade modal-extension" id="modal-extension" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true" style="z-index: 99999; background: #0000003d;">'
