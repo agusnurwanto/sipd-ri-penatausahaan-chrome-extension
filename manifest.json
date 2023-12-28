@@ -14,7 +14,7 @@
 	"content_scripts": [
 		{
 			"matches": [
-				"https://sipd-ri.kemendagri.go.id/*"
+				"https://sipd.kemendagri.go.id/*"
 			],
 			"css": [
 				"css/content.css",
@@ -46,7 +46,7 @@
 				"/css/*"
 			],
 			"matches": [
-				"https://sipd-ri.kemendagri.go.id/*"
+				"https://sipd.kemendagri.go.id/*"
 			]
 		}
 	],
