@@ -21,7 +21,7 @@ function lihat_password(that){
 }
 
 function login_sipd(){
-	var user = jQuery('input[name="email"]').val();
+	var user = jQuery('input[name="username"]').val();
 	var pass = jQuery('input[name="password"]').val();
 	jQuery('#wrap-loading').show();
 	relayAjax({
