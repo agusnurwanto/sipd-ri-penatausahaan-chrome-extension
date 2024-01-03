@@ -15,7 +15,6 @@ function injectScript(file, node, _type) {
 }
 injectScript( chrome.runtime.getURL('/content_message.js'), 'head', 'js');
 injectScript( chrome.runtime.getURL('/config.js'), 'head', 'js');
-injectScript( chrome.runtime.getURL('/js/jquery.min.js'), 'head', 'js');
 injectScript( chrome.runtime.getURL('/js/bootstrap.bundle.min.js'), 'head', 'js');
 injectScript( chrome.runtime.getURL('/js/content/content_inject.js'), 'head', 'js');
 injectScript( chrome.runtime.getURL('/js/jquery.dataTables.min.js'), 'head', 'js');
@@ -23,6 +22,7 @@ injectScript( chrome.runtime.getURL('/js/crypto-js.min.js'), 'head', 'js');
 injectScript( chrome.runtime.getURL('/js/dataTables.bootstrap5.min.js'), 'head', 'js');
 injectScript( chrome.runtime.getURL('/js/content/functions.js'), 'head', 'js');
 injectScript( chrome.runtime.getURL('/css/dataTables.bootstrap5.min.css'), 'head', 'css');
+injectScript( chrome.runtime.getURL('/js/jquery.min.js'), 'head', 'js');
 window.data_temp_onmessage = {};
 
 chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {

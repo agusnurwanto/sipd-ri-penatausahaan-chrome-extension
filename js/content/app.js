@@ -92,18 +92,35 @@ function cekUrl(current_url, nomor=1){
 			}
 
 			// Data RAK SIPD
-			else if(current_url.indexOf('/penatausahaan/penatausahaan/pengeluaran/dpa/validasi/belanja') != -1)
+			else if(current_url.indexOf('penatausahaan/pengeluaran/dpa/rencana-penarikan-dana/belanja') != -1)
 			{
-				console.log('VALIDASI RAK Belanja');
-				jQuery('.aksi-extension').remove();
-				var btn = ''
-					+'<div class="aksi-extension">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_sipd_lokal">Singkron ke DB Lokal</button>'					
-					+'</div>';
-				jQuery('.page-title').append(btn);
-				jQuery('#singkron_rak_sipd_lokal').on('click', function(){
-					singkron_rak_sipd_lokal();
-				});
+				console.log('Halaman RAK Belanja');
+				var title = jQuery('.card-title.custom-class').text();
+				if(title == 'Detail Dokumen Pelaksanaan Anggaran (DPA) | Detail Belanja'){
+					jQuery('.aksi-extension').remove();
+					var btn = ''
+						+'<div class="aksi-extension" style="display: inline-block;">'						
+							+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_sipd_lokal">Singkron ke DB Lokal</button>'					
+						+'</div>';
+					jQuery('.card-title.custom-class').append(btn);
+					jQuery('#singkron_rak_sipd_lokal').on('click', function(){
+						jQuery('#wrap-loading').show();
+						var sub = current_url.split('/');
+						get_rak({
+							id_unit: sub[9],
+							id_skpd: sub[10],
+							id_sub_skpd: sub[11],
+							id_urusan: sub[12],
+							id_bidang_urusan: sub[13],
+							id_program: sub[14],
+							id_giat: sub[15],
+							id_sub_giat: sub[16]
+						}, function(){
+							alert('Berhasil singkron RAK ke lokal!');
+							jQuery('#wrap-loading').hide();
+						});
+					});
+				}
 			}
 
 			// Data Master User
@@ -149,12 +166,12 @@ function cekUrl(current_url, nomor=1){
 			cek_reload = false;
 		}else if(current_url.indexOf('/penatausahaan/login') != -1){
 			var lihat_pass = ''
-				+'<label style="margin-top: 35px; margin-bottom: 10px;"><input type="checkbox" onclick="lihat_password(this)"> Lihat Password</label>'
-				+'<a class="btn btn-lg btn-warning w-100" onclick="login_sipd()" id="login-ext">Login Chrome Extension</a>';
+				+'<label style="margin-top: 35px; margin-bottom: 10px;"><input type="checkbox" onclick="lihat_password(this)"> Lihat Password</label>';
+				// +'<a class="btn btn-lg btn-warning w-100" onclick="login_sipd()" id="login-ext">Login Chrome Extension</a>';
 			var password = jQuery('input[name="password"]');
 			if(
 				password.length >= 1
-				&& jQuery('#login-ext').length <= 1
+				&& jQuery('#login-ext').length < 1
 			){
 				password.after(lihat_pass);
 				cek_reload = false;

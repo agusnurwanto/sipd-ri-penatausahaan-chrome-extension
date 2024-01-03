@@ -1,15 +1,18 @@
-jQuery(document).on('show.bs.modal', '.modal-extension', function(event) { 
-	jQuery(this).addClass('show');
-	jQuery('.modal-backdrop').addClass('show');
-	if(typeof options_datatable != 'undefined'){
-		jQuery(this).find(".modal-body > table").DataTable(options_datatable);
-	}
+jQuery(document).ready(function(){
+	jQuery(document).on('show.bs.modal', '.modal-extension', function(event) { 
+		jQuery(this).addClass('show');
+		jQuery('.modal-backdrop').addClass('show');
+		if(typeof options_datatable != 'undefined'){
+			jQuery(this).find(".modal-body > table").DataTable(options_datatable);
+		}
+	});
+	jQuery(document).on('hide.bs.modal', '.modal-extension', function(event) { 
+		jQuery(this).find(".modal-body table.dataTable").DataTable().destroy();
+		jQuery('.modal-backdrop').removeClass('show');
+		jQuery(this).removeClass('show');
+	});
 });
-jQuery(document).on('hide.bs.modal', '.modal-extension', function(event) { 
-	jQuery(this).find(".modal-body table.dataTable").DataTable().destroy();
-	jQuery('.modal-backdrop').removeClass('show');
-	jQuery(this).removeClass('show');
-});
+
 const auth_key = 'v8.0.38-authf649fc9a5f55';
 
 function lihat_password(that){

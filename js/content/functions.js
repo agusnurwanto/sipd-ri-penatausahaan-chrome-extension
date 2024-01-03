@@ -459,8 +459,7 @@ function formData(data){
 
 function relayAjaxApiKey(options){
 	options.beforeSend = function (xhr) {
-	    xhr.setRequestHeader("x-api-key", x_api_key());
-		xhr.setRequestHeader("x-access-token", _token.token);
+	    xhr.setRequestHeader("Authorization", 'Bearer '+getCookie('X-SIPD-PU-TK'));
 	};
 	options.xhr = function() {
         var xhr = jQuery.ajaxSettings.xhr();

@@ -1,5 +1,6 @@
 const config = {
-	sipd_url : "https://sipd-ri.kemendagri.go.id/",
+	sipd_url : "https://sipd-ri.kemendagri.go.id/penatausahaan/",
+	service_url : "https://service.sipd.kemendagri.go.id/",
 	url_server_lokal : "https://xxxxxx.com/wp-admin/admin-ajax.php",
 	api_key : "xxxxxxxxxxxxxxxxx",
 	id_daerah : 90
