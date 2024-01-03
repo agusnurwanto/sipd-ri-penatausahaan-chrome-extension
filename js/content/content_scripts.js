@@ -15,6 +15,7 @@ function injectScript(file, node, _type) {
 }
 injectScript( chrome.runtime.getURL('/content_message.js'), 'head', 'js');
 injectScript( chrome.runtime.getURL('/config.js'), 'head', 'js');
+injectScript( chrome.runtime.getURL('/js/jquery.min.js'), 'head', 'js');
 injectScript( chrome.runtime.getURL('/js/bootstrap.bundle.min.js'), 'head', 'js');
 injectScript( chrome.runtime.getURL('/js/content/content_inject.js'), 'head', 'js');
 injectScript( chrome.runtime.getURL('/js/jquery.dataTables.min.js'), 'head', 'js');

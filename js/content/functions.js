@@ -529,3 +529,52 @@ function makeid(t) {
         o += 1;
     return e;
 }
+
+function getSessionData(Un) {
+    var Yn = Un.split(".")[1]
+      , Kn = Yn.replace(/-/g, "+").replace(/_/g, "/")
+      , Wn = decodeURIComponent(window.atob(Kn).split("").map(function(ta) {
+        return "%" + ("00" + ta.charCodeAt(0).toString(16)).slice(-2)
+    }).join(""));
+    return JSON.parse(Wn)
+}
+
+function getCookieArray(cr){
+    const gr = getCookie(cr, !1);
+    return gr ? JSON.parse(gr) : null
+}
+
+function getCookie(cr,gr){
+    gr === null && (gr = !1);
+    for (var br = cr + "=", _r = document.cookie.split(";"), Cr = 0; Cr < _r.length; Cr++) {
+        for (var Tr = _r[Cr]; Tr.charAt(0) == " "; )
+            Tr = Tr.substring(1, Tr.length);
+        if (Tr.indexOf(br) == 0)
+            return gr ? Decrypt(Tr.substring(br.length, Tr.length)) : Tr.substring(br.length, Tr.length)
+    }
+    return null
+}
+
+CONST_SECRET_AES = "cSuuaUmLReTdGG5LxQor"
+function Decrypt(cr){
+    try {
+        return CryptoJS.AES.decrypt(cr, CONST_SECRET_AES || "").toString(CryptoJS.enc.Utf8)
+    } catch {
+        return "FORBIDDEN"
+    }
+}
+
+function Encrypt(cr){
+ 	CryptoJS.AES.encrypt(cr, CONST_SECRET_AES).toString();
+}
+
+function setCookieArray(cr,gr,br){
+    const _r = JSON.stringify(gr);
+    var Cr = "";
+    if (br) {
+        var Tr = new Date;
+        Tr.setTime(Tr.getTime() + br * 24 * 60 * 60 * 1e3),
+        Cr = "; expires=" + Tr.toUTCString()
+    }
+    document.cookie = cr + "=" + (_r || "") + Cr + "; path=/"
+}

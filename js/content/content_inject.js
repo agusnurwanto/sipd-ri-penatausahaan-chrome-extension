@@ -64,10 +64,6 @@ function ganti_tahun(){
 }
 
 function logout(){
-    localStorage.removeItem(auth_key);
-    localStorage.removeItem("sipd-konfigurasi-tahun");
-    localStorage.removeItem("sipd-konfigurasi");
-    localStorage.removeItem("sipd-konfigurasi-id_daerah");
-    localStorage.removeItem("sipd-konfigurasi-unit-set");
+    return alert('Masih dalam pengembangan!');
 	window.location.href = config.sipd_url;
 }

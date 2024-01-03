@@ -79,16 +79,16 @@ function cekUrl(current_url, nomor=1){
 		}
 
 		var cek_reload = true;
-		var title_admin = jQuery('#kt_header .menu-title.text-white');
+		var title_admin = jQuery('#ZEUS main header .items-center.h-full');
 		// jika halaman admin
 		if(title_admin.length >= 1){
 			var aksi_admin = ''
 				+'<div id="aksi-admin" class="menu-item me-lg-1">'
-					+'<a class="btn btn-success btn-sm" onclick="ganti_tahun();" style="margin-left: 2px;">Ganti Tahun Anggaran</a>'
+					// +'<a class="btn btn-success btn-sm" onclick="ganti_tahun();" style="margin-left: 2px;">Ganti Tahun Anggaran</a>'
 					+'<a class="btn btn-danger btn-sm" onclick="logout();" style="margin-left: 5px;">Keluar</a>'
 				+'</div>'
 			if(jQuery('#aksi-admin').length == 0){
-				title_admin.closest('.menu-item').after(aksi_admin);
+				title_admin.find('> .items-center').eq(0).after(aksi_admin);
 			}
 
 			// Data RAK SIPD
