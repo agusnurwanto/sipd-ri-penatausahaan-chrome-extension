@@ -96,13 +96,13 @@ function cekUrl(current_url, nomor=1){
 			{
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Halaman RAK Belanja', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_sipd_lokal">Singkron ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);
 				if(title.indexOf(' | Detail Belanja') != -1){
-					jQuery('.aksi-extension').remove();
-					var btn = ''
-						+'<div class="aksi-extension" style="display: inline-block;">'						
-							+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_sipd_lokal">Singkron ke DB Lokal</button>'					
-						+'</div>';
-					jQuery('.card-title.custom-class').append(btn);
 					jQuery('#singkron_rak_sipd_lokal').on('click', function(){
 						jQuery('#wrap-loading').show();
 						var sub = current_url.split('/');
@@ -119,6 +119,15 @@ function cekUrl(current_url, nomor=1){
 							alert('Berhasil singkron RAK ke lokal!');
 							jQuery('#wrap-loading').hide();
 						});
+					});
+				}else if(title.indexOf(' | Sub Belanja') != -1){
+					jQuery('#singkron_rak_sipd_lokal').on('click', function(){
+						jQuery('#wrap-loading').show();
+						var sub = current_url.split('/');
+						get_sub_keg(sub[9], function(){
+							alert('Berhasil singkron RAK ke lokal!');
+							jQuery('#wrap-loading').hide();
+            			});
 					});
 				}
 
