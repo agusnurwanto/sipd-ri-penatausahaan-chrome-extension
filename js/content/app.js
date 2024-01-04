@@ -146,23 +146,31 @@ function cekUrl(current_url, nomor=1){
 				}
 
 			// Data Master User
-			}else if(current_url.indexOf('/penatausahaan/user') != -1){
-				console.log('halaman User');	
+			}else if(current_url.indexOf('penatausahaan/user') != -1){
+				var title = jQuery('.card-title.custom-class').text();				
+				console.log('halaman User', title);	
 				// level = "8";
 				// model = "penyelia";
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_user_lokal">Singkron User ke DB Lokal</button>'
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_user_lokal">Singkron User ke DB Lokal</button>'					
 					+'</div>';
 				jQuery('.page-title').append(btn);
-				jQuery('#singkron_user_lokal').on('click', function(){
-					singkron_user_lokal();
-				});
+				if(title.indexOf('Pengguna') != -1){
+					jQuery('#singkron_user_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_user_lokal();
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}
 
 			// Data Master Pegawai
-			}else if(current_url.indexOf('/penatausahaan/setting/pegawai') != -1){
-				console.log('halaman Pegawai');	
+			}else if(current_url.indexOf('penatausahaan/setting/pegawai') != -1){
+				var title = jQuery('.card-title.custom-class').text();	
+				console.log('halaman Pegawai', title);	
 				// level = "8";
 				// model = "penyelia";
 				jQuery('.aksi-extension').remove();
@@ -172,7 +180,9 @@ function cekUrl(current_url, nomor=1){
 					+'</div>';
 				jQuery('.page-title').append(btn);
 				jQuery('#singkron_pegawai_lokal').on('click', function(){
-					singkron_pegawai_lokal();
+					if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
+						singkron_pegawai_lokal();
+					}
 				});
 			}
 			
