@@ -85,7 +85,7 @@ function cekUrl(current_url, nomor=1){
 			var aksi_admin = ''
 				+'<div id="aksi-admin" class="menu-item me-lg-1">'
 					// +'<a class="btn btn-success btn-sm" onclick="ganti_tahun();" style="margin-left: 2px;">Ganti Tahun Anggaran</a>'
-					+'<a class="btn btn-danger btn-sm" onclick="logout();" style="margin-left: 5px;">Keluar</a>'
+					// +'<a class="btn btn-danger btn-sm" onclick="logout();" style="margin-left: 5px;">Keluar</a>'
 				+'</div>'
 			if(jQuery('#aksi-admin').length == 0){
 				title_admin.find('> .items-center').eq(0).after(aksi_admin);
@@ -99,36 +99,50 @@ function cekUrl(current_url, nomor=1){
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_sipd_lokal">Singkron ke DB Lokal</button>'					
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_sipd_lokal">Singkron RAK Sub Kegiatan ke DB Lokal</button>'					
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);
 				if(title.indexOf(' | Detail Belanja') != -1){
 					jQuery('#singkron_rak_sipd_lokal').on('click', function(){
-						jQuery('#wrap-loading').show();
-						var sub = current_url.split('/');
-						get_rak({
-							id_unit: sub[9],
-							id_skpd: sub[10],
-							id_sub_skpd: sub[11],
-							id_urusan: sub[12],
-							id_bidang_urusan: sub[13],
-							id_program: sub[14],
-							id_giat: sub[15],
-							id_sub_giat: sub[16]
-						}, function(){
-							alert('Berhasil singkron RAK ke lokal!');
-							jQuery('#wrap-loading').hide();
-						});
+						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
+							jQuery('#wrap-loading').show();
+							var sub = current_url.split('/');
+							get_rak({
+								id_unit: sub[9],
+								id_skpd: sub[10],
+								id_sub_skpd: sub[11],
+								id_urusan: sub[12],
+								id_bidang_urusan: sub[13],
+								id_program: sub[14],
+								id_giat: sub[15],
+								id_sub_giat: sub[16]
+							}, function(){
+								alert('Berhasil singkron RAK ke lokal!');
+								jQuery('#wrap-loading').hide();
+							});
+						}
 					});
 				}else if(title.indexOf(' | Sub Belanja') != -1){
+					jQuery('#singkron_rak_sipd_lokal').text('Singkron RAK SKPD ke DB Lokal');
 					jQuery('#singkron_rak_sipd_lokal').on('click', function(){
-						jQuery('#wrap-loading').show();
-						var sub = current_url.split('/');
-						get_sub_keg(sub[9], function(){
-							alert('Berhasil singkron RAK ke lokal!');
-							jQuery('#wrap-loading').hide();
-            			});
+						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
+							jQuery('#wrap-loading').show();
+							var sub = current_url.split('/');
+							get_sub_keg(sub[9], function(){
+								alert('Berhasil singkron RAK ke lokal!');
+								jQuery('#wrap-loading').hide();
+	            			});
+						}
 					});
+				}else if(title.indexOf(' | Belanja') != -1){
+					jQuery('#singkron_rak_sipd_lokal').text('Singkron ALL SKPD ke DB Lokal');
+					jQuery('#singkron_rak_sipd_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_rak_ke_lokal();
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
 				}
 
 			// Data Master User

@@ -9,6 +9,7 @@ function singkron_rak_ke_lokal(){
 			skpd_all.reduce(function(sequence, nextData){
                 return sequence.then(function(current_data){
             		return new Promise(function(resolve_reduce, reject_reduce){
+            			pesan_loading('Get sub kegiatan dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
             			get_sub_keg(current_data.id_skpd, function(){
             				return resolve_reduce(nextData);
             			});
@@ -41,6 +42,7 @@ function get_sub_keg(id_sub_skpd, callback){
 			ret.items.reduce(function(sequence, nextData){
                 return sequence.then(function(current_data){
             		return new Promise(function(resolve_reduce, reject_reduce){
+            			pesan_loading('Get RAK sub kegiatan "'+current_data.kode_sub_giat+' '+current_data.nama_sub_giat+'" '+current_data.kode_sub_skpd+' '+current_data.nama_sub_skpd);
             			get_rak(current_data, function(){
             				return resolve_reduce(nextData);
             			});
