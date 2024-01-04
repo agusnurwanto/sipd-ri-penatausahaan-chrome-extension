@@ -82,14 +82,15 @@ function get_rak(sub, callback){
 		type: 'get',
 		success: function(ret){
 			console.log('ret', ret);
-			var kode_sbl = id_unit+'.'+id_skpd+'.'+id_sub_skpd+'.'+id_urusan+'.'+id_bidang_urusan+'.'+id_program+'.'+id_giat+'.'+id_sub_giat;
+			var kode_sbl = id_skpd+'.'+id_sub_skpd+'.'+id_skpd+'.'+id_bidang_urusan+'.'+id_program+'.'+id_giat+'.'+id_sub_giat;
 			var data_rak = { 
 				action: 'singkron_anggaran_kas',
-				tahun_anggaran: config.tahun_anggaran,
+				tahun_anggaran: _token.tahun,
 				api_key: config.api_key,
 				kode_sbl: kode_sbl,
 				id_skpd: id_skpd,
-				type: opsi.type,
+				type: 'belanja',
+				sumber: 'ri',
 				data: {}
 			};
 			ret.map(function(b, i){

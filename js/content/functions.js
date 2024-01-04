@@ -355,20 +355,9 @@ function en(data){
 
 function getToken(){
 	_token = false;
-	for(var i in localStorage){ 
-		if(
-			i.indexOf('auth') != -1
-			|| i == 'sipd-konfigurasi' || i == 'sipd-konfigurasi-unit-set'
-		){
-		    var item = localStorage.getItem(i);
-	    	if(!_token){
-	    		_token = {};
-	    	}
-	    	item = JSON.parse(item);
-	    	for(var i in item){
-	        	_token[i] = item[i];
-	    	}
-		}
+	var a = getCookie('X-SIPD-PU-TK');
+	if(a != null){
+		_token = JSON.parse(atob(a.split('.')[1]));
 	}
 	run_script('run', 'window._token = '+JSON.stringify(_token));
 	console.log('_token', _token);

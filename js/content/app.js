@@ -92,11 +92,11 @@ function cekUrl(current_url, nomor=1){
 			}
 
 			// Data RAK SIPD
-			else if(current_url.indexOf('penatausahaan/pengeluaran/dpa/rencana-penarikan-dana/belanja') != -1)
+			if(current_url.indexOf('penatausahaan/pengeluaran/dpa/rencana-penarikan-dana/belanja') != -1)
 			{
-				console.log('Halaman RAK Belanja');
 				var title = jQuery('.card-title.custom-class').text();
-				if(title == 'Detail Dokumen Pelaksanaan Anggaran (DPA) | Detail Belanja'){
+				console.log('Halaman RAK Belanja', title);
+				if(title.indexOf(' | Detail Belanja') != -1){
 					jQuery('.aksi-extension').remove();
 					var btn = ''
 						+'<div class="aksi-extension" style="display: inline-block;">'						
@@ -121,11 +121,9 @@ function cekUrl(current_url, nomor=1){
 						});
 					});
 				}
-			}
 
 			// Data Master User
-			else if(current_url.indexOf('/penatausahaan/user') != -1)
-			{
+			}else if(current_url.indexOf('/penatausahaan/user') != -1){
 				console.log('halaman User');	
 				// level = "8";
 				// model = "penyelia";
@@ -138,11 +136,9 @@ function cekUrl(current_url, nomor=1){
 				jQuery('#singkron_user_lokal').on('click', function(){
 					singkron_user_lokal();
 				});
-			}
 
 			// Data Master Pegawai
-			else if(current_url.indexOf('/penatausahaan/setting/pegawai') != -1)
-			{
+			}else if(current_url.indexOf('/penatausahaan/setting/pegawai') != -1){
 				console.log('halaman Pegawai');	
 				// level = "8";
 				// model = "penyelia";
