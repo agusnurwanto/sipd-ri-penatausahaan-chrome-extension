@@ -14,6 +14,27 @@ function get_pegawai(opsi, page=1, limit=50){
 			url: config.service_url+'pegawai/strict/pegawai?page='+page+'&limit='+limit,
 			type: 'get',
 			success: function(data){
+				// jika user yang login adalah BUD
+				if(
+					page == 1
+					&& _token.id_role == 9
+				){
+					data.push({
+				        "id": '',
+				        "id_daerah": _token.id_daerah,
+				        "id_skpd": 0,
+				        "id_user": _token.id_user,
+				        "id_role": _token.id_role,
+				        "nama_role": "BENDAHARA UMUM DAERAH",
+				        "tahun_pegawai": _token.tahun,
+				        "id_pegawai_kpa": 0,
+				        "status": "",
+				        "id_pegawai_ref": "0",
+				        "id_user_kpa": 0,
+				        "nama_user": "",
+				        "nip_user": ""
+					})
+				}
 				var last = data.length-1;
 				data.reduce(function(sequence, nextData){
 		            return sequence.then(function(current_data){
@@ -98,7 +119,7 @@ function get_pegawai(opsi, page=1, limit=50){
 					    console.log('responeMessage', response);
 					});
 
-					if(data.length == limit){
+					if(data.length >= limit){
 						// dikosongkan lagi setelah data dikirim ke lokal
 						opsi.data = [];
 						page++;
