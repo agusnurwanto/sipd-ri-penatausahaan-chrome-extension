@@ -90,6 +90,7 @@ function cekUrl(current_url, nomor=1){
 			if(jQuery('#aksi-admin').length == 0){
 				title_admin.find('> .items-center').eq(0).after(aksi_admin);
 			}
+			cek_reload = false;
 
 			// Data RAK SIPD
 			if(current_url.indexOf('penatausahaan/pengeluaran/dpa/rencana-penarikan-dana/belanja') != -1)
@@ -154,12 +155,12 @@ function cekUrl(current_url, nomor=1){
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_user_lokal">Singkron User ke DB Lokal</button>'					
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_user_lokal">Singkron Pengguna ke DB Lokal</button>'					
 					+'</div>';
-				jQuery('.page-title').append(btn);
+				jQuery('.card-header-slot').append(btn);
 				if(title.indexOf('Pengguna') != -1){
 					jQuery('#singkron_user_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
+						if(confirm('Apakah anda yakin melakukan backup data pengguna? Data lokal akan diupdate sesuai data terbaru.')){
 							singkron_user_lokal();
 						}
 					});
@@ -169,24 +170,26 @@ function cekUrl(current_url, nomor=1){
 
 			// Data Master Pegawai
 			}else if(current_url.indexOf('penatausahaan/setting/pegawai') != -1){
-				var title = jQuery('.card-title.custom-class').text();	
-				console.log('halaman Pegawai', title);	
+				var title = jQuery('.card-title.custom-class').text();
+				console.log('halaman Pegawai', title);
+				if(title == ''){
+					console.log('konten halaman belum terload!');
+					cek_reload = true;
+				}
 				// level = "8";
 				// model = "penyelia";
 				jQuery('.aksi-extension').remove();
 				var btn = ''
-					+'<div class="aksi-extension">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_pegawai_lokal">Singkron User ke DB Lokal</button>'
+					+'<div class="aksi-extension card-header-slot">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_pegawai_lokal">Singkron Pegawai ke DB Lokal</button>'
 					+'</div>';
-				jQuery('.page-title').append(btn);
+				jQuery('.card-header-slot').before(btn);
 				jQuery('#singkron_pegawai_lokal').on('click', function(){
-					if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
+					if(confirm('Apakah anda yakin melakukan backup data pegawai? Data lokal akan diupdate sesuai data terbaru.')){
 						singkron_pegawai_lokal();
 					}
 				});
 			}
-			
-			cek_reload = false;
 		// jika halaman login
 		}else if(
 			current_url.indexOf('/landing-page') != -1
