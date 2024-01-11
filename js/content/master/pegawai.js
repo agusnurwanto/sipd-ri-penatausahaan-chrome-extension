@@ -78,6 +78,8 @@ function get_pegawai(opsi, page=1, limit=50){
 									current_data.is_from_generate = '';
 									current_data.is_from_external = '';
 									current_data.idSubUnit = '';
+									current_data.lahir_user = user.lahir_user;
+									current_data.nik = user.nik_user;
 									current_data.idUser = current_data.id_user;
 									current_data.idPegawai = '';
 									current_data.alamat = user.alamat;

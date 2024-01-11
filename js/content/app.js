@@ -166,6 +166,7 @@ function cekUrl(current_url, nomor=1){
 				jQuery('#singkron_pegawai_lokal').on('click', function(){
 					if(confirm('Apakah anda yakin melakukan backup data pegawai? Data lokal akan diupdate sesuai data terbaru.')){
 						singkron_pegawai_lokal();
+						// singkron_user_lokal();
 					}
 				});
 			}
