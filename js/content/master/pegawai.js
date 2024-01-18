@@ -86,8 +86,10 @@ function get_pegawai(opsi, page=1, limit=50){
 										current_data.idPegawai = '';
 										current_data.alamat = user.alamat;
 										opsi.data.push(current_data);
+										// penempatan kode resolve promisnya harusnya di dalaman fungsi then
+									resolve_reduce(nextData);
 									})	
-										resolve_reduce(nextData);
+									
 								}
 							});
 		        		})
