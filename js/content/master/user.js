@@ -14,15 +14,6 @@ function singkron_user_lokal(){
                 api_key: config.api_key,
                 data_user: {}
             };
-                        // "id_user": 110,
-                        // "id_daerah": 115,
-                        // "nip_user": "196605171993032003",
-                        // "nama_user": "Dr. ENY RACHYUNINGSIH, M.Si.",
-                        // "id_pang_gol": 0,
-                        // "nik_user": "",
-                        // "npwp_user": "",
-                        // "alamat": "Kota Batu",
-                        // "lahir_user": "0001-01-01T00:00:00Z"
             user_all.map(function(b, i){
                 data.data_user[i] = {}
                 data.data_user[i].idUser = b.id_user;

@@ -86,8 +86,8 @@ function get_pegawai(opsi, page=1, limit=50){
 										current_data.idPegawai = '';
 										current_data.alamat = user.alamat;
 										opsi.data.push(current_data);
-									})	
 										resolve_reduce(nextData);
+									});
 								}
 							});
 		        		})
