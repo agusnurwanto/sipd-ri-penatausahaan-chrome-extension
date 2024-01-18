@@ -44,48 +44,50 @@ function get_pegawai(opsi, page=1, limit=50){
 								type: 'get',
 								success: function(user){
 		        					pesan_loading('Get detail pegawai '+user.nama_user);
-									current_data.detail_user = user;
-									current_data.skpd = {
-										'idSkpd': current_data.id_skpd,
-										'namaSkpd': '',
-										'kodeSkpd': '',
-										'idDaerah': current_data.id_daerah
-									};
-									current_data.userName = user.nip_user;
-									current_data.nip = user.nip_user;
-									current_data.fullName = user.nama_user;
-									current_data.nomorHp = '';
-									current_data.rank = '';
-									current_data.npwp = user.npwp_user;
-									current_data.jabatan = {
-										'idJabatan': '',
-										'namaJabatan': current_data.nama_role,
-										'idRole': current_data.id_role,
-										'order': ''
-									};
-									current_data.kpa = '';
-									current_data.bank = '';
-									current_data.group = '';
-									current_data.password = '';
-									current_data.konfirmasiPassword = '';
-									current_data.kodeBank = '';
-									current_data.nama_rekening = '';
-									current_data.nomorRekening = '';
-									current_data.pangkatGolongan = '';
-									current_data.tahunPegawai = current_data.tahun_pegawai;
-									current_data.kodeDaerah = '';
-									current_data.is_from_sipd = '';
-									current_data.is_from_generate = '';
-									current_data.is_from_external = '';
-									current_data.idSubUnit = '';
-									current_data.lahir_user = user.lahir_user;
-									current_data.nik = user.nik_user;
-									current_data.idUser = current_data.id_user;
-									current_data.idPegawai = '';
-									current_data.alamat = user.alamat;
-									opsi.data.push(current_data);
-
-									resolve_reduce(nextData);
+									get_view_skpd().then(function(skpd){
+										console.log(skpd);
+										current_data.detail_user = user;
+										current_data.skpd = {
+											'idSkpd': current_data.id_skpd,
+											'namaSkpd': skpd.nama_skpd,
+											'kodeSkpd': skpd.kode_skpd,
+											'idDaerah': current_data.id_daerah
+										};
+										current_data.userName = user.nip_user;
+										current_data.nip = user.nip_user;
+										current_data.fullName = user.nama_user;
+										current_data.nomorHp = '';
+										current_data.rank = '';
+										current_data.npwp = user.npwp_user;
+										current_data.jabatan = {
+											'idJabatan': '',
+											'namaJabatan': current_data.nama_role,
+											'idRole': current_data.id_role,
+											'order': ''
+										};
+										current_data.kpa = '';
+										current_data.bank = '';
+										current_data.group = '';
+										current_data.password = '';
+										current_data.konfirmasiPassword = '';
+										current_data.kodeBank = '';
+										current_data.nama_rekening = '';
+										current_data.nomorRekening = '';
+										current_data.pangkatGolongan = '';
+										current_data.tahunPegawai = current_data.tahun_pegawai;
+										current_data.kodeDaerah = '';
+										current_data.is_from_sipd = '';
+										current_data.is_from_generate = '';
+										current_data.is_from_external = '';
+										current_data.idSubUnit = '';
+										current_data.lahir_user = user.lahir_user;
+										current_data.nik = user.nik_user;
+										current_data.idUser = current_data.id_user;
+										current_data.idPegawai = '';
+										current_data.alamat = user.alamat;
+										opsi.data.push(current_data);
+									})	
+										resolve_reduce(nextData);
 								}
 							});
 		        		})
@@ -136,4 +138,34 @@ function get_pegawai(opsi, page=1, limit=50){
 			}
 		});
 	});
+}
+
+function get_view_pegawai(idpegawai){    
+    return new Promise(function(resolve, reject){    	
+		relayAjaxApiKey({
+			url: config.sipd_url+'api/master/daerah/view/'+idpegawai,                                    
+			type: 'GET',	      				
+			processData: false,
+			contentType : 'application/json',
+			// beforeSend: function (xhr) {			    
+			// 	xhr.setRequestHeader("X-API-KEY", x_api_key2());
+			// 	xhr.setRequestHeader("X-ACCESS-TOKEN", _token.token);  
+			// },
+	      	success: function(pegawai){
+	      		return resolve(pegawai);
+	      	}
+	    });
+    });
+}
+
+function get_view_skpd(){    
+    return new Promise(function(resolve, reject){    	
+		relayAjaxApiKey({
+			url: config.service_url+'referensi/strict/skpd/list/'+_token.id_daerah+'/'+_token.tahun,                                    
+			type: 'GET',
+	      	success: function(skpd){
+	      		return resolve(skpd);
+	      	}
+	    });
+    });
 }
