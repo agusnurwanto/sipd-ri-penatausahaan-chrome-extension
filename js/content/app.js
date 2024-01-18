@@ -145,7 +145,7 @@ function cekUrl(current_url, nomor=1){
 				}else{
 					jQuery('.aksi-extension').remove();
 				}
-
+				
 			// Data Master Pegawai dan user
 			}else if(
 				current_url.indexOf('penatausahaan/setting/pegawai') != -1
@@ -161,12 +161,17 @@ function cekUrl(current_url, nomor=1){
 				var btn = ''
 					+'<div class="aksi-extension card-header-slot">'						
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_pegawai_lokal">Singkron Pegawai ke DB Lokal</button>'
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_panggol_lokal">Master Pangkat Golongan ke DB Lokal</button>'
 					+'</div>';
 				jQuery('.card-header-slot').before(btn);
 				jQuery('#singkron_pegawai_lokal').on('click', function(){
 					if(confirm('Apakah anda yakin melakukan backup data pegawai? Data lokal akan diupdate sesuai data terbaru.')){
-						singkron_pegawai_lokal();
-						// singkron_user_lokal();
+						singkron_pegawai_lokal();						
+					}
+				});
+				jQuery('#singkron_panggol_lokal').on('click', function(){
+					if(confirm('Apakah anda yakin melakukan backup data pegawai? Data lokal akan diupdate sesuai data terbaru.')){
+						singkron_panggol_lokal();						
 					}
 				});
 			}
