@@ -145,7 +145,28 @@ function cekUrl(current_url, nomor=1){
 				}else{
 					jQuery('.aksi-extension').remove();
 				}
-				
+			
+			// DATA SPD
+			}else if(
+				current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spd/otorisasi') != -1				
+			){
+				var title = jQuery('.card-title.custom-class').text();
+				console.log('halaman Otoritasi SPD', title);
+				if(title == ''){
+					console.log('konten halaman belum terload!');
+					cek_reload = true;
+				}
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension card-header-slot">'												
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spd_lokal">Singkron SPD ke DB Lokal</button>'
+					+'</div>';
+				jQuery('.card-header-slot').before(btn);				
+				jQuery('#singkron_spd_lokal').on('click', function(){
+					if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
+						singkron_spd_lokal();						
+					}
+				});
 			// Data Master Pegawai dan user
 			}else if(
 				current_url.indexOf('penatausahaan/setting/pegawai') != -1
@@ -162,6 +183,7 @@ function cekUrl(current_url, nomor=1){
 					+'<div class="aksi-extension card-header-slot">'						
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_pegawai_lokal">Singkron Pegawai ke DB Lokal</button>'
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_panggol_lokal">Master Pangkat Golongan ke DB Lokal</button>'
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spd_lokal">SPD ke DB Lokal</button>'
 					+'</div>';
 				jQuery('.card-header-slot').before(btn);
 				jQuery('#singkron_pegawai_lokal').on('click', function(){
@@ -170,8 +192,13 @@ function cekUrl(current_url, nomor=1){
 					}
 				});
 				jQuery('#singkron_panggol_lokal').on('click', function(){
-					if(confirm('Apakah anda yakin melakukan backup data pegawai? Data lokal akan diupdate sesuai data terbaru.')){
+					if(confirm('Apakah anda yakin melakukan backup data pangkat Golongan? Data lokal akan diupdate sesuai data terbaru.')){
 						singkron_panggol_lokal();						
+					}
+				});
+				jQuery('#singkron_spd_lokal').on('click', function(){
+					if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
+						singkron_spd_lokal();						
 					}
 				});
 			}
