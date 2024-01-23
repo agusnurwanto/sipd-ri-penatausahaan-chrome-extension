@@ -180,7 +180,7 @@ function cekUrl(current_url, nomor=1){
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);
 				if(title.indexOf(' | Penerimaan Pembiayaan') != -1){
-					jQuery('#singkron_rak_pembiayaan_penerimaan_sipd_lokal').text('Singkron ALL SKPD ke DB Lokal');
+					jQuery('#singkron_rak_pembiayaan_penerimaan_sipd_lokal').text('Singkron Pembiayaan Penerimaan ke DB Lokal');
 					jQuery('#singkron_rak_pembiayaan_penerimaan_sipd_lokal').on('click', function(){
 						if(confirm('Apakah anda yakin melakukan backup data anggaran kas Pembiayaan Penerimaan? Data lokal akan diupdate sesuai data terbaru.')){
 							singkron_rak_pembiayaan_penerimaan_sipd_lokal();
