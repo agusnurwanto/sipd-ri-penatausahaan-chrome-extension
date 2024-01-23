@@ -193,7 +193,7 @@ function cekUrl(current_url, nomor=1){
 		else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/dpa/rencana-penerimaan-dana/pendapatan') != -1)
 		{	
 			var title = jQuery('.card-title.custom-class').text();
-				console.log('Halaman RAK pendapatan', title);
+				console.log('Halaman RAK Pendapatan', title);
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
