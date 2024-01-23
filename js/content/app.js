@@ -234,6 +234,8 @@ function cekUrl(current_url, nomor=1){
 					lihat_id_daerah();
 				});
 			}
+		}else if(current_url == 'https://sipd.kemendagri.go.id/logout'){
+			return window.location = current_url.replace('go.id/logout', 'go.id/penatausahaan/logout');
 		}
 
 		// ulangi cek url
