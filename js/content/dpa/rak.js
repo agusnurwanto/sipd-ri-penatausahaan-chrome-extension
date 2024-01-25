@@ -503,7 +503,7 @@ function singkron_up(){
 		type: 'get',
 		success: function(skpd_all){
 			console.log(skpd_all);
-			var last = skpd_all.length-1;
+			// var last = skpd_all.length-1;
 			var data_up = { 
 				action: 'singkron_up',
 				tahun_anggaran: _token.tahun,
@@ -535,15 +535,9 @@ function singkron_up(){
 		    			return: true
 					}
 			    }
-			};
-			// if(callback){
-			// 	data_back.message.content.return = false;
-			// }
+			};			
 			chrome.runtime.sendMessage(data_back, function(response) {
-			    console.log('responeMessage', response);
-				// if(callback){
-			    // 	callback(data_up);
-			    // }
+			    console.log('responeMessage', response);			
 			});
 		}
 	});
