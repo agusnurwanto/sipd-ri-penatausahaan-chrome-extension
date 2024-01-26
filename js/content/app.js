@@ -142,6 +142,8 @@ function cekUrl(current_url, nomor=1){
 							singkron_rak_ke_lokal();
 						}
 					});
+				}else if(title.indexOf('Cetak Dokumen') != -1){
+					jQuery('.container-frame-pdf').attr('contenteditable', true);
 				}else{
 					jQuery('.aksi-extension').remove();
 				}
