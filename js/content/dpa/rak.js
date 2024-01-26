@@ -493,3 +493,52 @@ function get_rak_pemb_pengeluaran(sub, callback){
 		}
 	});
 }
+
+
+function singkron_up(){
+    jQuery('#wrap-loading').show();
+    var url = config.service_url+'/referensi/strict/besaran-up';
+    relayAjaxApiKey({
+		url: url,
+		type: 'get',
+		success: function(skpd_all){
+			console.log(skpd_all);
+			// var last = skpd_all.length-1;
+			var data_up = { 
+				action: 'singkron_up',
+				tahun_anggaran: _token.tahun,
+				api_key: config.api_key,											
+				sumber: 'ri',
+				data: {}
+			};
+			skpd_all.map(function(b, i){
+				data_up.data[i] = {}
+				data_up.data[i].besaran_up = b.besaran_up;
+				data_up.data[i].besaran_up_kkpd = b.besaran_up_kkpd;
+				data_up.data[i].id_besaran_up = b.id_besaran_up;
+				data_up.data[i].id_daerah = b.id_daerah;
+				data_up.data[i].id_skpd = b.id_skpd;
+				data_up.data[i].id_sub_skpd = b.id_sub_skpd;
+				data_up.data[i].id_unit = b.id_unit;
+				data_up.data[i].kode_skpd = b.kode_skpd;
+				data_up.data[i].nama_skpd = b.nama_skpd;
+				data_up.data[i].pagu = b.pagu;
+				data_up.data[i].tahun = b.tahun;
+			});
+			var data_back = {
+			    message:{
+			        type: "get-url",
+			        content: {
+					    url: config.url_server_lokal,
+					    type: 'post',
+					    data: data_up,
+		    			return: true
+					}
+			    }
+			};			
+			chrome.runtime.sendMessage(data_back, function(response) {
+			    console.log('responeMessage', response);			
+			});
+		}
+	});
+}
