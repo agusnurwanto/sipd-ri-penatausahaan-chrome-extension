@@ -73,7 +73,7 @@ function get_spd_skpd(id_sub_skpd, callback){
 	});
 }
 
-function get_rak(sub, callback){
+function get_spd(sub, callback){
 	var id_daerah = sub.id_daerah;
 	var id_skpd = sub.id_skpd;
 	var id_spd = sub.id_spd;
