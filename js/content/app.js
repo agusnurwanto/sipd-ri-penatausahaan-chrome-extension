@@ -92,8 +92,8 @@ function cekUrl(current_url, nomor=1){
 			}
 			cek_reload = false;
 
-			// Data RAK SIPD
-			if(current_url.indexOf('penatausahaan/pengeluaran/dpa/rencana-penarikan-dana/belanja') != -1)
+		// Data RAK SIPD
+		if(current_url.indexOf('penatausahaan/pengeluaran/dpa/rencana-penarikan-dana/belanja') != -1)
 			{
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Halaman RAK Belanja', title);
@@ -231,26 +231,38 @@ function cekUrl(current_url, nomor=1){
 				}
 			});
 		//SPD	
-		}else if(
-			current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spd/otorisasi') != -1				
-			){
+		}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spd/otorisasi') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
-				console.log('halaman Otoritasi SPD', title);
-				if(title == ''){
-					console.log('konten halaman belum terload!');
-					cek_reload = true;
-				}
+				console.log('Surat Penyediaan Dana (SPD)', title);
 				jQuery('.aksi-extension').remove();
 				var btn = ''
-					+'<div class="aksi-extension card-header-slot">'												
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spd_lokal">Singkron SPD ke DB Lokal</button>'
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spd_lokal">Singkron SPD ke DB Lokal</button>'					
 					+'</div>';
-				jQuery('.card-header-slot').before(btn);				
-				jQuery('#singkron_spd_lokal').on('click', function(){
-					if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
-						singkron_spd_lokal();						
-					}
-				});
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Surat Penyediaan Dana (SPD)') != -1){
+					jQuery('#singkron_spd_lokal').text('Singkron SPD SKPD ke DB Lokal');
+					jQuery('#singkron_spd_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
+							jQuery('#wrap-loading').show();
+							var sub = current_url.split('/');
+							get_sub_keg(sub[5], function(){
+								alert('Berhasil singkron SPD ke lokal!');
+								jQuery('#wrap-loading').hide();
+	            			});
+						}
+					});
+				}else if(title.indexOf(' | Otorisasi') != -1){
+					jQuery('#singkron_spd_lokal').text('Singkron ALL SKPD ke DB Lokal');
+					jQuery('#singkron_spd_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_spd_lokal();						
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}				
+				
 		// Data Master Pegawai dan user		
 		}else if(
 				current_url.indexOf('penatausahaan/setting/pegawai') != -1
