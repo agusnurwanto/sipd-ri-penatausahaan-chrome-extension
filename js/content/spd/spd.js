@@ -42,8 +42,8 @@ function get_spd_skpd(id_sub_skpd, callback){
 		url: url,
 		type: 'get',
 		success: function(ret){
-			var last = ret.items.length-1;
-			ret.items.reduce(function(sequence, nextData){
+			 var last = ret.length-1;
+			ret.reduce(function(sequence, nextData){
                 return sequence.then(function(current_data){
             		return new Promise(function(resolve_reduce, reject_reduce){
             			pesan_loading('Get Laporan SPD "'+current_data.id_skpd+' '+current_data.nomor_spd+'" '+current_data.periode_spd+' '+current_data.nilai);
@@ -60,7 +60,7 @@ function get_spd_skpd(id_sub_skpd, callback){
                     console.log(e);
                     return Promise.resolve(nextData);
                 });
-            }, Promise.resolve(ret.items[last]))
+            }, Promise.resolve(ret[last]))
             .then(function(data_last){
             	if(callback){
             		callback();
@@ -99,7 +99,12 @@ function get_spd(sub, callback){
 				sumber: 'ri',
 				data: {}
 			};
-			ret.map(function(b, i){
+            let lapspd = Object.keys(ret)
+            
+			lapspd.map( b => { 
+                //function(b, i){       
+                console.log(b);         
+                let laporan = Object.keys(b.item_laporan)
 				data_spd.data[i] = {}
 				data_spd.data[i].idSpd = id_spd;
 				data_spd.data[i].id_skpd = id_skpd;
@@ -139,11 +144,16 @@ function get_spd(sub, callback){
 				data_spd.data[i].untuk_kebutuhan = b.untuk_kebutuhan;
 				data_spd.data[i].akumulasi_spd_sebelumnya = b.akumulasi_spd_sebelumnya;	
 				data_spd.data[i].detail_spd	= {};	
-				b.item_laporan.map(function(d, c){
-					data_spd.data[i].detail_spd[c]	= {};
-					data_spd.data[i].detail_spd[c].id_akun	= d.id_akun;
-					data_spd.data[i].detail_spd[c].kode_akun	= d.kode_akun;
-					data_spd.data[i].detail_spd[c].nama_akun	= d.nama_akun;
+                console.log(laporan);
+				laporan.map(function(d, c){
+					data_spd.data[i].detail_spd[c]	= {};					               
+                    data_spd.data[i].detail_spd[c].alokasi_anggaran	= d.alokasi_anggaran;
+                    data_spd.data[i].detail_spd[c].alokasi_spd_lalu	= d.alokasi_spd_lalu;
+                    data_spd.data[i].detail_spd[c].alokasi_spd_saat_ini	= d.alokasi_spd_saat_ini;
+                    data_spd.data[i].detail_spd[c].alokasi_spd_saat_ini	= d.alokasi_spd_saat_ini;
+                    data_spd.data[i].detail_spd[c].kode_rekening	= d.kode_rekening;
+                    data_spd.data[i].detail_spd[c].sisa_anggaran	= d.sisa_anggaran;
+                    data_spd.data[i].detail_spd[c].nama_akun	= d.uraian;     
 				});			
 			});
 			var data_back = {

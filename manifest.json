@@ -30,7 +30,7 @@
 				"js/content/login.js",
 				"js/content/app.js",
 				"js/content/dpa/rak.js",
-				"js/content/dpa/spd.js",
+				"js/content/spd/spd.js",
 				"js/content/master/user.js",
 				"js/content/master/pegawai.js"
 			],
