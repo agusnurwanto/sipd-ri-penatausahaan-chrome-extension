@@ -274,9 +274,9 @@ function cekUrl(current_url, nomor=1){
 		jQuery('.card-title.custom-class').append(btn);				
 		if(title.indexOf('Surat Penyediaan Dana (SPD)') != -1){
 			jQuery('#singkron_spd_pa_lokal').text('Singkron SPD SKPD ke DB Lokal');
-			jQuery('#singkron_spd_lokal').on('click', function(){
+			jQuery('#singkron_spd_pa_lokal').on('click', function(){
 				if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
-					singkron_spd_lokal();						
+					singkron_spd_pa_lokal();						
 				}
 			});
 		}else{
