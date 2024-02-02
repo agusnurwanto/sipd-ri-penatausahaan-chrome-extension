@@ -470,7 +470,7 @@ function get_sub_giat_spd_view(data, id_spd, is_otorisasi_spd, kode_tahap, nilai
 
 function get_detail_spd(sub, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, callback){
 	console.log('sub', sub);
-	console.log('id_spd', id_spd);
+	// console.log('id_spd', id_spd);
 	var id_daerah = sub.id_daerah;
 	var id_skpd = sub.id_skpd;
 	var id_sub_skpd = sub.id_sub_skpd;
@@ -486,13 +486,7 @@ function get_detail_spd(sub, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_
 	var nilai_spd = nilai;
 	var nomor_spd = nomor_spd;
 	var periode_spd = periode_spd;
-	// var idDetailSpd = id_skpd+'.'+id_sub_skpd+'.'+id_skpd+'.'+id_giat+'.'+id_sub_giat+'.'+id_spd;
-	// var id_spd = sub.id_spd;
-	// var is_otorisasi_spd = sub.is_otorisasi_spd;
-	// var kode_tahap = sub.kode_tahap;
-	// var nilai = sub.nilai;
-	// var nomor_spd = sub.nomor_spd;
-	// var periode_spd = sub.periode_spd;
+	// var idDetailSpd = id_skpd+'.'+id_sub_skpd+'.'+id_skpd+'.'+id_giat+'.'+id_sub_giat+'.'+id_spd;	
 	//https://service.sipd.kemendagri.go.id/pengeluaran/strict/spd/pembuatan/view?id_skpd=1392&id_sub_skpd=1392&id_giat=8709&id_sub_giat=20295&id_akun=16414
 	var url = config.service_url+'pengeluaran/strict/spd/pembuatan/view?id_skpd='+id_skpd+'&id_sub_skpd='+id_sub_skpd+'&id_giat='+id_giat+'&id_sub_giat='+id_sub_giat+'&id_akun='+id_akun;	
 	//var url = config.service_url+'pengeluaran/strict/spd/pembuatan/laporan-spd/'+id_skpd+'/'+id_spd;
@@ -507,7 +501,7 @@ function get_detail_spd(sub, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_
 				tahun_anggaran: _token.tahun,
 				api_key: config.api_key,
 				id_skpd: id_skpd,
-				// id_spd: id_spd,
+				idSpd: id_spd,
 				sumber: 'ri',
 				data: {}
 			};
