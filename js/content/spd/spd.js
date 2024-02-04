@@ -502,6 +502,8 @@ function get_detail_spd(sub, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_
 				api_key: config.api_key,
 				id_skpd: id_skpd,
 				idSpd: id_spd,
+				nomorSpd: nomor_spd,
+				keteranganSpd: periode_spd+'-'+kode_tahap,
 				sumber: 'ri',
 				data: {}
 			};
@@ -516,9 +518,11 @@ function get_detail_spd(sub, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_
 				data_spd.data[i].id_sub_giat = id_sub_giat;
 				data_spd.data[i].id_sub_giat = id_sub_giat;
 				data_spd.data[i].id_akun = id_akun;
-				data_spd.data[i].totalSpd = nilai_akun;
-				//data_spd.data[i].totalSpd = b.nilai_spd;
-				data_spd.data[i].nomorSpd = nomor_spd;				
+				data_spd.data[i].idDetailSpd = b.id_akun;
+				data_spd.data[i].nilai = nilai_akun;
+				data_spd.data[i].totalSpd = nilai_spd;
+				data_spd.data[i].nomorSpd = nomor_spd;	
+				data_spd.data[i].keteranganSpd = periode_spd+'-'+kode_tahap;								
 				data_spd.data[i].harga_satuan = b.harga_satuan;
 				data_spd.data[i].kode_standar_harga = b.kode_standar_harga;
 
