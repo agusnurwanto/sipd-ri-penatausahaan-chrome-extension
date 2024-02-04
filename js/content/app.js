@@ -281,7 +281,37 @@ function cekUrl(current_url, nomor=1){
 			});
 		}else{
 			jQuery('.aksi-extension').remove();
-		}		
+		}	
+	// SPP
+	}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan') != -1	){
+		var title = jQuery('.card-title.custom-class').text();
+		window.type_data = 'UP';
+		if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=UP') != -1){
+			type_data = 'UP';
+		}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=GU') != -1){
+			type_data = 'GU';
+		}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=TU') != -1){
+			type_data = 'TU';
+		}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=LS') != -1){
+			type_data = 'LS';
+		}
+		console.log('Surat Permintaan Pembayaran (SPP)', title);
+		jQuery('.aksi-extension').remove();
+		var btn = ''
+			+'<div class="aksi-extension" style="display: inline-block;">'						
+				+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spp_lokal">Singkron SPP '+type_data+' ke DB Lokal</button>'					
+			+'</div>';
+		jQuery('.card-title.custom-class').append(btn);				
+		if(title.indexOf('Surat Permintaan Pembayaran (SPP)') != -1){
+			jQuery('#singkron_spp_lokal').text('Singkron SPP '+type_data+' ke DB Lokal');
+			jQuery('#singkron_spp_lokal').on('click', function(){
+				if(confirm('Apakah anda yakin melakukan backup data SPP '+type_data+'? Data lokal akan diupdate sesuai data terbaru.')){
+					singkron_spp_lokal(type_data);						
+				}
+			});
+		}else{
+			jQuery('.aksi-extension').remove();
+	}		
 		
 	// Data Master Pegawai dan user		
 	}else if(
