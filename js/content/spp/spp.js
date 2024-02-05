@@ -1,45 +1,47 @@
-function singkron_spp_lokal(type_data, search_value=false){
-	return new Promise(function(resolve, reject){
-		var type;
-		if (type_data =='UP') {
-			type = 'UP';
-		}else if (type_data =='GU') {
-			type = 'GU';
-		}else if (type_data =='TU') {
-			type = 'TU';
-		}else if (type_data =='LS') {
-			type = 'LS';
-		}
-		console.log('Get data All SPP!');
-	})
-}
+// function singkron_spp_lokal(type_data, search_value=false){
+// 	return new Promise(function(resolve, reject){
+// 		var type;
+// 		if (type_data =='UP') {
+// 			type = 'UP';
+// 		}else if (type_data =='GU') {
+// 			type = 'GU';
+// 		}else if (type_data =='TU') {
+// 			type = 'TU';
+// 		}else if (type_data =='LS') {
+// 			type = 'LS';
+// 		}
 
-function singkron_spp_ke_lokal() {
-	var url = config.service_url+'referensi/strict/dpa/penarikan/belanja/skpd/'+id_sub_skpd;
+// 		console.log('Get data All SPP!');
+// 	})
+// }
+
+function singkron_spp_lokal() {
+	jQuery('#wrap-loading').show();
+    var url = config.service_url+'referensi/strict/dpa/penarikan/belanja';
 	relayAjaxApiKey({
 	  url: url,
-	  type: "get",
+	  type: "GET",
 	  success: function (units) {
 		var last = units.length-1;
 		units.reduce(function (sequence, nextData) {
 		  return sequence.then(function (current_data) {
 			return new Promise(function (resolve_reduce, reject_reduce) {
-			  singkron_spp_ke_lokal_skpd(current_data,'UP', 'draft', ()=>{
-				singkron_spp_ke_lokal_skpd(current_data,'UP', 'diterima', ()=>{
-					singkron_spp_ke_lokal_skpd(current_data,'UP', 'dihapus', ()=>{
-						singkron_spp_ke_lokal_skpd(current_data,'UP', 'ditolak', ()=>{
-							singkron_spp_ke_lokal_skpd(current_data,'GU', 'draft', ()=>{
-								singkron_spp_ke_lokal_skpd(current_data,'GU', 'diterima',()=>{
-									singkron_spp_ke_lokal_skpd(current_data,'GU', 'dihapus', ()=>{
-										singkron_spp_ke_lokal_skpd(current_data,'GU', 'ditolak',()=>{
-											singkron_spp_ke_lokal_skpd(current_data,'TU', 'draft', ()=>{
-												singkron_spp_ke_lokal_skpd(current_data,'TU', 'diterima',()=>{
-													singkron_spp_ke_lokal_skpd(current_data,'TU', 'dihapus', ()=>{
-														singkron_spp_ke_lokal_skpd(current_data,'TU', 'ditolak',()=>{
-															singkron_spp_ke_lokal_skpd(current_data,'LS', 'draft', ()=>{
-																singkron_spp_ke_lokal_skpd(current_data,'LS', 'diterima',()=>{
-																	singkron_spp_ke_lokal_skpd(current_data,'LS', 'dihapus', ()=>{
-																		singkron_spp_ke_lokal_skpd(current_data,'LS', 'ditolak',()=>{
+			  singkron_spp_ke_lokal_skpd(current_data.id_skpd,'UP', 'draft', ()=>{
+				singkron_spp_ke_lokal_skpd(current_data.id_skpd,'UP', 'diterima', ()=>{
+					singkron_spp_ke_lokal_skpd(current_data.id_skpd,'UP', 'dihapus', ()=>{
+						singkron_spp_ke_lokal_skpd(current_data.id_skpd,'UP', 'ditolak', ()=>{
+							singkron_spp_ke_lokal_skpd(current_data.id_skpd,'GU', 'draft', ()=>{
+								singkron_spp_ke_lokal_skpd(current_data.id_skpd,'GU', 'diterima',()=>{
+									singkron_spp_ke_lokal_skpd(current_data.id_skpd,'GU', 'dihapus', ()=>{
+										singkron_spp_ke_lokal_skpd(current_data.id_skpd,'GU', 'ditolak',()=>{
+											singkron_spp_ke_lokal_skpd(current_data.id_skpd,'TU', 'draft', ()=>{
+												singkron_spp_ke_lokal_skpd(current_data.id_skpd,'TU', 'diterima',()=>{
+													singkron_spp_ke_lokal_skpd(current_data.id_skpd,'TU', 'dihapus', ()=>{
+														singkron_spp_ke_lokal_skpd(current_data.id_skpd,'TU', 'ditolak',()=>{
+															singkron_spp_ke_lokal_skpd(current_data.id_skpd,'LS', 'draft', ()=>{
+																singkron_spp_ke_lokal_skpd(current_data.id_skpd,'LS', 'diterima',()=>{
+																	singkron_spp_ke_lokal_skpd(current_data.id_skpd,'LS', 'dihapus', ()=>{
+																		singkron_spp_ke_lokal_skpd(current_data.id_skpd,'LS', 'ditolak',()=>{
 																			resolve_reduce(nextData);
 																		});
 																	});
@@ -75,18 +77,19 @@ function singkron_spp_ke_lokal() {
 	});
   }
 
-  function singkron_spp_ke_lokal_skpd(skpd, tipe, status, callback) {
-	relayAjax({
-	  url: config.sipd_url + "siap/data/spp/" + skpd.idSkpd+ "/" + tipe,
+  function singkron_spp_ke_lokal_skpd(skpd, tipe, status, callback) {	
+	relayAjaxApiKey({
+	  url: config.service_url+'pengeluaran/strict/spp/pembuatan/index?jenis='+tipe+'&status='+status,
 	  method: "GET",
-	  dataType: "JSON",
+	//   dataType: "JSON",
 	  success: function (response) {
 		var spp = {
 		  action: "singkron_spp",
 		  tahun_anggaran: config.tahun_anggaran,
 		  api_key: config.api_key,
-		  idSkpd: skpd.idSkpd,
+		  idSkpd: skpd.id_skpd,
 		  tipe: tipe,
+		  sumber: 'ri',
 		  data: response,
 		};
 		var data_back = {
@@ -101,7 +104,7 @@ function singkron_spp_ke_lokal() {
 		  },
 		};
 		chrome.runtime.sendMessage(data_back, (resp) => {
-		  console.log("Kirim data SPP ID SKPD="+skpd.idSkpd+" tipe="+tipe+". Response From Background", resp);
+		  console.log("Kirim data SPP ID SKPD="+skpd.id_skpd+" tipe="+tipe+" status="+status+". Response From Background", resp);
 		});
   
 		var last = response.length-1;
