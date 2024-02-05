@@ -494,7 +494,6 @@ function get_rak_pemb_pengeluaran(sub, callback){
 	});
 }
 
-
 function singkron_up(){
     jQuery('#wrap-loading').show();
     var url = config.service_url+'/referensi/strict/besaran-up';

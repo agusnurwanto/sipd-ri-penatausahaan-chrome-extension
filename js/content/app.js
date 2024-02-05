@@ -92,8 +92,8 @@ function cekUrl(current_url, nomor=1){
 			}
 			cek_reload = false;
 
-			// Data RAK SIPD
-			if(current_url.indexOf('penatausahaan/pengeluaran/dpa/rencana-penarikan-dana/belanja') != -1)
+		// Data RAK SIPD
+		if(current_url.indexOf('penatausahaan/pengeluaran/dpa/rencana-penarikan-dana/belanja') != -1)
 			{
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Halaman RAK Belanja', title);
@@ -233,28 +233,91 @@ function cekUrl(current_url, nomor=1){
 				}
 			});
 		//SPD	
-		}else if(
-			current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spd/otorisasi') != -1				
-			){
+		}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spd/otorisasi') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
-				console.log('halaman Otoritasi SPD', title);
-				if(title == ''){
-					console.log('konten halaman belum terload!');
-					cek_reload = true;
-				}
+				console.log('Surat Penyediaan Dana (SPD)', title);
 				jQuery('.aksi-extension').remove();
 				var btn = ''
-					+'<div class="aksi-extension card-header-slot">'												
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spd_lokal">Singkron SPD ke DB Lokal</button>'
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spd_lokal">Singkron SPD ke DB Lokal</button>'					
 					+'</div>';
-				jQuery('.card-header-slot').before(btn);				
-				jQuery('#singkron_spd_lokal').on('click', function(){
-					if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
-						singkron_spd_lokal();						
-					}
-				});
-		// Data Master Pegawai dan user		
-		}else if(
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Surat Penyediaan Dana (SPD)') != -1){
+					jQuery('#singkron_spd_lokal').text('Singkron SPD SKPD ke DB Lokal');
+					jQuery('#singkron_spd_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
+							jQuery('#wrap-loading').show();
+							var sub = current_url.split('/');
+							get_sub_keg(sub[5], function(){
+								alert('Berhasil singkron SPD ke lokal!');
+								jQuery('#wrap-loading').hide();
+	            			});
+						}
+					});
+				}else if(title.indexOf(' | Otorisasi') != -1){
+					jQuery('#singkron_spd_lokal').text('Singkron ALL SKPD ke DB Lokal');
+					jQuery('#singkron_spd_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_spd_lokal();						
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}				
+		//SPD PA
+	}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spd/pembuatan') != -1	){
+		var title = jQuery('.card-title.custom-class').text();
+		console.log('Surat Penyediaan Dana (SPD)', title);
+		jQuery('.aksi-extension').remove();
+		var btn = ''
+			+'<div class="aksi-extension" style="display: inline-block;">'						
+				+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spd_pa_lokal">Singkron SPD ke DB Lokal</button>'					
+			+'</div>';
+		jQuery('.card-title.custom-class').append(btn);				
+		if(title.indexOf('Surat Penyediaan Dana (SPD)') != -1){
+			jQuery('#singkron_spd_pa_lokal').text('Singkron SPD SKPD ke DB Lokal');
+			jQuery('#singkron_spd_pa_lokal').on('click', function(){
+				if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
+					singkron_spd_pa_lokal();						
+				}
+			});
+		}else{
+			jQuery('.aksi-extension').remove();
+		}	
+	// SPP
+	}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan') != -1	){
+		var title = jQuery('.card-title.custom-class').text();
+		window.type_data = 'UP';
+		if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=UP') != -1){
+			type_data = 'UP';
+		}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=GU') != -1){
+			type_data = 'GU';
+		}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=TU') != -1){
+			type_data = 'TU';
+		}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=LS') != -1){
+			type_data = 'LS';
+		}
+		console.log('Surat Permintaan Pembayaran (SPP)', title);
+		jQuery('.aksi-extension').remove();
+		var btn = ''
+			+'<div class="aksi-extension" style="display: inline-block;">'						
+				+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spp_lokal">Singkron SPP '+type_data+' ke DB Lokal</button>'					
+			+'</div>';
+		jQuery('.card-title.custom-class').append(btn);				
+		if(title.indexOf('Surat Permintaan Pembayaran (SPP)') != -1){
+			jQuery('#singkron_spp_lokal').text('Singkron SPP '+type_data+' ke DB Lokal');
+			jQuery('#singkron_spp_lokal').on('click', function(){
+				if(confirm('Apakah anda yakin melakukan backup data SPP '+type_data+'? Data lokal akan diupdate sesuai data terbaru.')){
+					// singkron_spp_lokal(type_data);	
+					singkron_spp_lokal();						
+				}
+			});
+		}else{
+			jQuery('.aksi-extension').remove();
+	}		
+		
+	// Data Master Pegawai dan user		
+	}else if(
 				current_url.indexOf('penatausahaan/setting/pegawai') != -1
 				|| current_url.indexOf('penatausahaan/user') != -1
 		){
@@ -269,7 +332,7 @@ function cekUrl(current_url, nomor=1){
 					+'<div class="aksi-extension card-header-slot">'						
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_pegawai_lokal">Singkron Pegawai ke DB Lokal</button>'
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_panggol_lokal">Master Pangkat Golongan ke DB Lokal</button>'
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spd_lokal">SPD ke DB Lokal</button>'
+						// +'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spd_lokal">SPD ke DB Lokal</button>'
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_up">Singkron UP ke DB Lokal</button>'
 					+'</div>';
 				jQuery('.card-header-slot').before(btn);
