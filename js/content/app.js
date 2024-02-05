@@ -245,17 +245,14 @@ function cekUrl(current_url, nomor=1){
 					jQuery('#singkron_spd_lokal').on('click', function(){
 						if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
 							jQuery('#wrap-loading').show();
-							var sub = current_url.split('/');
-							get_sub_keg(sub[5], function(){
-								alert('Berhasil singkron SPD ke lokal!');
-								jQuery('#wrap-loading').hide();
-	            			});
+							singkron_spd_lokal();						
 						}
 					});
 				}else if(title.indexOf(' | Otorisasi') != -1){
 					jQuery('#singkron_spd_lokal').text('Singkron ALL SKPD ke DB Lokal');
 					jQuery('#singkron_spd_lokal').on('click', function(){
 						if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
+							jQuery('#wrap-loading').show();
 							singkron_spd_lokal();						
 						}
 					});
