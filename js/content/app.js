@@ -306,7 +306,8 @@ function cekUrl(current_url, nomor=1){
 			jQuery('#singkron_spp_lokal').text('Singkron SPP '+type_data+' ke DB Lokal');
 			jQuery('#singkron_spp_lokal').on('click', function(){
 				if(confirm('Apakah anda yakin melakukan backup data SPP '+type_data+'? Data lokal akan diupdate sesuai data terbaru.')){
-					singkron_spp_lokal(type_data);						
+					// singkron_spp_lokal(type_data);	
+					singkron_spp_lokal();						
 				}
 			});
 		}else{
