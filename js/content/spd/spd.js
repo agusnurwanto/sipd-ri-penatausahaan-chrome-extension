@@ -47,7 +47,7 @@ function get_spd_skpd(id_sub_skpd, callback){
                 return sequence.then(function(current_data){
             		return new Promise(function(resolve_reduce, reject_reduce){
             			pesan_loading('Get Laporan SPD "'+current_data.id_skpd+' '+current_data.nomor_spd+'" '+current_data.periode_spd+' '+current_data.nilai);
-            			get_spd(current_data, function(){
+            			get_otoritas_spd_sub_skpd(current_data, function(){
             				return resolve_reduce(nextData);
             			});
             		})
