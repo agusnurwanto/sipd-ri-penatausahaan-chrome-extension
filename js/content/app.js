@@ -242,19 +242,13 @@ function cekUrl(current_url, nomor=1){
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spd_lokal">Singkron SPD ke DB Lokal</button>'					
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);				
-				if(title.indexOf('Surat Penyediaan Dana (SPD)') != -1){
-					jQuery('#singkron_spd_lokal').text('Singkron SPD SKPD ke DB Lokal');
-					jQuery('#singkron_spd_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
-							jQuery('#wrap-loading').show();
-							singkron_spd_lokal();						
-						}
-					});
-				}else if(title.indexOf(' | Otorisasi') != -1){
+				if(
+					title.indexOf('Surat Penyediaan Dana (SPD)') != -1
+					|| title.indexOf(' | Otorisasi') != -1
+				){
 					jQuery('#singkron_spd_lokal').text('Singkron ALL SKPD ke DB Lokal');
 					jQuery('#singkron_spd_lokal').on('click', function(){
 						if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
-							jQuery('#wrap-loading').show();
 							singkron_spd_lokal();						
 						}
 					});
