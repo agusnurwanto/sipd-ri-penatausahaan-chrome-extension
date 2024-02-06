@@ -90,8 +90,18 @@ function singkron_spp_lokal() {
 		  idSkpd: skpd.id_skpd,
 		  tipe: tipe,
 		  sumber: 'ri',
-		  data: response,
+		//   data: response,
+		  data: {}
 		};
+		response.map( function(b, i){    
+			spp.data[i] = {}
+			spp.data[i].idSpd = id_spd;
+			spp.data[i].id_skpd = id_skpd;
+			spp.data[i].id_sub_skpd = id_sub_skpd;
+			spp.data[i].id_giat = id_giat;
+			spp.data[i].id_sub_giat = id_sub_giat;
+			spp.data[i].id_sub_giat = id_sub_giat;
+		});
 		var data_back = {
 		  message: {
 			type: "get-url",
