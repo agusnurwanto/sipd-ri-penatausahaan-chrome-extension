@@ -92,9 +92,8 @@ function cekUrl(current_url, nomor=1){
 			}
 			cek_reload = false;
 
-		// Data RAK SIPD
-		if(current_url.indexOf('penatausahaan/pengeluaran/dpa/rencana-penarikan-dana/belanja') != -1)
-			{
+			// Data RAK SIPD
+			if(current_url.indexOf('penatausahaan/pengeluaran/dpa/rencana-penarikan-dana/belanja') != -1){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Halaman RAK Belanja', title);
 				jQuery('.aksi-extension').remove();
@@ -147,93 +146,88 @@ function cekUrl(current_url, nomor=1){
 				}else{
 					jQuery('.aksi-extension').remove();
 				}
-		}
-		// DATA RAK Pembiayaan Peneluaran
-		else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/dpa/rencana-penarikan-dana/pengeluaran-pembiayaan') != -1)
-		{	
-			var title = jQuery('.card-title.custom-class').text();
-				console.log('Halaman RAK pembiayaan', title);
-				jQuery('.aksi-extension').remove();
-				var btn = ''
-					+'<div class="aksi-extension" style="display: inline-block;">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_pembiayaan_pengeluaran_sipd_lokal">Singkron RAK Pembiayaan ke DB Lokal</button>'					
-					+'</div>';
-				jQuery('.card-title.custom-class').append(btn);
-				if(title.indexOf(' | Pengeluaran Pembiayaan') != -1){
-					jQuery('#singkron_rak_pembiayaan_pengeluaran_sipd_lokal').text('Singkron Pembiayaan Pengeluaran ke DB Lokal');
-					jQuery('#singkron_rak_pembiayaan_pengeluaran_sipd_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data anggaran kas Pembiayaan Pengeluaran? Data lokal akan diupdate sesuai data terbaru.')){
-							singkron_rak_pembiayaan_pengeluaran_sipd_lokal();
-						}
-					});
-				}else{
-					jQuery('.aksi-extension').remove();
-				}
-		}
-		// DATA RAK Pembiayaan penerimaan
-		else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/dpa/rencana-penerimaan-dana/penerimaan-pembiayaan') != -1)
-		{	
-			var title = jQuery('.card-title.custom-class').text();
-				console.log('Halaman RAK pembiayaan penerimaan', title);
-				jQuery('.aksi-extension').remove();
-				var btn = ''
-					+'<div class="aksi-extension" style="display: inline-block;">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_pembiayaan_penerimaan_sipd_lokal">Singkron RAK Pembiayaan ke DB Lokal</button>'					
-					+'</div>';
-				jQuery('.card-title.custom-class').append(btn);
-				if(title.indexOf(' | Penerimaan Pembiayaan') != -1){
-					jQuery('#singkron_rak_pembiayaan_penerimaan_sipd_lokal').text('Singkron Pembiayaan Penerimaan ke DB Lokal');
-					jQuery('#singkron_rak_pembiayaan_penerimaan_sipd_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data anggaran kas Pembiayaan Penerimaan? Data lokal akan diupdate sesuai data terbaru.')){
-							singkron_rak_pembiayaan_penerimaan_sipd_lokal();
-						}
-					});
-				}else{
-					jQuery('.aksi-extension').remove();
-				}
-		}
-		else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/dpa/rencana-penerimaan-dana/pendapatan') != -1)
-		{	
-			var title = jQuery('.card-title.custom-class').text();
-				console.log('Halaman RAK Pendapatan', title);
-				jQuery('.aksi-extension').remove();
-				var btn = ''
-					+'<div class="aksi-extension" style="display: inline-block;">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_pendapatan_sipd_lokal">Singkron RAK Pembiayaan ke DB Lokal</button>'					
-					+'</div>';
-				jQuery('.card-title.custom-class').append(btn);
-				if(title.indexOf(' | Pendapatan') != -1){
-					jQuery('#singkron_rak_pendapatan_sipd_lokal').text('Singkron ALL SKPD ke DB Lokal');
-					jQuery('#singkron_rak_pendapatan_sipd_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data anggaran kas Pendapatan? Data lokal akan diupdate sesuai data terbaru.')){
-							singkron_rak_pendapatan_sipd_lokal();
-						}
-					});
-				}else{
-					jQuery('.aksi-extension').remove();
-				}
-		//BESARAN UP
-		}else if(current_url.indexOf('penatausahaan/setting/besaran-up') != -1)
-		{
-			var title = jQuery('.card-title.custom-class').text();
-			console.log('Besaran Uang Persediaan (UP)', title);
-			if(title == ''){
-				console.log('konten halaman belum terload!');
-				cek_reload = true;
 			}
-			jQuery('.aksi-extension').remove();
-			var btn = ''
-				+'<div class="aksi-extension card-header-slot">'												
-					+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_up">Singkron UP ke DB Lokal</button>'
-				+'</div>';
-			jQuery('.card-header-slot').before(btn);				
-			jQuery('#singkron_up').on('click', function(){
-				if(confirm('Apakah anda yakin melakukan backup data UP? Data lokal akan diupdate sesuai data terbaru.')){
-					singkron_up();						
-				}
-			});
-		//SPD	
-		}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spd/otorisasi') != -1	){
+			// DATA RAK Pembiayaan Peneluaran
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/dpa/rencana-penarikan-dana/pengeluaran-pembiayaan') != -1)
+			{	
+				var title = jQuery('.card-title.custom-class').text();
+					console.log('Halaman RAK pembiayaan', title);
+					jQuery('.aksi-extension').remove();
+					var btn = ''
+						+'<div class="aksi-extension" style="display: inline-block;">'						
+							+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_pembiayaan_pengeluaran_sipd_lokal">Singkron RAK Pembiayaan ke DB Lokal</button>'					
+						+'</div>';
+					jQuery('.card-title.custom-class').append(btn);
+					if(title.indexOf(' | Pengeluaran Pembiayaan') != -1){
+						jQuery('#singkron_rak_pembiayaan_pengeluaran_sipd_lokal').text('Singkron Pembiayaan Pengeluaran ke DB Lokal');
+						jQuery('#singkron_rak_pembiayaan_pengeluaran_sipd_lokal').on('click', function(){
+							if(confirm('Apakah anda yakin melakukan backup data anggaran kas Pembiayaan Pengeluaran? Data lokal akan diupdate sesuai data terbaru.')){
+								singkron_rak_pembiayaan_pengeluaran_sipd_lokal();
+							}
+						});
+					}else{
+						jQuery('.aksi-extension').remove();
+					}
+			}
+			// DATA RAK Pembiayaan penerimaan
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/dpa/rencana-penerimaan-dana/penerimaan-pembiayaan') != -1)
+			{	
+				var title = jQuery('.card-title.custom-class').text();
+					console.log('Halaman RAK pembiayaan penerimaan', title);
+					jQuery('.aksi-extension').remove();
+					var btn = ''
+						+'<div class="aksi-extension" style="display: inline-block;">'						
+							+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_pembiayaan_penerimaan_sipd_lokal">Singkron RAK Pembiayaan ke DB Lokal</button>'					
+						+'</div>';
+					jQuery('.card-title.custom-class').append(btn);
+					if(title.indexOf(' | Penerimaan Pembiayaan') != -1){
+						jQuery('#singkron_rak_pembiayaan_penerimaan_sipd_lokal').text('Singkron Pembiayaan Penerimaan ke DB Lokal');
+						jQuery('#singkron_rak_pembiayaan_penerimaan_sipd_lokal').on('click', function(){
+							if(confirm('Apakah anda yakin melakukan backup data anggaran kas Pembiayaan Penerimaan? Data lokal akan diupdate sesuai data terbaru.')){
+								singkron_rak_pembiayaan_penerimaan_sipd_lokal();
+							}
+						});
+					}else{
+						jQuery('.aksi-extension').remove();
+					}
+			}
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/dpa/rencana-penerimaan-dana/pendapatan') != -1)
+			{	
+				var title = jQuery('.card-title.custom-class').text();
+					console.log('Halaman RAK Pendapatan', title);
+					jQuery('.aksi-extension').remove();
+					var btn = ''
+						+'<div class="aksi-extension" style="display: inline-block;">'						
+							+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_pendapatan_sipd_lokal">Singkron RAK Pembiayaan ke DB Lokal</button>'					
+						+'</div>';
+					jQuery('.card-title.custom-class').append(btn);
+					if(title.indexOf(' | Pendapatan') != -1){
+						jQuery('#singkron_rak_pendapatan_sipd_lokal').text('Singkron ALL SKPD ke DB Lokal');
+						jQuery('#singkron_rak_pendapatan_sipd_lokal').on('click', function(){
+							if(confirm('Apakah anda yakin melakukan backup data anggaran kas Pendapatan? Data lokal akan diupdate sesuai data terbaru.')){
+								singkron_rak_pendapatan_sipd_lokal();
+							}
+						});
+					}else{
+						jQuery('.aksi-extension').remove();
+					}
+			//BESARAN UP
+			}else if(current_url.indexOf('penatausahaan/setting/besaran-up') != -1){
+				var title = jQuery('.card-title.custom-class').text();
+				console.log('Besaran Uang Persediaan (UP)', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension card-header-slot">'												
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_up">Singkron UP ke DB Lokal</button>'
+					+'</div>';
+				jQuery('.card-header-slot').before(btn);				
+				jQuery('#singkron_up').on('click', function(){
+					if(confirm('Apakah anda yakin melakukan backup data UP? Data lokal akan diupdate sesuai data terbaru.')){
+						singkron_up();						
+					}
+				});
+			//SPD	
+			}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spd/otorisasi') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Surat Penyediaan Dana (SPD)', title);
 				jQuery('.aksi-extension').remove();
@@ -255,69 +249,65 @@ function cekUrl(current_url, nomor=1){
 				}else{
 					jQuery('.aksi-extension').remove();
 				}				
-		//SPD PA
-	}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spd/pembuatan') != -1	){
-		var title = jQuery('.card-title.custom-class').text();
-		console.log('Surat Penyediaan Dana (SPD)', title);
-		jQuery('.aksi-extension').remove();
-		var btn = ''
-			+'<div class="aksi-extension" style="display: inline-block;">'						
-				+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spd_pa_lokal">Singkron SPD ke DB Lokal</button>'					
-			+'</div>';
-		jQuery('.card-title.custom-class').append(btn);				
-		if(title.indexOf('Surat Penyediaan Dana (SPD)') != -1){
-			jQuery('#singkron_spd_pa_lokal').text('Singkron SPD SKPD ke DB Lokal');
-			jQuery('#singkron_spd_pa_lokal').on('click', function(){
-				if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
-					singkron_spd_pa_lokal();						
+				//SPD PA
+			}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spd/pembuatan') != -1	){
+				var title = jQuery('.card-title.custom-class').text();
+				console.log('Surat Penyediaan Dana (SPD)', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spd_pa_lokal">Singkron SPD ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Surat Penyediaan Dana (SPD)') != -1){
+					jQuery('#singkron_spd_pa_lokal').text('Singkron SPD SKPD ke DB Lokal');
+					jQuery('#singkron_spd_pa_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_spd_pa_lokal();						
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}	
+			// SPP
+			}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan') != -1	){
+				var title = jQuery('.card-title.custom-class').text();
+				window.type_data = 'UP';
+				if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=UP') != -1){
+					type_data = 'UP';
+				}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=GU') != -1){
+					type_data = 'GU';
+				}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=TU') != -1){
+					type_data = 'TU';
+				}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=LS') != -1){
+					type_data = 'LS';
 				}
-			});
-		}else{
-			jQuery('.aksi-extension').remove();
-		}	
-	// SPP
-	}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan') != -1	){
-		var title = jQuery('.card-title.custom-class').text();
-		window.type_data = 'UP';
-		if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=UP') != -1){
-			type_data = 'UP';
-		}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=GU') != -1){
-			type_data = 'GU';
-		}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=TU') != -1){
-			type_data = 'TU';
-		}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=LS') != -1){
-			type_data = 'LS';
-		}
-		console.log('Surat Permintaan Pembayaran (SPP)', title);
-		jQuery('.aksi-extension').remove();
-		var btn = ''
-			+'<div class="aksi-extension" style="display: inline-block;">'						
-				+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spp_lokal">Singkron SPP '+type_data+' ke DB Lokal</button>'					
-			+'</div>';
-		jQuery('.card-title.custom-class').append(btn);				
-		if(title.indexOf('Surat Permintaan Pembayaran (SPP)') != -1){
-			jQuery('#singkron_spp_lokal').text('Singkron SPP '+type_data+' ke DB Lokal');
-			jQuery('#singkron_spp_lokal').on('click', function(){
-				if(confirm('Apakah anda yakin melakukan backup data SPP '+type_data+'? Data lokal akan diupdate sesuai data terbaru.')){
-					// singkron_spp_lokal(type_data);	
-					singkron_spp_lokal();						
-				}
-			});
-		}else{
-			jQuery('.aksi-extension').remove();
-	}		
-		
-	// Data Master Pegawai dan user		
-	}else if(
+				console.log('Surat Permintaan Pembayaran (SPP)', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spp_lokal">Singkron SPP '+type_data+' ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Surat Permintaan Pembayaran (SPP)') != -1){
+					jQuery('#singkron_spp_lokal').text('Singkron SPP '+type_data+' ke DB Lokal');
+					jQuery('#singkron_spp_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data SPP '+type_data+'? Data lokal akan diupdate sesuai data terbaru.')){
+							// singkron_spp_lokal(type_data);	
+							singkron_spp_lokal();						
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+			}		
+				
+			// Data Master Pegawai dan user		
+			}else if(
 				current_url.indexOf('penatausahaan/setting/pegawai') != -1
 				|| current_url.indexOf('penatausahaan/user') != -1
-		){
+			){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('halaman Pegawai', title);
-				if(title == ''){
-					console.log('konten halaman belum terload!');
-					cek_reload = true;
-				}
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension card-header-slot">'						
@@ -347,7 +337,13 @@ function cekUrl(current_url, nomor=1){
 						singkron_up();						
 					}
 				});
-		}
+			}
+
+			// load ulang fungsi jika title masih kosong
+			if(title == ''){
+				console.log('konten halaman belum terload!');
+				cek_reload = true;
+			}
 		// jika halaman login
 		}else if(
 			current_url.indexOf('/landing-page') != -1

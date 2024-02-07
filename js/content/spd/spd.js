@@ -42,33 +42,43 @@ function get_spd_skpd(id_sub_skpd, callback){
 		url: url,
 		type: 'get',
 		success: function(ret){
-			 var last = ret.length-1;
-			ret.reduce(function(sequence, nextData){
-                return sequence.then(function(current_data){
-            		return new Promise(function(resolve_reduce, reject_reduce){
-            			pesan_loading('Get Laporan SPD "'+current_data.id_skpd+' '+current_data.nomor_spd+'" '+current_data.periode_spd+' '+current_data.nilai);
-            			get_otoritas_spd_sub_skpd(current_data, function(){
-            				return resolve_reduce(nextData);
-            			});
-            		})
-                    .catch(function(e){
-                        console.log(e);
-                        return Promise.resolve(nextData);
-                    });
-                })
-                .catch(function(e){
-                    console.log(e);
-                    return Promise.resolve(nextData);
-                });
-            }, Promise.resolve(ret[last]))
-            .then(function(data_last){
-            	if(callback){
+			if(ret != null){
+				var last = ret.length-1;
+				ret.reduce(function(sequence, nextData){
+	                return sequence.then(function(current_data){
+	            		return new Promise(function(resolve_reduce, reject_reduce){
+	            			pesan_loading('Get Laporan SPD "'+current_data.id_skpd+' '+current_data.nomor_spd+'" '+current_data.periode_spd+' '+current_data.nilai);
+	            			get_otoritas_spd_sub_skpd(current_data.id_skpd, function(){
+	            				return resolve_reduce(nextData);
+	            			});
+	            		})
+	                    .catch(function(e){
+	                        console.log(e);
+	                        return Promise.resolve(nextData);
+	                    });
+	                })
+	                .catch(function(e){
+	                    console.log(e);
+	                    return Promise.resolve(nextData);
+	                });
+	            }, Promise.resolve(ret[last]))
+	            .then(function(data_last){
+	            	if(callback){
+	            		callback();
+	            	}else{
+		        		alert('Berhasil singkron SPD ke lokal!');
+						jQuery('#wrap-loading').hide();
+	            	}
+	            });
+	        }else{
+	        	console.log('SPD kosong / null', ret);
+	        	if(callback){
             		callback();
             	}else{
 	        		alert('Berhasil singkron SPD ke lokal!');
 					jQuery('#wrap-loading').hide();
             	}
-            });
+	        }
 		}
 	});
 }
