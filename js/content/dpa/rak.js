@@ -422,7 +422,7 @@ function get_rak_pemb_pengeluaran(sub, callback){
 	var nilai_rak = sub.nilai_rak;
 	var status = sub.status;
 	var tahun = sub.tahun;
-	var url = config.service_url+'referensi/strict/dpa/penerimaan/pembiayaan/'+id_skpd;
+	var url = config.service_url+'referensi/strict/dpa/penarikan/pembiayaan/'+id_skpd;
 	relayAjaxApiKey({
 		url: url,
 		type: 'get',
