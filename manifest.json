@@ -31,7 +31,7 @@
 				"js/content/app.js",
 				"js/content/dpa/rak.js",
 				"js/content/spd/spd.js",
-				"js/content/spp/spp.js",
+				"js/content/pengeluaran/spp/spp.js",
 				"js/content/master/user.js",
 				"js/content/master/pegawai.js"
 			],
