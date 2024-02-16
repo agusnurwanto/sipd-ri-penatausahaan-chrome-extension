@@ -32,6 +32,7 @@
 				"js/content/dpa/rak.js",
 				"js/content/spd/spd.js",
 				"js/content/pengeluaran/spp/spp.js",
+				"js/content/pengeluaran/spm/spm.js",
 				"js/content/master/user.js",
 				"js/content/master/pegawai.js"
 			],
