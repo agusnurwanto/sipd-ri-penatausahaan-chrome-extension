@@ -496,16 +496,12 @@ function get_detail_spd(sub, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_
 	var nilai_spd = nilai;
 	var nomor_spd = nomor_spd;
 	var periode_spd = periode_spd;
-	// var idDetailSpd = id_skpd+'.'+id_sub_skpd+'.'+id_skpd+'.'+id_giat+'.'+id_sub_giat+'.'+id_spd;	
-	//https://service.sipd.kemendagri.go.id/pengeluaran/strict/spd/pembuatan/view?id_skpd=1392&id_sub_skpd=1392&id_giat=8709&id_sub_giat=20295&id_akun=16414
-	var url = config.service_url+'pengeluaran/strict/spd/pembuatan/view?id_skpd='+id_skpd+'&id_sub_skpd='+id_sub_skpd+'&id_giat='+id_giat+'&id_sub_giat='+id_sub_giat+'&id_akun='+id_akun;	
-	//var url = config.service_url+'pengeluaran/strict/spd/pembuatan/laporan-spd/'+id_skpd+'/'+id_spd;
+	var url = config.service_url+'pengeluaran/strict/spd/pembuatan/view?id_skpd='+id_skpd+'&id_sub_skpd='+id_sub_skpd+'&id_giat='+id_giat+'&id_sub_giat='+id_sub_giat+'&id_akun='+id_akun;
 	relayAjaxApiKey({
 		url: url,
 		type: 'get',
 		success: function(ret){
 			console.log('ret', ret);
-			// var idDetailSpd = id_skpd+'.'+id_sub_skpd+'.'+id_skpd+'.'+id_giat+'.'+id_sub_giat+'.'+id_spd;
 			var data_spd = { 
 				action: 'singkron_detail_spd',
 				tahun_anggaran: _token.tahun,
@@ -520,61 +516,25 @@ function get_detail_spd(sub, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_
             // let lapspd = Object.keys(ret)
             
 			ret.map( function(b, i){    
+				// var idDetailSpd = id_sub_skpd+''+id_sub_giat+''+id_spd+''+b.id_akun;
 				data_spd.data[i] = {}
 				data_spd.data[i].idSpd = id_spd;
 				data_spd.data[i].id_skpd = id_skpd;
 				data_spd.data[i].id_sub_skpd = id_sub_skpd;
+				// data_spd.data[i].id_program = sub.id_program; // tidak ada dari sipd-ri nya
 				data_spd.data[i].id_giat = id_giat;
 				data_spd.data[i].id_sub_giat = id_sub_giat;
-				data_spd.data[i].id_sub_giat = id_sub_giat;
 				data_spd.data[i].id_akun = id_akun;
-				data_spd.data[i].idDetailSpd = b.id_akun;
+				data_spd.data[i].idDetailSpd = id_akun;
 				data_spd.data[i].nilai = nilai_akun;
 				data_spd.data[i].totalSpd = nilai_spd;
 				data_spd.data[i].nomorSpd = nomor_spd;	
 				data_spd.data[i].keteranganSpd = periode_spd+'-'+kode_tahap;								
 				data_spd.data[i].harga_satuan = b.harga_satuan;
 				data_spd.data[i].kode_standar_harga = b.kode_standar_harga;
-
 				data_spd.data[i].koefisien = b.koefisien;
 				data_spd.data[i].nama_standar_harga = b.nama_standar_harga;
 				data_spd.data[i].pajak = b.pajak;
-						
-			// 	data_spd.data[i].jabatan_bud = b.jabatan_bud;
-			// 	data_spd.data[i].jumlah_dana_dpa_skpd = b.jumlah_dana_dpa_skpd;
-			// 	data_spd.data[i].jumlah_dana_spd_saat_ini = b.jumlah_dana_spd_saat_ini;
-			// 	data_spd.data[i].jumlah_penyediaan_dana = b.jumlah_penyediaan_dana;
-			// 	data_spd.data[i].keterangan_spd = b.keterangan_spd;
-			// 	data_spd.data[i].kondisi_dpa = b.kondisi_dpa;
-			// 	data_spd.data[i].kondisi_perda = b.kondisi_perda;
-			// 	data_spd.data[i].kondisi_perkada = b.kondisi_perkada;
-			// 	data_spd.data[i].nama_bud = b.nama_bud;				
-			// 	data_spd.data[i].nama_daerah = b.nama_daerah;
-			// 	data_spd.data[i].nama_ibu_kota = b.nama_ibu_kota;
-			// 	data_spd.data[i].nama_kepala = b.nama_kepala;
-			// 	data_spd.data[i].nama_skpd = b.nama_skpd;
-			// 	data_spd.data[i].nip_bud = b.nip_bud;
-			// 	data_spd.data[i].no_perkada = b.no_perkada;
-			// 	data_spd.data[i].nomor_dpa = b.nomor_dpa;
-			// 	data_spd.data[i].nomor_perda = b.nomor_perda;
-			// 	data_spd.data[i].sisa_jumlah_dana = b.sisa_jumlah_dana;
-			// 	data_spd.data[i].tanggal_perda = b.tanggal_perda;
-			// 	data_spd.data[i].tanggal_perkada = b.tanggal_perkada;
-			// 	data_spd.data[i].tanggal_spd = b.tanggal_spd;
-			// 	data_spd.data[i].untuk_kebutuhan = b.untuk_kebutuhan;
-			// 	data_spd.data[i].akumulasi_spd_sebelumnya = b.akumulasi_spd_sebelumnya;	
-			// 	data_spd.data[i].detail_spd	= {};	
-            //     console.log(laporan);
-			// 	laporan.map(function(d, c){
-			// 		data_spd.data[i].detail_spd[c]	= {};					               
-            //         data_spd.data[i].detail_spd[c].alokasi_anggaran	= d.alokasi_anggaran;
-            //         data_spd.data[i].detail_spd[c].alokasi_spd_lalu	= d.alokasi_spd_lalu;
-            //         data_spd.data[i].detail_spd[c].alokasi_spd_saat_ini	= d.alokasi_spd_saat_ini;
-            //         data_spd.data[i].detail_spd[c].alokasi_spd_saat_ini	= d.alokasi_spd_saat_ini;
-            //         data_spd.data[i].detail_spd[c].kode_rekening	= d.kode_rekening;
-            //         data_spd.data[i].detail_spd[c].sisa_anggaran	= d.sisa_anggaran;
-            //         data_spd.data[i].detail_spd[c].nama_akun	= d.uraian;     
-			// 	});			
 			});
 			var data_back = {
 			    message:{

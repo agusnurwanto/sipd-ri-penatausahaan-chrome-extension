@@ -71,6 +71,10 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 			_alert = false;
 			cek_hide_loading = false;
 			promise_nonactive[res.id_unit]();
+		}else if(res.action == 'singkron_spp_detail'){
+			_alert = false;
+			cek_hide_loading = false;
+			singkron_spp_detail.resolve(singkron_spp_detail.nextData);
 		}else if(res.action == 'singkron_kategori_ssh'){
 			_alert = false;
 			cek_hide_loading = false;
