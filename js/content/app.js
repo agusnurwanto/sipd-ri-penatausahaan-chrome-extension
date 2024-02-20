@@ -323,8 +323,7 @@ function cekUrl(current_url, nomor=1){
 					jQuery('#singkron_spm_lokal').text('Singkron SPM '+type_data+' ke DB Lokal');
 					jQuery('#singkron_spm_lokal').on('click', function(){
 						if(confirm('Apakah anda yakin melakukan backup data SPM '+type_data+'? Data lokal akan diupdate sesuai data terbaru.')){
-							// singkron_spm_lokal(type_data);	
-							singkron_spm_lokal();						
+							singkron_spm_lokal(type_data);
 						}
 					});
 				}else{
