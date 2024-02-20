@@ -298,8 +298,8 @@ function cekUrl(current_url, nomor=1){
 					});
 				}else{
 					jQuery('.aksi-extension').remove();
-				}		
-			
+				}
+			// SPM
 			}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				window.type_data = 'UP';
@@ -325,6 +325,26 @@ function cekUrl(current_url, nomor=1){
 						if(confirm('Apakah anda yakin melakukan backup data SPM '+type_data+'? Data lokal akan diupdate sesuai data terbaru.')){
 							// singkron_spm_lokal(type_data);	
 							singkron_spm_lokal();						
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}
+			// SP2D
+			}else if(current_url.indexOf('penatausahaan/pengeluaran/sp2d') != -1	){
+				var title = jQuery('.card-title.custom-class').text();
+				console.log('Surat Perintah Pencairan Dana', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_sp2d_lokal">Singkron SP2D ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Surat Perintah Pencairan Dana |') != -1){
+					jQuery('#singkron_sp2d_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data SP2D? Data lokal akan diupdate sesuai data terbaru.')){
+							// singkron_sp2d_lokal(type_data);	
+							singkron_sp2d_lokal();						
 						}
 					});
 				}else{

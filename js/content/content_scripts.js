@@ -74,7 +74,7 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 		}else if(res.action == 'singkron_spp_detail'){
 			_alert = false;
 			cek_hide_loading = false;
-			singkron_spp_detail.resolve(singkron_spp_detail.nextData);
+			singkron_spp_detail.resolve();
 		}else if(res.action == 'singkron_kategori_ssh'){
 			_alert = false;
 			cek_hide_loading = false;

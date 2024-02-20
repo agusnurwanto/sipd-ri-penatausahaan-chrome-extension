@@ -31,6 +31,7 @@
 				"js/content/app.js",
 				"js/content/dpa/rak.js",
 				"js/content/spd/spd.js",
+				"js/content/pengeluaran/sp2d/sp2d.js",
 				"js/content/pengeluaran/spp/spp.js",
 				"js/content/pengeluaran/spm/spm.js",
 				"js/content/master/user.js",
