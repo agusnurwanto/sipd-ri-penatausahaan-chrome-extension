@@ -34,6 +34,9 @@
 				"js/content/pengeluaran/sp2d/sp2d.js",
 				"js/content/pengeluaran/spp/spp.js",
 				"js/content/pengeluaran/spm/spm.js",
+				"js/content/penerimaan/rekening/rekening.js",
+				"js/content/penerimaan/stbp/stbp.js",
+				"js/content/pembiayaan/spd.js",
 				"js/content/master/user.js",
 				"js/content/master/pegawai.js"
 			],
