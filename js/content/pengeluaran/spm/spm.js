@@ -1,47 +1,56 @@
-function singkron_spm_lokal(type_data) {
+function singkron_spm_lokal(data=['UP', 'LS', 'GU', 'TU']) {
 	jQuery('#wrap-loading').show();
     // status = draft , diterima , dihapus , ditolak
     var status = 'diterima';
-    pesan_loading('Get data SPM jenis='+type_data+' , status='+status);
-	relayAjaxApiKey({
-        url: config.service_url+'pengeluaran/strict/spm/index?jenis='+type_data+'&status='+status,
-        type: 'get',
-        success: function (response) {
-    		console.log('SPM', response);
-    		var page_skpd = {};
-            var last = response.length-1;
-            response.reduce(function (sequence, nextData) {
-                return sequence.then(function (current_data) {
-                    return new Promise(function (resolve_reduce, reject_reduce) {
-                        pesan_loading('Get SPM '+type_data+' dari ID SKPD "'+current_data.id_skpd+'"');
-                        if(!page_skpd[current_data.id_skpd]){
-                            page_skpd[current_data.id_skpd] = [];
-                        }
-                        page_skpd[current_data.id_skpd].push(current_data);
+    var type_data = data.shift();
+    new Promise(function(resolve, reject){
+        if(typeof type_data == 'undefined'){
+            return resolve();
+        }
+        pesan_loading('Get data SPM jenis='+type_data+' , status='+status);
+    	relayAjaxApiKey({
+            url: config.service_url+'pengeluaran/strict/spm/index?jenis='+type_data+'&status='+status,
+            type: 'get',
+            success: function (response) {
+        		console.log('SPM', response);
+        		var page_skpd = {};
+                var last = response.length-1;
+                response.reduce(function (sequence, nextData) {
+                    return sequence.then(function (current_data) {
+                        return new Promise(function (resolve_reduce, reject_reduce) {
+                            pesan_loading('Get SPM '+type_data+' dari ID SKPD "'+current_data.id_skpd+'"');
+                            if(!page_skpd[current_data.id_skpd]){
+                                page_skpd[current_data.id_skpd] = [];
+                            }
+                            page_skpd[current_data.id_skpd].push(current_data);
 
-                        // melakukan reset page sesuai data per skpd
-                        current_data.page = page_skpd[current_data.id_skpd].length;
+                            // melakukan reset page sesuai data per skpd
+                            current_data.page = page_skpd[current_data.id_skpd].length;
 
-    					singkron_spm_ke_lokal_skpd(current_data, type_data, status, ()=>{
-                            resolve_reduce(nextData);
-      		            });
-    				})
-    				.catch(function(e){
-    					console.log(e);
-    					return Promise.resolve(nextData);
-    				});
-    			})
-    			.catch(function(e){
-    				console.log(e);
-    				return Promise.resolve(nextData);
-    			});
-    		}, Promise.resolve(response[last]))
-    		.then(function (data_last) {
-    		    jQuery("#wrap-loading").hide();
-                alert("Berhasil singkron SPM");
-    		});
-        },
-	});
+        					singkron_spm_ke_lokal_skpd(current_data, type_data, status, ()=>{
+                                resolve_reduce(nextData);
+          		            });
+        				})
+        				.catch(function(e){
+        					console.log(e);
+        					return Promise.resolve(nextData);
+        				});
+        			})
+        			.catch(function(e){
+        				console.log(e);
+        				return Promise.resolve(nextData);
+        			});
+        		}, Promise.resolve(response[last]))
+        		.then(function (data_last) {
+        		    return singkron_spm_lokal(data);
+        		});
+            },
+    	});
+    })
+    .then(function () {
+        jQuery("#wrap-loading").hide();
+        alert("Berhasil singkron SPM");
+    });
 }
 
 function singkron_spm_ke_lokal_skpd(current_data, tipe, status, callback) {
@@ -127,5 +136,6 @@ function singkron_spm_ke_lokal_skpd(current_data, tipe, status, callback) {
     };
     chrome.runtime.sendMessage(data_back, (resp) => {
         pesan_loading("Kirim data SPM ID SKPD="+current_data.id_skpd+" tipe="+tipe+" status="+status+" keterangan = "+current_data.keterangan_spm);
+        callback();
     });
 }        

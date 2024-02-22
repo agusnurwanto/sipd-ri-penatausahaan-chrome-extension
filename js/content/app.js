@@ -302,27 +302,27 @@ function cekUrl(current_url, nomor=1){
 			// SPM
 			}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
-				window.type_data = 'UP';
+				window.type_data = ['UP', 'LS', 'GU', 'TU'];
 				if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan?type=UP') != -1){
-					type_data = 'UP';
+					type_data = ['UP'];
 				}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan?type=GU') != -1){
-					type_data = 'GU';
+					type_data = ['GU'];
 				}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan?type=TU') != -1){
-					type_data = 'TU';
+					type_data = ['TU'];
 				}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan?type=LS') != -1){
-					type_data = 'LS';
+					type_data = ['LS'];
 				}
 				console.log('Surat Perintah Membayar (SPM)', title);
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spm_lokal">Singkron SPM '+type_data+' ke DB Lokal</button>'					
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spm_lokal">Singkron SPM '+type_data.join(', ')+' ke DB Lokal</button>'					
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);				
 				if(title.indexOf('| Pembuatan') != -1){
-					jQuery('#singkron_spm_lokal').text('Singkron SPM '+type_data+' ke DB Lokal');
+					jQuery('#singkron_spm_lokal').text('Singkron SPM '+type_data.join(', ')+' ke DB Lokal');
 					jQuery('#singkron_spm_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data SPM '+type_data+'? Data lokal akan diupdate sesuai data terbaru.')){
+						if(confirm('Apakah anda yakin melakukan backup data SPM '+type_data.join(', ')+'? Data lokal akan diupdate sesuai data terbaru.')){
 							singkron_spm_lokal(type_data);
 						}
 					});
