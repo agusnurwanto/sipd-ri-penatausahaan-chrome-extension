@@ -1,13 +1,12 @@
 function singkron_stbp_lokal(status=['belum_verifikasi', 'sudah_verifikasi', 'sudah_otorisasi', 'sudah_validasi', 'dihapus']) {
 	jQuery('#wrap-loading').show();
-	// var status = 'sudah_validasi';
-    var type_status = data();
+    var type_status = status;
     new Promise(function(resolve, reject){
         if(typeof type_status == 'undefined'){
             return resolve();
         }
         pesan_loading('Get data STBP status='+type_status);
-    	relayAjaxApiKey({
+    	relayAjaxApiKey({			
             url: config.service_url+'penerimaan/strict/stbp?jenis=ALL&status='+type_status,
             type: 'get',
             success: function (response) {
@@ -17,7 +16,8 @@ function singkron_stbp_lokal(status=['belum_verifikasi', 'sudah_verifikasi', 'su
                 response.reduce(function (sequence, nextData) {
                     return sequence.then(function (current_data) {
                         return new Promise(function (resolve_reduce, reject_reduce) {
-                            pesan_loading('Get STBP '+type_data+' dari ID SKPD "'+current_data.id_skpd+'"');
+							console.log('STBP', current_data);
+                            pesan_loading('Get STBP '+type_status+' dari ID SKPD "'+current_data.id_skpd+'"');
                             if(!page_skpd[current_data.id_skpd]){
                                 page_skpd[current_data.id_skpd] = [];
                             }
@@ -53,8 +53,8 @@ function singkron_stbp_lokal(status=['belum_verifikasi', 'sudah_verifikasi', 'su
 }
 
 
-function singkron_stbp_lokal(current_data, status, callback) {
-    var spm = {
+function singkron_stbp_ke_lokal_skpd(current_data, status, callback) {
+    var stbp = {
         action: "singkron_stbp",
         tahun_anggaran: _token.tahun,
         api_key: config.api_key,
@@ -128,14 +128,14 @@ function singkron_stbp_lokal(current_data, status, callback) {
                     }
                 };
                 chrome.runtime.sendMessage(data_back, (resp) => {
-                    window.singkron_spm_detail = {
+                    window.singkron_stbp_detail = {
                         resolve: resolve
                     };
-                    pesan_loading("Kirim data SPM detail ID="+current_data.id_spm+" tipe="+tipe);
+                    pesan_loading("Kirim data STBP detail ID="+current_data.id_stbp+" status="+status);
                 });
             },
             error: function(err){
-                console.log('Error get detail SPM! id='+current_data.id_spm, err);
+                console.log('Error get detail STBP! id='+current_data.id_stbp, err);
                 resolve();
             }
         });
