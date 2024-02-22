@@ -136,6 +136,56 @@ function singkron_spm_ke_lokal_skpd(current_data, tipe, status, callback) {
     };
     chrome.runtime.sendMessage(data_back, (resp) => {
         pesan_loading("Kirim data SPM ID SKPD="+current_data.id_skpd+" tipe="+tipe+" status="+status+" keterangan = "+current_data.keterangan_spm);
+    });
+    if(tipe == 'UP'){
+        return callback();
+    }
+
+    new Promise(function (resolve, reject) {
+        jQuery.ajax({
+            url: config.service_url + "pengeluaran/strict/spm/cetak/" + current_data.id_spm,
+            type: 'get',
+            dataType: "JSON",
+            beforeSend: function (xhr) {                
+                xhr.setRequestHeader("Authorization", 'Bearer '+getCookie('X-SIPD-PU-TK'));
+            },
+            success: function (res) {
+                console.log('response detail spm', res);
+                var spm_detail = {
+                    action: "singkron_spm_detail",
+                    tahun_anggaran: _token.tahun,
+                    api_key: config.api_key,
+                    idSkpd: current_data.id_skpd,
+                    id_spm: current_data.id_spm,
+                    tipe: tipe,
+                    sumber: 'ri',
+                    data: res[res.jenis.toLowerCase()]
+                };
+                var data_back = {
+                    message: {
+                        type: "get-url",
+                        content: {
+                            url: config.url_server_lokal,
+                            type: "post",
+                            data: spm_detail,
+                            return: true
+                        },
+                    }
+                };
+                chrome.runtime.sendMessage(data_back, (resp) => {
+                    window.singkron_spm_detail = {
+                        resolve: resolve
+                    };
+                    pesan_loading("Kirim data SPM detail ID="+current_data.id_spm+" tipe="+tipe);
+                });
+            },
+            error: function(err){
+                console.log('Error get detail SPM! id='+current_data.id_spm, err);
+                resolve();
+            }
+        });
+    })
+    .then(function () {
         callback();
     });
 }        
