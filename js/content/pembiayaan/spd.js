@@ -36,8 +36,8 @@ function singkron_spd_pembiayaan_lokal(){
 	});
 }
 
-function get_spd_skpd(id_sub_skpd, callback){
-	var url = config.service_url+'pengeluaran-pembiayaan/strict/spd/otorisasi/list-spd/'+id_sub_skpd;
+function get_spd_skpd(id_skpd, callback){
+	var url = config.service_url+'pengeluaran-pembiayaan/strict/spd/otorisasi/list-spd/'+id_skpd;
 	relayAjaxApiKey({
 		url: url,
 		type: 'get',
@@ -75,7 +75,7 @@ function get_spd_skpd(id_sub_skpd, callback){
 	        	if(callback){
             		callback();
             	}else{
-	        		alert('Berhasil singkron SPD ke lokal!');
+	        		alert('Berhasil singkron SPD Pembiayaan ke lokal!');
 					jQuery('#wrap-loading').hide();
             	}
 	        }
