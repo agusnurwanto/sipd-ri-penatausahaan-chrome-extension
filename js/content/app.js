@@ -191,6 +191,7 @@ function cekUrl(current_url, nomor=1){
 						jQuery('.aksi-extension').remove();
 					}
 			}
+			// DATA RAK Pembiayaan penerimaan
 			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/dpa/rencana-penerimaan-dana/pendapatan') != -1)
 			{	
 				var title = jQuery('.card-title.custom-class').text();
@@ -212,7 +213,9 @@ function cekUrl(current_url, nomor=1){
 						jQuery('.aksi-extension').remove();
 					}
 			//BESARAN UP
-			}else if(current_url.indexOf('penatausahaan/setting/besaran-up') != -1){
+			}
+			// DATA Besaran UP
+			else if(current_url.indexOf('penatausahaan/setting/besaran-up') != -1){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Besaran Uang Persediaan (UP)', title);
 				jQuery('.aksi-extension').remove();
@@ -227,7 +230,9 @@ function cekUrl(current_url, nomor=1){
 					}
 				});
 			//SPD	
-			}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spd/otorisasi') != -1	){
+			}
+			// DATA Otorisasi SPD
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spd/otorisasi') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Surat Penyediaan Dana (SPD)', title);
 				jQuery('.aksi-extension').remove();
@@ -250,7 +255,9 @@ function cekUrl(current_url, nomor=1){
 					jQuery('.aksi-extension').remove();
 				}				
 				//SPD PA
-			}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spd/pembuatan') != -1	){
+			}
+			// DATA Pengeluaran SPD
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spd/pembuatan') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Surat Penyediaan Dana (SPD)', title);
 				jQuery('.aksi-extension').remove();
@@ -270,7 +277,9 @@ function cekUrl(current_url, nomor=1){
 					jQuery('.aksi-extension').remove();
 				}	
 			// SPP
-			}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan') != -1	){
+			}
+			// DATA Pengeluaran SPP
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				window.type_data = 'UP';
 				if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=UP') != -1){
@@ -300,7 +309,9 @@ function cekUrl(current_url, nomor=1){
 					jQuery('.aksi-extension').remove();
 				}
 			// SPM
-			}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan') != -1	){
+			}
+			// DATA Pengeluaran SPM
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				window.type_data = ['UP', 'LS', 'GU', 'TU'];
 				if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan?type=UP') != -1){
@@ -330,7 +341,9 @@ function cekUrl(current_url, nomor=1){
 					jQuery('.aksi-extension').remove();
 				}
 			// SP2D
-			}else if(current_url.indexOf('penatausahaan/pengeluaran/sp2d') != -1	){
+			}
+			// DATA Pengeluaran SP2D
+			else if(current_url.indexOf('penatausahaan/pengeluaran/sp2d') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Surat Perintah Pencairan Dana', title);
 				jQuery('.aksi-extension').remove();
@@ -350,10 +363,79 @@ function cekUrl(current_url, nomor=1){
 					jQuery('.aksi-extension').remove();
 				}
 			// Data Master Pegawai dan user		
-			}else if(
-				current_url.indexOf('penatausahaan/setting/pegawai') != -1
-				|| current_url.indexOf('penatausahaan/user') != -1
-			){
+			}
+			// DATA Rekening Penerimaan
+			else if(current_url.indexOf('penatausahaan/penatausahaan/penerimaan/rekening/pembuatan') != -1	){
+				var title = jQuery('.card-title.custom-class').text();
+				console.log('Rekening Bank Satuan Kerja Perangkat Daerah (SKPD) | Pembuatan', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rekening_lokal">Singkron Rekening ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('| Pembuatan') != -1){
+					jQuery('#singkron_rekening_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data Rekeing Penerimaan? Data lokal akan diupdate sesuai data terbaru.')){
+							// singkron_sp2d_lokal(type_data);	
+							singkron_rekening_lokal();						
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}
+			// Data Master Pegawai dan user		
+			}
+			// DATA Rekening Penerimaan
+			else if(current_url.indexOf('penatausahaan/penatausahaan/penerimaan/stbp') != -1	){
+				var title = jQuery('.card-title.custom-class').text();
+				console.log('Surat Tanda Bukti Penerimaan (STBP)', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_stbp_lokal">Singkron STBP ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Surat Tanda Bukti Penerimaan | Semua Data') != -1){
+					jQuery('#singkron_stbp_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data STBP Penerimaan? Data lokal akan diupdate sesuai data terbaru.')){
+							// singkron_sp2d_lokal(type_data);	
+							singkron_stbp_lokal();						
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}
+			// Data Master Pegawai dan user		
+			}
+			// DATA Otorisasi SPD Pembiayaan
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pembiayaan/spd/otorisasi') != -1	){
+				var title = jQuery('.card-title.custom-class').text();
+				console.log('Pembiayaan | Surat Penyediaan Dana (SPD) | Otorisasi', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spd_pembiayaan_lokal">Singkron SPD ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(
+					title.indexOf('Surat Penyediaan Dana (SPD)') != -1
+					|| title.indexOf(' | Otorisasi') != -1
+				){
+					jQuery('#singkron_spd_pembiayaan_lokal').text('Singkron ALL SKPD ke DB Lokal');
+					jQuery('#singkron_spd_pembiayaan_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data SPD? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_spd_pembiayaan_lokal();						
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}				
+				//SPD PA
+			}
+			// DATA Pegawai
+			else if(current_url.indexOf('penatausahaan/setting/pegawai') != -1|| current_url.indexOf('penatausahaan/user') != -1)
+			{
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('halaman Pegawai', title);
 				jQuery('.aksi-extension').remove();
