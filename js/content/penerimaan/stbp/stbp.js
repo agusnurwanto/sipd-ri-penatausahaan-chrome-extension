@@ -59,7 +59,7 @@ function singkron_stbp_ke_lokal_skpd(current_data, status, callback) {
         tahun_anggaran: _token.tahun,
         api_key: config.api_key,
         idSkpd: current_data.id_skpd,        
-        sumber: 'ri',
+        sumber: 'ri',        
         page: current_data.page,
         data: {}
     };
@@ -80,6 +80,7 @@ function singkron_stbp_ke_lokal_skpd(current_data, status, callback) {
     stbp.data[0].id_skpd = current_data.id_skpd;
     stbp.data[0].id_sub_skpd = current_data.id_sub_skpd;    
     stbp.data[0].is_sts = current_data.is_sts;    
+    stbp.data[0].status = status;    
     stbp.data[0].created_at = current_data.created_at;
     
     var data_back = {
