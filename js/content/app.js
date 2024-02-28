@@ -362,7 +362,6 @@ function cekUrl(current_url, nomor=1){
 				}else{
 					jQuery('.aksi-extension').remove();
 				}
-			// Data Master Pegawai dan user		
 			}
 			// DATA Rekening Penerimaan
 			else if(current_url.indexOf('penatausahaan/penatausahaan/penerimaan/rekening/pembuatan') != -1	){
@@ -384,7 +383,6 @@ function cekUrl(current_url, nomor=1){
 				}else{
 					jQuery('.aksi-extension').remove();
 				}
-			// Data Master Pegawai dan user		
 			}
 			// DATA Rekening Penerimaan
 			else if(current_url.indexOf('penatausahaan/penatausahaan/penerimaan/stbp') != -1	){
@@ -406,7 +404,6 @@ function cekUrl(current_url, nomor=1){
 				}else{
 					jQuery('.aksi-extension').remove();
 				}
-			// Data Master Pegawai dan user		
 			}
 			// DATA Otorisasi SPD Pembiayaan
 			else if(current_url.indexOf('penatausahaan/penatausahaan/pembiayaan/spd/otorisasi') != -1	){
@@ -430,8 +427,7 @@ function cekUrl(current_url, nomor=1){
 					});
 				}else{
 					jQuery('.aksi-extension').remove();
-				}				
-				//SPD PA
+				}
 			}
 			// DATA Pegawai
 			else if(current_url.indexOf('penatausahaan/setting/pegawai') != -1|| current_url.indexOf('penatausahaan/user') != -1)

@@ -54,7 +54,7 @@ function singkron_spp_ke_lokal_skpd(current_data, tipe, status, callback) {
 	  	sumber: 'ri',
 	  	page: current_data.page,
 	 	data: {}
-	};   
+	};
 	spp.data[0] = {}
 	spp.data[0].nomorSpp = current_data.nomor_spp;
 	spp.data[0].nilaiSpp = current_data.nilai_spp;

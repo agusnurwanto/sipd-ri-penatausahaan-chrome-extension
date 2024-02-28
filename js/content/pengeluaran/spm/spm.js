@@ -112,7 +112,7 @@ function singkron_spm_ke_lokal_skpd(current_data, tipe, status, callback) {
     // spm.data[0].bulan_tpp = current_data.kode_tahap;
     spm.data[0].id_pengajuan_tu = current_data.is_tpp;
     spm.data[0].nomor_pengajuan_tu = current_data.bulan_tpp;
-    // spm.data[0].nomorSpm = current_data.id_pengajuan_tu;
+    spm.data[0].nomorSpm = current_data.nomor_spm;
     spm.data[0].tanggalSpm = current_data.tanggal_spm;
     spm.data[0].keteranganSpm = current_data.keterangan_spm;
     spm.data[0].verifikasiSpm = current_data.is_verifikasi_spm;
