@@ -4,7 +4,7 @@ function singkron_tbp_lokal() {
 	var status = 'aktif';
 	pesan_loading('Get data TBP, status='+status);
 	relayAjaxApiKey({
-  		url: config.service_url+'pengeluaran/strict/tbp/index/0?status='+status,
+  		url: config.service_url+'pengeluaran/strict/tbp/index/0?limit=10000000&status='+status,
 		//   url: config.service_url+'pengeluaran/strict/tbp/index/0?is_panjar=1&jenis=UP&status='+status,
 	  	type: 'get',
 	  	success: function (response) {
@@ -106,7 +106,7 @@ function singkron_tbp_ke_lokal_skpd(current_data, callback) {
 	  	},
 	};
 	chrome.runtime.sendMessage(data_back, (resp) => {
-	  	pesan_loading("Kirim data TBP ID SKPD="+current_data.id_skpd+" jenis="+current_data.jenis_tbp+" nomor="+current_data.nomor_tbp);
+	  	pesan_loading("Kirim data TBP ID SKPD="+current_data.id_skpd+" jenis="+current_data.jenis_tbp+" nomor="+current_data.nomor_tbp+" halaman="+current_data.page);
 	});
 	// if(current_data.jenis_tbp == 'UP'){
 	// 	return callback();
