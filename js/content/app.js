@@ -363,6 +363,48 @@ function cekUrl(current_url, nomor=1){
 					jQuery('.aksi-extension').remove();
 				}
 			}
+			// DATA Pengeluaran TBP
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/tbp/up-gu') != -1	){
+				var title = jQuery('.card-title.custom-class').text();				
+				console.log('Tanda Bukti Pembayaran | Uang Persediaan / Ganti Uang', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_tbp_lokal">Singkron TBP ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Tanda Bukti Pembayaran | Uang Persediaan / Ganti Uang') != -1){
+					jQuery('#singkron_tbp_lokal').text('Singkron TBP ke DB Lokal');
+					jQuery('#singkron_tbp_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data TBP ? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_tbp_lokal();
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}			
+			}
+			// DATA Pengajuan NPD
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/pengajuan/npd') != -1	){
+				var title = jQuery('.card-title.custom-class').text();				
+				console.log('Pengajuan | Nota Pencairan Dana', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_npd_lokal">Singkron NPD ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Pengajuan | Nota Pencairan Dana') != -1){
+					jQuery('#singkron_npd_lokal').text('Singkron NPD ke DB Lokal');
+					jQuery('#singkron_npd_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data NPD ? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_npd_lokal();
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}			
+			}
 			// DATA Rekening Penerimaan
 			else if(current_url.indexOf('penatausahaan/penatausahaan/penerimaan/rekening/pembuatan') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
