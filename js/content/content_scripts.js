@@ -67,6 +67,10 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 			}else{
 				open_modal_rpd(res.data);
 			}
+		}else if(res.action == 'update_bl_rak_nonactive'){
+			_alert = false;
+			cek_hide_loading = false;
+			update_bl_rak[res.id_unit]();
 		}else if(res.action == 'update_nonactive_sub_bl'){
 			_alert = false;
 			cek_hide_loading = false;
