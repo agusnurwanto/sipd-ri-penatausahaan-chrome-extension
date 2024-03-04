@@ -384,7 +384,7 @@ function cekUrl(current_url, nomor=1){
 					jQuery('.aksi-extension').remove();
 				}			
 			}	
-			// DATA Pengajuan NPD akun PA		
+			// DATA Pertanggung Jawaban NPD
 			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/rekapitulasi-npd') != -1	){
 				var title = jQuery('.card-title.custom-class').text();				
 				console.log('Pertanggung Jawaban Nota Pencairan Dana', title);
