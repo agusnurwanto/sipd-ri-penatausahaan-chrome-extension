@@ -155,12 +155,12 @@ function singkron_npd_ke_lokal_skpd(current_data, status, callback) {
                     // window.singkron_tbp_detail = {
                     //     resolve: resolve
                     // };
-                    pesan_loading("Kirim data NPD detail ID="+current_data.id_tbp);
+                    pesan_loading("Kirim data NPD detail ID="+current_data.id_npd);
 					return callback();
                 });
             },
             error: function(err){
-                console.log('Error get detail NPD! id='+current_data.id_tbp, err);
+                console.log('Error get detail NPD! id='+current_data.id_npd, err);
                 resolve();
             }
         });
