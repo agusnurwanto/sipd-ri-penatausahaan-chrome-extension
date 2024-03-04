@@ -39,7 +39,7 @@ function singkron_npd_lokal() {
 			}, Promise.resolve(response[last]))
 			.then(function (data_last) {
 			  	jQuery("#wrap-loading").hide();
-			  	alert("Berhasil singkron TBP");
+			  	alert("Berhasil singkron NPD");
 			});
 	  	},
 	});
@@ -59,7 +59,7 @@ function singkron_npd_ke_lokal_skpd(current_data, status, callback) {
 	npd.data[0].id_npd = current_data.id_npd;
 	npd.data[0].nomor_npd = current_data.nomor_npd;
 	npd.data[0].tahun = current_data.tahun;
-	npd.data[0].id_daerah = config.id_daerah;
+	npd.data[0].id_daerah = _token.id_daerah;
 	npd.data[0].id_unit = current_data.id_unit;
 	npd.data[0].id_skpd = current_data.id_skpd;
 	npd.data[0].nilai_npd = current_data.nilai_npd;
