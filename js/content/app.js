@@ -383,6 +383,27 @@ function cekUrl(current_url, nomor=1){
 				}else{
 					jQuery('.aksi-extension').remove();
 				}			
+			}	
+			// DATA Pengajuan NPD akun PA		
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/rekapitulasi-npd') != -1	){
+				var title = jQuery('.card-title.custom-class').text();				
+				console.log('Pertanggung Jawaban Nota Pencairan Dana', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_npd_lokal">Singkron NPD ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Pertanggung Jawaban Nota Pencairan Dana') != -1){
+					jQuery('#singkron_npd_lokal').text('Singkron NPD ke DB Lokal');
+					jQuery('#singkron_npd_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data NPD ? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_npd_lokal();
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}			
 			}
 			// DATA Pengajuan NPD
 			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/pengajuan/npd') != -1	){
