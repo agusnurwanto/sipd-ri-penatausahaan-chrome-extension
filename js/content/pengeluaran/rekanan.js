@@ -7,7 +7,7 @@ function singkron_rekanan_lokal(){
     })
 }
 
-function get_rekanan(opsi, page=1, limit=10){
+function get_rekanan(opsi, page=1, limit=20){
 	return new Promise(function(resolve, reject){
 		pesan_loading('Get rekanan page='+page);
 	    relayAjaxApiKey({
