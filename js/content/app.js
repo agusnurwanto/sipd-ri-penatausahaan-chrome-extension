@@ -527,7 +527,29 @@ function cekUrl(current_url, nomor=1){
 					}
 				});
 			}
-
+			// DATA Daftar Rekanan
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/daftar-rekanan?=1') != -1	){
+				var title = jQuery('.card-title.custom-class').text();
+				console.log('Daftar Rekanan', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rekanan_lokal">Singkron Rekanan ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(
+					title.indexOf('Daftar Rekanan') != -1
+				){
+					jQuery('#singkron_rekanan_lokal').text('Singkron Rekanan ke DB Lokal');
+					jQuery('#singkron_rekanan_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data Rekanan? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_rekanan_lokal();						
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}
+			}
 			// load ulang fungsi jika title masih kosong
 			if(title == ''){
 				console.log('konten halaman belum terload!');
