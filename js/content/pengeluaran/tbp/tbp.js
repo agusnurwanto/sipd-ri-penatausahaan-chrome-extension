@@ -7,7 +7,7 @@ function singkron_tbp_lokal(){
     })
 }
 
-function get_tbp(opsi, page=1, limit=20){
+function get_tbp(opsi, page=1, limit=50){
 	return new Promise(function(resolve, reject){
 		var status = 'aktif';
 		pesan_loading('Get data TBP, status='+status+', page='+page);
@@ -106,6 +106,10 @@ function get_tbp(opsi, page=1, limit=20){
 										res.jenis = current_data.jenis_tbp;
 										opsi.data.push(res);
 										resolve_reduce(nextData);
+									},
+									error: function(err){
+										console.log('Error get detail TBP! id='+current_data.id_tbp, err);
+										resolve();
 									}
 								});
 			        		})
