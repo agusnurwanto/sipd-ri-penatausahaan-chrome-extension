@@ -433,13 +433,13 @@ function cekUrl(current_url, nomor=1){
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lpj_lokal">Singkron LPJ ke DB Lokal</button>'					
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lpj_lokal">Singkron LPJ BPP ke DB Lokal</button>'					
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);				
 				if(title.indexOf('Laporan Pertanggung Jawaban | Pelimpahan  UP / GU') != -1){
-					jQuery('#singkron_lpj_lokal').text('Singkron LPJ ke DB Lokal');
+					jQuery('#singkron_lpj_lokal').text('Singkron LPJ BPP ke DB Lokal');
 					jQuery('#singkron_lpj_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data LPJ ? Data lokal akan diupdate sesuai data terbaru.')){
+						if(confirm('Apakah anda yakin melakukan backup data LPJ BPP ? Data lokal akan diupdate sesuai data terbaru.')){
 							singkron_lpj_lokal();
 						}
 					});

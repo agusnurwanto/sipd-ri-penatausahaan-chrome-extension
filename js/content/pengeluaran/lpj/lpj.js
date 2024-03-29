@@ -1,8 +1,8 @@
 function singkron_lpj_lokal(){
     jQuery('#wrap-loading').show();
     get_lpj({data: []})
-    .then(function(npd_all){
-		alert('Berhasil singkron LPJ ke lokal!');
+    .then(function(lpj_all){
+		alert('Berhasil singkron LPJ BPP ke lokal!');
 		jQuery('#wrap-loading').hide();
     })
 }
@@ -10,17 +10,18 @@ function singkron_lpj_lokal(){
 function get_lpj(opsi, page=1, limit=50){
 	return new Promise(function(resolve, reject){
 		var status = 'validasi';
-		pesan_loading('Get data NPD, status='+status+', page='+page);
+		pesan_loading('Get data LPJ BPP, status='+status+', page='+page);
 	    relayAjaxApiKey({
 			// https://service.sipd.kemendagri.go.id/pengeluaran/strict/lpj/index-persetujuan/2980?jenis=UP%2FGU&status=validasi&page=1&limit=10&bp_bpp=bp
-			url: config.service_url+'pengeluaran/strict/lpj/index-persetujua/'+_token.id_skpd+'?jenis=UP%2F&status='+status+'&page='+page+'&limit='+limit+'&bp_bpp=bp',
+			url: config.service_url+'pengeluaran/strict/lpj/index-persetujuan/'+_token.id_skpd+'?jenis=UP%2F&status='+status+'&page='+page+'&limit='+limit+'&bp_bpp=bp',
 			type: 'get',
-			success: function(data_lpj){				
-					var last = data_lpj.lpj_bp.length-1;
-					data_lpj.lpj_bp.reduce(function(sequence, nextData){
+			success: function(data_lpj){	
+					console.log(data_lpj.lpj_bpp);
+					var last = data_lpj.lpj_bpp.length-1;
+					data_lpj.lpj_bpp.reduce(function(sequence, nextData){
 			            return sequence.then(function(current_data){
 							var lpj = {
-								action: "singkron_lpj",
+								action: "singkron_lpj_bpp",
 								tahun_anggaran: _token.tahun,
 								api_key: config.api_key,
 								idSkpd: current_data.id_skpd,	  	
@@ -31,23 +32,23 @@ function get_lpj(opsi, page=1, limit=50){
 						  };   
                          
 						  	lpj.data[0] = {}
-							lpj.data[0].id_lpj = current_data.id_lpj;
-							lpj.data[0].nomor_lpj = current_data.nomor_lpj;
+							lpj.data[0].id_lpj_bpp = current_data.id_lpj_bpp;
+							lpj.data[0].nomor_lpj_bpp = current_data.nomor_lpj_bpp;
 							lpj.data[0].tahun = current_data.tahun;
 							lpj.data[0].id_daerah = _token.id_daerah;
 							lpj.data[0].id_unit = current_data.id_unit;
 							lpj.data[0].id_skpd = current_data.id_skpd;
                             lpj.data[0].id_sub_skpd = current_data.id_sub_skpd;
-							lpj.data[0].nilai_lpj = current_data.nilai_lpj;
-							lpj.data[0].tanggal_lpj = current_data.tanggal_lpj;
-                            lpj.data[0].jenis_lpj = current_data.jenis_lpj;                            
+							lpj.data[0].nilai_lpj_bpp = current_data.nilai_lpj_bpp;
+							lpj.data[0].tanggal_lpj_bpp = current_data.tanggal_lpj_bpp;
+                            lpj.data[0].jenis_lpj_bpp = current_data.jenis_lpj_bpp;                            
 							lpj.data[0].id_pegawai_pa_kpa = current_data.id_pegawai_pa_kpa;
-							lpj.data[0].is_verifikasi_lpj = current_data.is_verifikasi_lpj;
-                            lpj.data[0].verifikasi_lpj_at = current_data.verifikasi_lpj_at;														
-							lpj.data[0].verifikasi_lpj_by = current_data.verifikasi_lpj_by;
-							lpj.data[0].is_val_i_dasi_lpj = current_data.is_val_i_dasi_lpj;
-							lpj.data[0].val_i_dasi_lpj_at = current_data.val_i_dasi_lpj_at;
-							lpj.data[0].val_i_dasi_lpj_by = current_data.val_i_dasi_lpj_by;
+							lpj.data[0].is_verifikasi_lpj_bpp = current_data.is_verifikasi_lpj_bpp;
+                            lpj.data[0].verifikasi_lpj_bpp_at = current_data.verifikasi_lpj_bpp_at;														
+							lpj.data[0].verifikasi_lpj_by = current_data.verifikasi_lpj_bpp_by;
+							lpj.data[0].is_val_i_dasi_lpj_bpp = current_data.is_val_i_dasi_lpj_bpp;
+							lpj.data[0].val_i_dasi_lpj_bpp_at = current_data.val_i_dasi_lpj_bpp_at;
+							lpj.data[0].val_i_dasi_lpj_bpp_by = current_data.val_i_dasi_lpj_bpp_by;
 							lpj.data[0].is_spp_gu = current_data.is_spp_gu;
 							lpj.data[0].spp_gu_at = current_data.spp_gu_at;
 							lpj.data[0].spp_gu_by = current_data.spp_gu_by;
@@ -77,20 +78,20 @@ function get_lpj(opsi, page=1, limit=50){
 								},
 						  };
 						  chrome.runtime.sendMessage(data_back, (resp) => {
-							pesan_loading("Kirim data lpj ID SKPD="+current_data.id_skpd+" status="+status+" nomor="+current_data.nomor_lpj+" halaman="+page);
+							pesan_loading("Kirim data LPJ BPP ID SKPD="+current_data.id_skpd+" status="+status+" nomor="+current_data.nomor_lpj_bpp+" halaman="+page);
 						  });
 			        		return new Promise(function(resolve_reduce, reject_reduce){
 			        			relayAjaxApiKey({
 									//https://service.sipd.kemendagri.go.id/pengeluaran/strict/lpj/cetak/4779?tipe=bpp&id_skpd=2973
-									url: config.service_url + "pengeluaran/strict/lpj/cetak/"+current_data.id_lpj,
+									url: config.service_url + "pengeluaran/strict/lpj/cetak/"+current_data.id_lpj_bpp+'?tipe=bpp&id_skpd='+current_data.id_skpd,
 									type: 'get',
 									dataType: "JSON",
 									beforeSend: function (xhr) {			    
 										xhr.setRequestHeader("Authorization", 'Bearer '+getCookie('X-SIPD-PU-TK'));
 									},
 									success: function (res) {
-										console.log('response detail lpj', res);
-										pesan_loading("Kirim data lpj detail ID="+current_data.id_lpj+" halaman="+page);
+										console.log('response detail LPJ BPP', res);
+										pesan_loading("Kirim data LPJ BPP detail ID="+current_data.id_lpj_bpp+" ID SKPD="+current_data.id_skpd+" halaman="+page);
 										// var tbp_detail = {
 										// 	action: "singkron_tbp_detail",
 										// 	tahun_anggaran: _token.tahun,
@@ -102,12 +103,12 @@ function get_lpj(opsi, page=1, limit=50){
 										// 	data: res
 										// };										
 										res.idSkpd = current_data.id_skpd;
-										res.id_lpj = current_data.id_lpj;
+										res.id_lpj = current_data.id_lpj_bpp;
 										opsi.data.push(res);
 										resolve_reduce(nextData);
 									},
 									error: function(err){
-										console.log('Error get detail lpj! id='+current_data.id_lpj, err);
+										console.log('Error get detail LPJ BPP! id='+current_data.id_lpj_bpp, err);
 										resolve();
 									}
 								});
@@ -121,7 +122,7 @@ function get_lpj(opsi, page=1, limit=50){
 			                console.log(e);
 			                return Promise.resolve(nextData);
 			            });
-			        }, Promise.resolve(data_lpj.lpj_bp[last]))
+			        }, Promise.resolve(data_lpj.lpj_bpp[last]))
 			        .then(function(data_last){
 			        	var data_back = {
 						    message:{
@@ -144,7 +145,7 @@ function get_lpj(opsi, page=1, limit=50){
 						    console.log('responeMessage', response);
 						});
 
-						if(data_lpj.lpj_bp.length >= limit){
+						if(data_lpj.lpj_bpp.length >= limit){
 							// dikosongkan lagi setelah data dikirim ke lokal
 							opsi.data = [];
 							page++;
