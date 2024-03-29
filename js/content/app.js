@@ -429,14 +429,14 @@ function cekUrl(current_url, nomor=1){
 			// DATA Pengajuan LPJ
 			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/lpj/up-gu') != -1	){
 				var title = jQuery('.card-title.custom-class').text();				
-				console.log('Laporan Pertanggung Jawaban | UP / GU', title);
+				console.log('Laporan Pertanggung Jawaban | Pelimpahan  UP / GU', title);
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lpj_lokal">Singkron LPJ ke DB Lokal</button>'					
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);				
-				if(title.indexOf('Laporan Pertanggung Jawaban | UP / GU') != -1){
+				if(title.indexOf('Laporan Pertanggung Jawaban | Pelimpahan  UP / GU') != -1){
 					jQuery('#singkron_lpj_lokal').text('Singkron LPJ ke DB Lokal');
 					jQuery('#singkron_lpj_lokal').on('click', function(){
 						if(confirm('Apakah anda yakin melakukan backup data LPJ ? Data lokal akan diupdate sesuai data terbaru.')){
