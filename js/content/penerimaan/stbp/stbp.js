@@ -362,7 +362,7 @@ function simpan_validasi(current_data){
 			url: config.service_url + "penerimaan/strict/stbp/status/" + current_data.id_stbp,                                   
 			type: 'PUT',	      				
 			data: {            
-                    status: 3,				
+                    status: 1,				
                     update: "Validasi"
 				},
 			beforeSend: function (xhr) {                
