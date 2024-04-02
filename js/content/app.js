@@ -476,15 +476,34 @@ function cekUrl(current_url, nomor=1){
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_stbp_lokal">Singkron STBP ke DB Lokal</button>'					
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="otorisasi_stbp_all">Otorisasi ALL STBP </button>'
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="validasi_stbp_all">Validasi ALL STBP</button>'					
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);				
 				if(title.indexOf('Surat Tanda Bukti Penerimaan | Semua Data') != -1){
+					// jQuery('.setting-kegiatan').on('click', function(){
+					// 	var id = jQuery(this).attr('id');
+					// 	proses_setting_stbp(id);
+					// });
 					jQuery('#singkron_stbp_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data STBP Penerimaan? Data lokal akan diupdate sesuai data terbaru.')){
-							// singkron_sp2d_lokal(type_data);	
+						if(confirm('Apakah anda yakin melakukan backup data STBP Penerimaan? Data lokal akan diupdate sesuai data terbaru.')){								
 							singkron_stbp_lokal();						
 						}
 					});
+					jQuery('#set_validasi').on('click', function(){
+						set_validasi();
+					});	
+					jQuery('#otorisasi_stbp_all').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan Otorisasi data STBP Penerimaan? Data STBP Verifikasi akan diupdate menjadi sudah otorisasi.')){								
+							otorisasi_stbp_all();						
+						}
+					});
+					jQuery('#validasi_stbp_all').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan Validasi data STBP Penerimaan? Data STBP Otorisasi akan diupdate menjadi sudah Validasi.')){								
+							validasi_stbp_all();						
+						}
+					});
+					
 				}else{
 					jQuery('.aksi-extension').remove();
 				}
@@ -524,7 +543,7 @@ function cekUrl(current_url, nomor=1){
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_pegawai_lokal">Singkron Pegawai ke DB Lokal</button>'
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_panggol_lokal">Master Pangkat Golongan ke DB Lokal</button>'
 						// +'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spd_lokal">SPD ke DB Lokal</button>'
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_up">Singkron UP ke DB Lokal</button>'
+						// +'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_up">Singkron UP ke DB Lokal</button>'
 					+'</div>';
 				jQuery('.card-header-slot').before(btn);
 				jQuery('#singkron_pegawai_lokal').on('click', function(){
