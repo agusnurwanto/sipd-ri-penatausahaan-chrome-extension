@@ -174,3 +174,9 @@ thead{
 .form-group {
     padding: 10px;
 }
+
+.main-container-kebijakan-spds img.cursor-pointer {
+    padding: 5px;
+    background: #FFEB3B;
+    border-radius: 50%;
+}
