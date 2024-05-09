@@ -1,6 +1,6 @@
 function singkron_sp2d_lokal(data=['UP', 'LS', 'GU', 'TU']){
 	jQuery('#wrap-loading').show();
-	var status = 'diterima';
+	var status = 'ditransfer';
 	var type_data = data.shift();
 	new Promise(function(resolve, reject){
 		if(typeof type_data == 'undefined'){

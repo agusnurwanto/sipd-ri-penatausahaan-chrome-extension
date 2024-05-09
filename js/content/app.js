@@ -383,6 +383,27 @@ function cekUrl(current_url, nomor=1){
 				}else{
 					jQuery('.aksi-extension').remove();
 				}			
+			}	
+			// DATA Pertanggung Jawaban NPD
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/rekapitulasi-npd') != -1	){
+				var title = jQuery('.card-title.custom-class').text();				
+				console.log('Pertanggung Jawaban Nota Pencairan Dana', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_npd_lokal">Singkron NPD ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Pertanggung Jawaban Nota Pencairan Dana') != -1){
+					jQuery('#singkron_npd_lokal').text('Singkron NPD ke DB Lokal');
+					jQuery('#singkron_npd_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data NPD ? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_npd_lokal();
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}			
 			}
 			// DATA Pengajuan NPD
 			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/pengajuan/npd') != -1	){
@@ -399,6 +420,27 @@ function cekUrl(current_url, nomor=1){
 					jQuery('#singkron_npd_lokal').on('click', function(){
 						if(confirm('Apakah anda yakin melakukan backup data NPD ? Data lokal akan diupdate sesuai data terbaru.')){
 							singkron_npd_lokal();
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}			
+			}
+			// DATA Pengajuan LPJ
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/lpj/up-gu') != -1	){
+				var title = jQuery('.card-title.custom-class').text();				
+				console.log('Laporan Pertanggung Jawaban | Pelimpahan  UP / GU', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lpj_lokal">Singkron LPJ BPP ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Laporan Pertanggung Jawaban | Pelimpahan  UP / GU') != -1){
+					jQuery('#singkron_lpj_lokal').text('Singkron LPJ BPP ke DB Lokal');
+					jQuery('#singkron_lpj_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data LPJ BPP ? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_lpj_lokal();
 						}
 					});
 				}else{
@@ -434,15 +476,34 @@ function cekUrl(current_url, nomor=1){
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_stbp_lokal">Singkron STBP ke DB Lokal</button>'					
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-warning" id="otorisasi_stbp_all">Otorisasi ALL STBP </button>'
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="validasi_stbp_all">Validasi ALL STBP</button>'					
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);				
 				if(title.indexOf('Surat Tanda Bukti Penerimaan | Semua Data') != -1){
+					// jQuery('.setting-kegiatan').on('click', function(){
+					// 	var id = jQuery(this).attr('id');
+					// 	proses_setting_stbp(id);
+					// });
 					jQuery('#singkron_stbp_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data STBP Penerimaan? Data lokal akan diupdate sesuai data terbaru.')){
-							// singkron_sp2d_lokal(type_data);	
+						if(confirm('Apakah anda yakin melakukan backup data STBP Penerimaan? Data lokal akan diupdate sesuai data terbaru.')){								
 							singkron_stbp_lokal();						
 						}
 					});
+					jQuery('#set_validasi').on('click', function(){
+						set_validasi();
+					});	
+					jQuery('#otorisasi_stbp_all').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan Otorisasi data STBP Penerimaan? Data STBP Verifikasi akan diupdate menjadi sudah otorisasi.')){								
+							otorisasi_stbp_all();						
+						}
+					});
+					jQuery('#validasi_stbp_all').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan Validasi data STBP Penerimaan? Data STBP Otorisasi akan diupdate menjadi sudah Validasi.')){								
+							validasi_stbp_all();						
+						}
+					});
+					
 				}else{
 					jQuery('.aksi-extension').remove();
 				}
@@ -482,7 +543,7 @@ function cekUrl(current_url, nomor=1){
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_pegawai_lokal">Singkron Pegawai ke DB Lokal</button>'
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_panggol_lokal">Master Pangkat Golongan ke DB Lokal</button>'
 						// +'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spd_lokal">SPD ke DB Lokal</button>'
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_up">Singkron UP ke DB Lokal</button>'
+						// +'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_up">Singkron UP ke DB Lokal</button>'
 					+'</div>';
 				jQuery('.card-header-slot').before(btn);
 				jQuery('#singkron_pegawai_lokal').on('click', function(){
@@ -506,7 +567,29 @@ function cekUrl(current_url, nomor=1){
 					}
 				});
 			}
-
+			// DATA Daftar Rekanan
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/daftar-rekanan?=1') != -1	){
+				var title = jQuery('.card-title.custom-class').text();
+				console.log('Daftar Rekanan', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rekanan_lokal">Singkron Rekanan ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(
+					title.indexOf('Daftar Rekanan') != -1
+				){
+					jQuery('#singkron_rekanan_lokal').text('Singkron Rekanan ke DB Lokal');
+					jQuery('#singkron_rekanan_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data Rekanan? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_rekanan_lokal();						
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}
+			}
 			// load ulang fungsi jika title masih kosong
 			if(title == ''){
 				console.log('konten halaman belum terload!');
