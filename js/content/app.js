@@ -590,6 +590,29 @@ function cekUrl(current_url, nomor=1){
 					jQuery('.aksi-extension').remove();
 				}
 			}
+			// DATA Belnaja AKPD
+			else if(current_url.indexOf('penatausahaan/penatausahaan/akpd/belanja') != -1	){
+				var title = jQuery('.card-title.custom-class').text();
+				console.log('Anggaran Kas Pemerintah Daerah (AKPD) | Belanja', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_belanja_akpd_ke_lokal">Singkron Belanja AKPD ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(
+					title.indexOf('Anggaran Kas Pemerintah Daerah (AKPD) | Belanja') != -1
+				){
+					jQuery('#singkron_belanja_akpd_ke_lokal').text('Singkron Rekanan ke DB Lokal');
+					jQuery('#singkron_belanja_akpd_ke_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data belanja AKPD ? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_belanja_akpd_ke_lokal();						
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}
+			}
 			// load ulang fungsi jika title masih kosong
 			if(title == ''){
 				console.log('konten halaman belum terload!');
