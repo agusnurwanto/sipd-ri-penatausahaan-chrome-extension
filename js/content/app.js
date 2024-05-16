@@ -330,7 +330,7 @@ function cekUrl(current_url, nomor=1){
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spm_lokal">Singkron SPM '+type_data.join(', ')+' ke DB Lokal</button>'					
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);				
-				if(title.indexOf('| Pembuatan') != -1){
+				if(title.indexOf('Pengeluaran') != -1){
 					jQuery('#singkron_spm_lokal').text('Singkron SPM '+type_data.join(', ')+' ke DB Lokal');
 					jQuery('#singkron_spm_lokal').on('click', function(){
 						if(confirm('Apakah anda yakin melakukan backup data SPM '+type_data.join(', ')+'? Data lokal akan diupdate sesuai data terbaru.')){
