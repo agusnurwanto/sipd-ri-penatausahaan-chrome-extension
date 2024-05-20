@@ -1,72 +1,96 @@
-function singkron_rak_ke_lokal(){
+function singkron_rak_ke_lokal(page=1, skpd_all=[]){
     jQuery('#wrap-loading').show();
-    var url = config.service_url+'referensi/strict/dpa/penarikan/belanja';
-    relayAjaxApiKey({
-		url: url,
-		type: 'get',
-		success: function(skpd_all){
-			var last = skpd_all.length-1;
-			skpd_all.reduce(function(sequence, nextData){
-                return sequence.then(function(current_data){
-            		return new Promise(function(resolve_reduce, reject_reduce){
-            			pesan_loading('Get sub kegiatan dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
-            			get_sub_keg(current_data.id_skpd, function(){
-            				return resolve_reduce(nextData);
-            			});
-            		})
-                    .catch(function(e){
-                        console.log(e);
-                        return Promise.resolve(nextData);
-                    });
-                })
-                .catch(function(e){
-                    console.log(e);
-                    return Promise.resolve(nextData);
-                });
-            }, Promise.resolve(skpd_all[last]))
-            .then(function(data_last){
-        		alert('Berhasil singkron RAK ke lokal!');
-				jQuery('#wrap-loading').hide();
-            });
-		}
-	});
+    pesan_loading('Get SKPD halaman = '+page);
+    var url = config.service_url+'referensi/strict/dpa/penarikan/belanja?page='+page+'&limit=10';
+    return new Promise(function(resolve, reduce){
+	    relayAjaxApiKey({
+			url: url,
+			type: 'get',
+			success: function(data_skpd_all){
+				if(data_skpd_all.length >= 1){
+					data_skpd_all.map(function(b, i){
+						skpd_all.push(b);
+					})
+					singkron_rak_ke_lokal(page+1, skpd_all);
+					return resolve();
+				}else{
+					var last = skpd_all.length-1;
+					skpd_all.reduce(function(sequence, nextData){
+		                return sequence.then(function(current_data){
+		            		return new Promise(function(resolve_reduce, reject_reduce){
+		            			pesan_loading('Get sub kegiatan dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
+		            			get_sub_keg(current_data.id_skpd, function(){
+		            				return resolve_reduce(nextData);
+		            			});
+		            		})
+		                    .catch(function(e){
+		                        console.log(e);
+		                        return Promise.resolve(nextData);
+		                    });
+		                })
+		                .catch(function(e){
+		                    console.log(e);
+		                    return Promise.resolve(nextData);
+		                });
+		            }, Promise.resolve(skpd_all[last]))
+		            .then(function(data_last){
+		        		alert('Berhasil singkron RAK ke lokal!');
+						jQuery('#wrap-loading').hide();
+						return resolve();
+		            });
+		        }
+			}
+		});
+    });
 }
 
-function singkron_rak_pendapatan_sipd_lokal(){
+function singkron_rak_pendapatan_sipd_lokal(page=1, skpd_all=[]){
     jQuery('#wrap-loading').show();
-    var url = config.service_url+'referensi/strict/dpa/penerimaan/pendapatan';
-	relayAjaxApiKey({
-		url: url,
-		type: 'get',
-		success: function(skpd_all){
-			var last = skpd_all.length-1;
-			skpd_all.reduce(function(sequence, nextData){
-                return sequence.then(function(current_data){
-            		return new Promise(function(resolve_reduce, reject_reduce){
-						update_bl_rak_nonactive(current_data.id_skpd, 'pendapatan')
-						.then(function(){
-	            			pesan_loading('Get RAK Pendapatan SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
-	            			get_rak_pend(current_data, function(){
-	            				return resolve_reduce(nextData);
-            				});
-            			});
-            		})
-                    .catch(function(e){
-                        console.log(e);
-                        return Promise.resolve(nextData);
-                    });
-                })
-                .catch(function(e){
-                    console.log(e);
-                    return Promise.resolve(nextData);
-                });
-            }, Promise.resolve(skpd_all[last]))
-            .then(function(data_last){
-        		alert('Berhasil singkron RAK ke lokal!');
-				jQuery('#wrap-loading').hide();
-            });
-		}
-	});
+    pesan_loading('Get SKPD halaman = '+page);
+    var url = config.service_url+'referensi/strict/dpa/penerimaan/pendapatan?page='+page+'&limit=10';
+    return new Promise(function(resolve, reduce){
+		relayAjaxApiKey({
+			url: url,
+			type: 'get',
+			success: function(data_skpd_all){
+				if(data_skpd_all.length >= 1){
+					data_skpd_all.map(function(b, i){
+						skpd_all.push(b);
+					})
+					singkron_rak_pendapatan_sipd_lokal(page+1, skpd_all);
+					return resolve();
+				}else{
+					var last = skpd_all.length-1;
+					skpd_all.reduce(function(sequence, nextData){
+		                return sequence.then(function(current_data){
+		            		return new Promise(function(resolve_reduce, reject_reduce){
+								update_bl_rak_nonactive(current_data.id_skpd, 'pendapatan')
+								.then(function(){
+			            			pesan_loading('Get RAK Pendapatan SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
+			            			get_rak_pend(current_data, function(){
+			            				return resolve_reduce(nextData);
+		            				});
+		            			});
+		            		})
+		                    .catch(function(e){
+		                        console.log(e);
+		                        return Promise.resolve(nextData);
+		                    });
+		                })
+		                .catch(function(e){
+		                    console.log(e);
+		                    return Promise.resolve(nextData);
+		                });
+		            }, Promise.resolve(skpd_all[last]))
+		            .then(function(data_last){
+		        		alert('Berhasil singkron RAK ke lokal!');
+						jQuery('#wrap-loading').hide();
+						return resolve();
+		            });
+		        }
+			}
+		});
+    });
 }
 
 function get_rak_pend(sub, callback){
@@ -299,40 +323,52 @@ function get_rak(sub, callback){
 	});
 }
 
-function singkron_rak_pembiayaan_penerimaan_sipd_lokal(){
+function singkron_rak_pembiayaan_penerimaan_sipd_lokal(page=1, skpd_all=[]){
     jQuery('#wrap-loading').show();
-    var url = config.service_url+'referensi/strict/dpa/penerimaan/pembiayaan';
-	relayAjaxApiKey({
-		url: url,
-		type: 'get',
-		success: function(skpd_all){
-			var last = skpd_all.length-1;
-			skpd_all.reduce(function(sequence, nextData){
-                return sequence.then(function(current_data){
-            		return new Promise(function(resolve_reduce, reject_reduce){
-						update_bl_rak_nonactive(current_data.id_skpd, 'pembiayaan-penerimaan')
-						.then(function(){
-            				pesan_loading('Get RAK Pembiayaan Penerimaan SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
-	            			get_rak_pemb_penerimaan(current_data, function(){
-	            				return resolve_reduce(nextData);
-	            			});
-	            		});
-            		})
-                    .catch(function(e){
-                        console.log(e);
-                        return Promise.resolve(nextData);
-                    });
-                })
-                .catch(function(e){
-                    console.log(e);
-                    return Promise.resolve(nextData);
-                });
-            }, Promise.resolve(skpd_all[last]))
-            .then(function(data_last){
-        		alert('Berhasil singkron RAK ke lokal!');
-				jQuery('#wrap-loading').hide();
-            });
-		}
+    pesan_loading('Get SKPD halaman = '+page);
+    var url = config.service_url+'referensi/strict/dpa/penerimaan/pembiayaan?page='+page+'&limit=10';
+    return new Promise(function(resolve, reduce){
+		relayAjaxApiKey({
+			url: url,
+			type: 'get',
+			success: function(data_skpd_all){
+				if(data_skpd_all.length >= 1){
+					data_skpd_all.map(function(b, i){
+						skpd_all.push(b);
+					})
+					singkron_rak_pembiayaan_penerimaan_sipd_lokal(page+1, skpd_all);
+					return resolve();
+				}else{
+					var last = skpd_all.length-1;
+					skpd_all.reduce(function(sequence, nextData){
+		                return sequence.then(function(current_data){
+		            		return new Promise(function(resolve_reduce, reject_reduce){
+								update_bl_rak_nonactive(current_data.id_skpd, 'pembiayaan-penerimaan')
+								.then(function(){
+		            				pesan_loading('Get RAK Pembiayaan Penerimaan SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
+			            			get_rak_pemb_penerimaan(current_data, function(){
+			            				return resolve_reduce(nextData);
+			            			});
+			            		});
+		            		})
+		                    .catch(function(e){
+		                        console.log(e);
+		                        return Promise.resolve(nextData);
+		                    });
+		                })
+		                .catch(function(e){
+		                    console.log(e);
+		                    return Promise.resolve(nextData);
+		                });
+		            }, Promise.resolve(skpd_all[last]))
+		            .then(function(data_last){
+		        		alert('Berhasil singkron RAK ke lokal!');
+						jQuery('#wrap-loading').hide();
+						return resolve();
+		            });
+		        }
+			}
+		});
 	});
 }
 
@@ -417,40 +453,52 @@ function get_rak_pemb_penerimaan(sub, callback){
 	});
 }
 
-function singkron_rak_pembiayaan_pengeluaran_sipd_lokal(){
+function singkron_rak_pembiayaan_pengeluaran_sipd_lokal(page=1, skpd_all=[]){
     jQuery('#wrap-loading').show();
-    var url = config.service_url+'referensi/strict/dpa/penarikan/pembiayaan';
-	relayAjaxApiKey({
-		url: url,
-		type: 'get',
-		success: function(skpd_all){
-			var last = skpd_all.length-1;
-			skpd_all.reduce(function(sequence, nextData){
-                return sequence.then(function(current_data){
-            		return new Promise(function(resolve_reduce, reject_reduce){
-						update_bl_rak_nonactive(current_data.id_skpd, 'pembiayaan-pengeluaran')
-						.then(function(){
-	            			pesan_loading('Get RAK Pembiayaan Pengeluaran SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
-	            			get_rak_pemb_pengeluaran(current_data, function(){
-	            				return resolve_reduce(nextData);
-	            			});
-	            		});
-            		})
-                    .catch(function(e){
-                        console.log(e);
-                        return Promise.resolve(nextData);
-                    });
-                })
-                .catch(function(e){
-                    console.log(e);
-                    return Promise.resolve(nextData);
-                });
-            }, Promise.resolve(skpd_all[last]))
-            .then(function(data_last){
-        		alert('Berhasil singkron RAK ke lokal!');
-				jQuery('#wrap-loading').hide();
-            });
-		}
+    pesan_loading('Get SKPD halaman = '+page);
+    var url = config.service_url+'referensi/strict/dpa/penarikan/pembiayaan?page='+page+'&limit=10';
+    return new Promise(function(resolve, reduce){
+		relayAjaxApiKey({
+			url: url,
+			type: 'get',
+			success: function(data_skpd_all){
+				if(data_skpd_all.length >= 1){
+					data_skpd_all.map(function(b, i){
+						skpd_all.push(b);
+					})
+					singkron_rak_pembiayaan_pengeluaran_sipd_lokal(page+1, skpd_all);
+					return resolve();
+				}else{
+					var last = skpd_all.length-1;
+					skpd_all.reduce(function(sequence, nextData){
+		                return sequence.then(function(current_data){
+		            		return new Promise(function(resolve_reduce, reject_reduce){
+								update_bl_rak_nonactive(current_data.id_skpd, 'pembiayaan-pengeluaran')
+								.then(function(){
+			            			pesan_loading('Get RAK Pembiayaan Pengeluaran SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
+			            			get_rak_pemb_pengeluaran(current_data, function(){
+			            				return resolve_reduce(nextData);
+			            			});
+			            		});
+		            		})
+		                    .catch(function(e){
+		                        console.log(e);
+		                        return Promise.resolve(nextData);
+		                    });
+		                })
+		                .catch(function(e){
+		                    console.log(e);
+		                    return Promise.resolve(nextData);
+		                });
+		            }, Promise.resolve(skpd_all[last]))
+		            .then(function(data_last){
+		        		alert('Berhasil singkron RAK ke lokal!');
+						jQuery('#wrap-loading').hide();
+						return resolve();
+		            });
+		        }
+			}
+		});
 	});
 }
 
