@@ -1,13 +1,14 @@
 function singkron_rak_ke_lokal(page=1, skpd_all=[]){
     jQuery('#wrap-loading').show();
     pesan_loading('Get SKPD halaman = '+page);
-    var url = config.service_url+'referensi/strict/dpa/penarikan/belanja?page='+page+'&limit=10';
+    // var url = config.service_url+'referensi/strict/dpa/penarikan/belanja?page='+page+'&limit=10';
+    var url = config.service_url+'referensi/strict/dpa/penarikan/pembiayaan?page='+page+'&limit=10';
     return new Promise(function(resolve, reduce){
 	    relayAjaxApiKey({
 			url: url,
 			type: 'get',
 			success: function(data_skpd_all){
-				if(data_skpd_all.length >= 1){
+				if(data_skpd_all!=null && data_skpd_all.length >= 1){
 					data_skpd_all.map(function(b, i){
 						skpd_all.push(b);
 					})
@@ -47,13 +48,14 @@ function singkron_rak_ke_lokal(page=1, skpd_all=[]){
 function singkron_rak_pendapatan_sipd_lokal(page=1, skpd_all=[]){
     jQuery('#wrap-loading').show();
     pesan_loading('Get SKPD halaman = '+page);
-    var url = config.service_url+'referensi/strict/dpa/penerimaan/pendapatan?page='+page+'&limit=10';
+    // var url = config.service_url+'referensi/strict/dpa/penerimaan/pendapatan?page='+page+'&limit=10';
+    var url = config.service_url+'referensi/strict/dpa/penarikan/pembiayaan?page='+page+'&limit=10';
     return new Promise(function(resolve, reduce){
 		relayAjaxApiKey({
 			url: url,
 			type: 'get',
 			success: function(data_skpd_all){
-				if(data_skpd_all.length >= 1){
+				if(data_skpd_all!=null && data_skpd_all.length >= 1){
 					data_skpd_all.map(function(b, i){
 						skpd_all.push(b);
 					})
@@ -326,13 +328,14 @@ function get_rak(sub, callback){
 function singkron_rak_pembiayaan_penerimaan_sipd_lokal(page=1, skpd_all=[]){
     jQuery('#wrap-loading').show();
     pesan_loading('Get SKPD halaman = '+page);
-    var url = config.service_url+'referensi/strict/dpa/penerimaan/pembiayaan?page='+page+'&limit=10';
+    // var url = config.service_url+'referensi/strict/dpa/penerimaan/pembiayaan?page='+page+'&limit=10';
+    var url = config.service_url+'referensi/strict/dpa/penarikan/pembiayaan?page='+page+'&limit=10';
     return new Promise(function(resolve, reduce){
 		relayAjaxApiKey({
 			url: url,
 			type: 'get',
 			success: function(data_skpd_all){
-				if(data_skpd_all.length >= 1){
+				if(data_skpd_all!=null && data_skpd_all.length >= 1){
 					data_skpd_all.map(function(b, i){
 						skpd_all.push(b);
 					})
@@ -462,7 +465,7 @@ function singkron_rak_pembiayaan_pengeluaran_sipd_lokal(page=1, skpd_all=[]){
 			url: url,
 			type: 'get',
 			success: function(data_skpd_all){
-				if(data_skpd_all.length >= 1){
+				if(data_skpd_all!=null && data_skpd_all.length >= 1){
 					data_skpd_all.map(function(b, i){
 						skpd_all.push(b);
 					})
