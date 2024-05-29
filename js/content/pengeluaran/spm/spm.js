@@ -1,8 +1,11 @@
-function singkron_spm_lokal(data=['UP', 'LS', 'GU', 'TU']) {
+// function singkron_spm_lokal(data=['UP', 'LS', 'GU', 'TU']) {
+function singkron_spm_lokal(val, type_data) {
 	jQuery('#wrap-loading').show();
     // status = draft , diterima , dihapus , ditolak
-    var status = 'diterima';
-    var type_data = data.shift();
+    // var status = 'diterima';
+    var status = val;
+    // var type_data = data.shift();
+    var type_data = type_data;
     new Promise(function(resolve, reject){
         if(typeof type_data == 'undefined'){
             return resolve();

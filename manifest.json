@@ -29,6 +29,7 @@
 				"js/content/functions.js",
 				"js/content/login.js",
 				"js/content/app.js",
+				"js/content/dashboard.js",
 				"js/content/pengeluaran/rekanan.js",
 				"js/content/pengeluaran/dpa/rak.js",
 				"js/content/pengeluaran/spd/spd.js",

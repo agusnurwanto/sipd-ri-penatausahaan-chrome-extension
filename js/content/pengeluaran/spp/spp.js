@@ -1,7 +1,8 @@
-function singkron_spp_lokal(type_data) {
+function singkron_spp_lokal(val, type_data) {
 	jQuery('#wrap-loading').show();
 	// status = draft , diterima , dihapus , ditolak
-	var status = 'diterima';
+	var status = val;
+	// var status = 'diterima';
 	pesan_loading('Get data SPP jenis='+type_data+' , status='+status);
 	relayAjaxApiKey({
   		url: config.service_url+'pengeluaran/strict/spp/pembuatan/index?jenis='+type_data+'&status='+status,
@@ -13,7 +14,7 @@ function singkron_spp_lokal(type_data) {
 			response.reduce(function (sequence, nextData) {
 			  	return sequence.then(function (current_data) {
 					return new Promise(function (resolve_reduce, reject_reduce) {
-						pesan_loading('Get SPP '+type_data+' dari ID SKPD "'+current_data.id_skpd+'"');
+						pesan_loading('Get SPP '+type_data+' status='+status+' dari ID SKPD "'+current_data.id_skpd+'"');
 						if(!page_skpd[current_data.id_skpd]){
 							page_skpd[current_data.id_skpd] = [];
 						}
