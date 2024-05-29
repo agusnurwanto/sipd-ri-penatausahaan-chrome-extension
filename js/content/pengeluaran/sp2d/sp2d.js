@@ -6,51 +6,63 @@ function singkron_sp2d_lokal(data=['UP', 'LS', 'GU', 'TU']){
 		if(typeof type_data == 'undefined'){
 			return resolve();
 		}
-		pesan_loading('Get data SP2D jenis='+type_data+' , status='+status);
-		var url = config.service_url+'pengeluaran/strict/sp2d/pembuatan/index?jenis='+type_data+'&status='+status;
-		relayAjaxApiKey({
-		  	url: url,
-		  	type: 'get',
-		  	success: function (response) {
-				console.log('SP2D', response);
-				var page_skpd = {};
-				var last = response.length-1;
-				response.reduce(function (sequence, nextData) {
-				  	return sequence.then(function (current_data) {
-						return new Promise(function (resolve_reduce, reject_reduce) {
-							pesan_loading('Get SP2D '+type_data+' dari ID SKPD "'+current_data.id_skpd+'"');
-							if(!page_skpd[current_data.id_skpd]){
-								page_skpd[current_data.id_skpd] = [];
-							}
-							page_skpd[current_data.id_skpd].push(current_data);
+		singkron_sp2d_lokal_per_jenis(type_data, status, 1, [], function(response){
+			var page_skpd = {};
+			var last = response.length-1;
+			response.reduce(function (sequence, nextData) {
+			  	return sequence.then(function (current_data) {
+					return new Promise(function (resolve_reduce, reject_reduce) {
+						pesan_loading('Get SP2D '+type_data+' dari ID SKPD "'+current_data.id_skpd+'"');
+						if(!page_skpd[current_data.id_skpd]){
+							page_skpd[current_data.id_skpd] = [];
+						}
+						page_skpd[current_data.id_skpd].push(current_data);
 
-							// melakukan reset page sesuai data per skpd
-							current_data.page = page_skpd[current_data.id_skpd].length;
+						// melakukan reset page sesuai data per skpd
+						current_data.page = page_skpd[current_data.id_skpd].length;
 
-							singkron_sp2d_ke_lokal_skpd(current_data, type_data, status, ()=>{
-								resolve_reduce(nextData);
-					  		});
-						})
-						.catch(function(e){
-							console.log(e);
-							return Promise.resolve(nextData);
-						});
+						singkron_sp2d_ke_lokal_skpd(current_data, type_data, status, ()=>{
+							resolve_reduce(nextData);
+				  		});
 					})
 					.catch(function(e){
 						console.log(e);
 						return Promise.resolve(nextData);
 					});
-				}, Promise.resolve(response[last]))
-				.then(function (data_last) {
-					return singkron_sp2d_lokal(data);
+				})
+				.catch(function(e){
+					console.log(e);
+					return Promise.resolve(nextData);
 				});
-		  	},
+			}, Promise.resolve(response[last]))
+			.then(function (data_last) {
+				return singkron_sp2d_lokal(data);
+			});
 		});
 	})
 	.then(function () {
 	  	jQuery("#wrap-loading").hide();
 	  	alert("Berhasil singkron SP2D");
 	});
+}
+
+function singkron_sp2d_lokal_per_jenis(type_data, status, page=1, response_all=[], cb){
+    pesan_loading('Get data SP2D jenis='+type_data+' , status='+status+', halaman='+page);
+    relayAjaxApiKey({
+        url: config.service_url+'pengeluaran/strict/sp2d/pembuatan/index?jenis='+type_data+'&status='+status+'&page='+page,
+        type: 'get',
+        success: function (response) {
+            console.log('SP2D', response);
+            if(response!=null && response.length >= 1){
+                response.map(function(b, i){
+                    response_all.push(b);
+                })
+                singkron_sp2d_lokal_per_jenis(type_data, status, page+1, response_all, cb);
+            }else{
+                cb(response_all);
+            }
+        },
+    });
 }
 
 function singkron_sp2d_ke_lokal_skpd(current_data, tipe, status, callback) {

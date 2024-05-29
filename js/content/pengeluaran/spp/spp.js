@@ -1,46 +1,57 @@
-function singkron_spp_lokal(type_data) {
+function singkron_spp_lokal(type_data, page=1, response_all=[]) {
 	jQuery('#wrap-loading').show();
 	// status = draft , diterima , dihapus , ditolak
 	var status = 'diterima';
-	pesan_loading('Get data SPP jenis='+type_data+' , status='+status);
-	relayAjaxApiKey({
-  		url: config.service_url+'pengeluaran/strict/spp/pembuatan/index?jenis='+type_data+'&status='+status,
-	  	type: 'get',
-	  	success: function (response) {
-			console.log('SPP', response);
-			var page_skpd = {};
-			var last = response.length-1;
-			response.reduce(function (sequence, nextData) {
-			  	return sequence.then(function (current_data) {
-					return new Promise(function (resolve_reduce, reject_reduce) {
-						pesan_loading('Get SPP '+type_data+' dari ID SKPD "'+current_data.id_skpd+'"');
-						if(!page_skpd[current_data.id_skpd]){
-							page_skpd[current_data.id_skpd] = [];
-						}
-						page_skpd[current_data.id_skpd].push(current_data);
-
-						// melakukan reset page sesuai data per skpd
-						current_data.page = page_skpd[current_data.id_skpd].length;
-
-						singkron_spp_ke_lokal_skpd(current_data, type_data, status, ()=>{
-							resolve_reduce(nextData);
-				  		});
+	pesan_loading('Get data SPP jenis='+type_data+' , status='+status+', halaman='+page);
+	return new Promise(function(resolve, reduce){
+		relayAjaxApiKey({
+	  		url: config.service_url+'pengeluaran/strict/spp/pembuatan/index?jenis='+type_data+'&status='+status+'&page='+page,
+		  	type: 'get',
+		  	success: function (response) {
+				console.log('SPP', response);
+				if(response!=null && response.length >= 1){
+					response.map(function(b, i){
+						response_all.push(b);
 					})
-					.catch(function(e){
-						console.log(e);
-						return Promise.resolve(nextData);
+					singkron_spp_lokal(type_data, page+1, response_all);
+					return resolve();
+				}else{
+					var page_skpd = {};
+					var last = response_all.length-1;
+					response_all.reduce(function (sequence, nextData) {
+					  	return sequence.then(function (current_data) {
+							return new Promise(function (resolve_reduce, reject_reduce) {
+								pesan_loading('Get SPP '+type_data+' dari ID SKPD "'+current_data.id_skpd+'"');
+								if(!page_skpd[current_data.id_skpd]){
+									page_skpd[current_data.id_skpd] = [];
+								}
+								page_skpd[current_data.id_skpd].push(current_data);
+
+								// melakukan reset page sesuai data per skpd
+								current_data.page = page_skpd[current_data.id_skpd].length;
+
+								singkron_spp_ke_lokal_skpd(current_data, type_data, status, ()=>{
+									resolve_reduce(nextData);
+						  		});
+							})
+							.catch(function(e){
+								console.log(e);
+								return Promise.resolve(nextData);
+							});
+						})
+						.catch(function(e){
+							console.log(e);
+							return Promise.resolve(nextData);
+						});
+					}, Promise.resolve(response_all[last]))
+					.then(function (data_last) {
+					  	jQuery("#wrap-loading").hide();
+					  	alert("Berhasil singkron SPP");
+					  	return resolve();
 					});
-				})
-				.catch(function(e){
-					console.log(e);
-					return Promise.resolve(nextData);
-				});
-			}, Promise.resolve(response[last]))
-			.then(function (data_last) {
-			  	jQuery("#wrap-loading").hide();
-			  	alert("Berhasil singkron SPP");
-			});
-	  	},
+				}
+		  	},
+		});
 	});
 }
 

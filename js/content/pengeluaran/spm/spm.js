@@ -7,49 +7,62 @@ function singkron_spm_lokal(data=['UP', 'LS', 'GU', 'TU']) {
         if(typeof type_data == 'undefined'){
             return resolve();
         }
-        pesan_loading('Get data SPM jenis='+type_data+' , status='+status);
-    	relayAjaxApiKey({
-            url: config.service_url+'pengeluaran/strict/spm/index?jenis='+type_data+'&status='+status,
-            type: 'get',
-            success: function (response) {
-        		console.log('SPM', response);
-        		var page_skpd = {};
-                var last = response.length-1;
-                response.reduce(function (sequence, nextData) {
-                    return sequence.then(function (current_data) {
-                        return new Promise(function (resolve_reduce, reject_reduce) {
-                            pesan_loading('Get SPM '+type_data+' dari ID SKPD "'+current_data.id_skpd+'"');
-                            if(!page_skpd[current_data.id_skpd]){
-                                page_skpd[current_data.id_skpd] = [];
-                            }
-                            page_skpd[current_data.id_skpd].push(current_data);
+        singkron_spm_lokal_per_jenis(type_data, status, 1, [], function(response){
+    		var page_skpd = {};
+            var last = response.length-1;
+            response.reduce(function (sequence, nextData) {
+                return sequence.then(function (current_data) {
+                    return new Promise(function (resolve_reduce, reject_reduce) {
+                        pesan_loading('Get SPM '+type_data+' dari ID SKPD "'+current_data.id_skpd+'"');
+                        if(!page_skpd[current_data.id_skpd]){
+                            page_skpd[current_data.id_skpd] = [];
+                        }
+                        page_skpd[current_data.id_skpd].push(current_data);
 
-                            // melakukan reset page sesuai data per skpd
-                            current_data.page = page_skpd[current_data.id_skpd].length;
+                        // melakukan reset page sesuai data per skpd
+                        current_data.page = page_skpd[current_data.id_skpd].length;
 
-        					singkron_spm_ke_lokal_skpd(current_data, type_data, status, ()=>{
-                                resolve_reduce(nextData);
-          		            });
-        				})
-        				.catch(function(e){
-        					console.log(e);
-        					return Promise.resolve(nextData);
-        				});
-        			})
-        			.catch(function(e){
-        				console.log(e);
-        				return Promise.resolve(nextData);
-        			});
-        		}, Promise.resolve(response[last]))
-        		.then(function (data_last) {
-        		    return singkron_spm_lokal(data);
-        		});
-            },
-    	});
+    					singkron_spm_ke_lokal_skpd(current_data, type_data, status, ()=>{
+                            resolve_reduce(nextData);
+      		            });
+    				})
+    				.catch(function(e){
+    					console.log(e);
+    					return Promise.resolve(nextData);
+    				});
+    			})
+    			.catch(function(e){
+    				console.log(e);
+    				return Promise.resolve(nextData);
+    			});
+    		}, Promise.resolve(response[last]))
+    		.then(function (data_last) {
+    		    return singkron_spm_lokal(data);
+    		});
+        });
     })
     .then(function () {
         jQuery("#wrap-loading").hide();
         alert("Berhasil singkron SPM");
+    });
+}
+
+function singkron_spm_lokal_per_jenis(type_data, status, page=1, response_all=[], cb){
+    pesan_loading('Get data SPM jenis='+type_data+' , status='+status+', halaman='+page);
+    relayAjaxApiKey({
+        url: config.service_url+'pengeluaran/strict/spm/index?jenis='+type_data+'&status='+status+'&page='+page,
+        type: 'get',
+        success: function (response) {
+            console.log('SPM', response);
+            if(response!=null && response.length >= 1){
+                response.map(function(b, i){
+                    response_all.push(b);
+                })
+                singkron_spm_lokal_per_jenis(type_data, status, page+1, response_all, cb);
+            }else{
+                cb(response_all);
+            }
+        },
     });
 }
 
