@@ -1,7 +1,7 @@
-function singkron_spp_lokal(type_data, page=1, response_all=[]) {
+function singkron_spp_lokal(val, type_data, page=1, response_all=[]) {
 	jQuery('#wrap-loading').show();
 	// status = draft , diterima , dihapus , ditolak
-	var status = 'diterima';
+	var status = val;
 	pesan_loading('Get data SPP jenis='+type_data+' , status='+status+', halaman='+page);
 	return new Promise(function(resolve, reduce){
 		relayAjaxApiKey({
@@ -13,7 +13,7 @@ function singkron_spp_lokal(type_data, page=1, response_all=[]) {
 					response.map(function(b, i){
 						response_all.push(b);
 					})
-					singkron_spp_lokal(type_data, page+1, response_all);
+					singkron_spp_lokal(val, type_data, page+1, response_all);
 					return resolve();
 				}else{
 					var page_skpd = {};
