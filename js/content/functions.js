@@ -566,3 +566,20 @@ function setCookieArray(cr,gr,br){
     }
     document.cookie = cr + "=" + (_r || "") + Cr + "; path=/"
 }
+
+function get_view_skpd(){    
+    return new Promise(function(resolve, reject){
+    	if(typeof data_all_skpd == 'undefined'){
+			relayAjaxApiKey({
+				url: config.service_url+'referensi/strict/skpd/list/'+_token.id_daerah+'/'+_token.tahun,                                    
+				type: 'GET',
+		      	success: function(skpd){
+            		window.data_all_skpd = skpd;
+		      		return resolve(data_all_skpd);
+		      	}
+		    });
+	    }else{
+	    	return resolve(data_all_skpd);
+	    }
+    });
+}

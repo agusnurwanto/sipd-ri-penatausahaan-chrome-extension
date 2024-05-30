@@ -79,6 +79,10 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 			_alert = false;
 			cek_hide_loading = false;
 			singkron_spp_detail.resolve();
+		}else if(res.action == 'singkron_stbp_detail'){
+			_alert = false;
+			cek_hide_loading = false;
+			singkron_stbp_detail.resolve();
 		}else if(res.action == 'singkron_spm_detail'){
 			_alert = false;
 			cek_hide_loading = false;
