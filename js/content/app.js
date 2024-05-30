@@ -432,6 +432,26 @@ function cekUrl(current_url, nomor=1){
 					jQuery('.aksi-extension').remove();
 				}
 			}
+			// DATA Pengeluaran STS
+			else if(current_url.indexOf('penatausahaan/pengeluaran/sts/tu') != -1	){
+				var title = jQuery('.card-title.custom-class').text();
+				console.log('Surat Tamda Setoran', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_sts_lokal">Singkron STS TU ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Surat Tanda Setoran |') != -1){
+					jQuery('#singkron_sts_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data STS TU? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_sts_lokal();						
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}
+			}
 			// DATA Pengeluaran TBP
 			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/tbp/up-gu') != -1	){
 				var title = jQuery('.card-title.custom-class').text();				
