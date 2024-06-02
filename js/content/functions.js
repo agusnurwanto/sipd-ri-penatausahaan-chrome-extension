@@ -583,3 +583,7 @@ function get_view_skpd(){
 	    }
     });
 }
+
+function cp_obj(obj){
+	return JSON.parse(JSON.stringify(obj));
+}

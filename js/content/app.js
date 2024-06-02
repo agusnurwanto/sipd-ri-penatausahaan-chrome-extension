@@ -282,57 +282,30 @@ function cekUrl(current_url, nomor=1){
 			// DATA Pengeluaran SPP
 			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
-				window.type_data = ['UP', 'LS', 'GU', 'TU', 'KKPD'];
+				window.type_data_global = ['UP', 'LS', 'GU', 'TU', 'KKPD'];
 				if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=UP') != -1){
-					type_data = ['UP'];
+					type_data_global = ['UP'];
 				}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=GU') != -1){
-					type_data = ['GU'];
+					type_data_global = ['GU'];
 				}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=TU') != -1){
-					type_data = ['TU'];
+					type_data_global = ['TU'];
 				}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan?type=LS') != -1){
-					type_data = ['LS'];				
+					type_data_global = ['LS'];				
 				}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spp/pembuatan/kkpd?type=GU') != -1){
-					type_data = ['KKPD'];
+					type_data_global = ['KKPD'];
 				}
 				console.log('Surat Permintaan Pembayaran (SPP)', title);
-				// var modal = ''						
-				// 		+'<div class="modal fade modal-extension" id="modal-extension" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true" style="z-index: 99999; background: #0000003d;">'
-				// 			+'<div class="modal-dialog" style="max-width: 1200px;" role="document">'
-				// 				+'<div class="modal-content">'
-				// 					+'<div class="modal-header bgpanel-theme">'
-				// 						+'<h3 class="fw-bolder m-0">Pilih Status SPP '+type_data+' yang akan di singkronkan ke DB Lokal</h4>'
-				// 						+'<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>'
-				// 					+'</div>'
-				// 					+'<div class="modal-body">'
-				// 						+'<select class="form-control" style="width: 300px; margin-left: 5px;" id="data_master_status>'
-				// 							+'<option value="">Pilih Status yang akan di Backup</option>'
-				// 							+'<option value="draft">Belum Diverifikasi</option>'
-				// 							+'<option value="diterima">Sudah Diverifikasi</option>'
-				// 							+'<option value="dihapus">Dihapus</option>'
-				// 							+'<option value="ditolak">Ditolak</option>'
-				// 						+'</select>';
-				// 					+'</div>'
-				// 					+'<div class="modal-footer">'
-				// 						+'<button type="button" class="btn btn-primary" id="singkron_spp_lokal">Simpan</button>'
-				// 						+'<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>'
-				// 					+'</div>'
-				// 				+'</div>'
-				// 			+'</div>'
-				// 		+'</div>';
-				// jQuery('body').append(modal);
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'	
-							+'<button onclick="return false;" class="btn btn-sm btn-primary" id="singkron_spp_lokal" style="margin-left: 5px;">Singkron SPP '+type_data+' ke DB Lokal</button>'
-							+'<select class="form-control" style="width: 300px; margin-left: 5px;" id="data_master_status">'
+							+'<button onclick="return false;" class="btn btn-sm btn-primary" id="singkron_spp_lokal" style="margin-left: 5px;">Singkron SPP '+type_data_global+' ke DB Lokal</button>'
+							+'<select class="form-control" style="width: 300px; margin: 0 5px; display: inline-block; padding: 6px;" id="data_master_status">'
 								+'<option value="">Pilih Status yang akan di Backup</option>'
 								+'<option value="draft">Belum Diverifikasi</option>'
 								+'<option value="diterima">Sudah Diverifikasi</option>'
 								+'<option value="dihapus">Dihapus</option>'
 								+'<option value="ditolak">Ditolak</option>'
-							+'</select>';					
-						// +'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spp_lokal">Singkron SPP '+type_data+' ke DB Lokal</button>'					
-						// +'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="modal_status_spp">Singkron SPP '+type_data+' ke DB Lokal</button>'					
+							+'</select>';
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);				
 				jQuery('#modal_status_spp').on('click', function(){
@@ -340,19 +313,14 @@ function cekUrl(current_url, nomor=1){
 				});
 				
 				if(title.indexOf('Surat Permintaan Pembayaran (SPP)') != -1){
-					jQuery('#singkron_spp_lokal').text('Singkron SPP '+type_data+' ke DB Lokal');
-					// jQuery('#singkron_spp_lokal').on('click', function(){
-					// 	if(confirm('Apakah anda yakin melakukan backup data SPP '+type_data+'? Data lokal akan diupdate sesuai data terbaru.')){
-					// 		singkron_spp_lokal(type_data);
-					// 	}
-					// });
+					jQuery('#singkron_spp_lokal').text('Singkron SPP '+type_data_global+' ke DB Lokal');
 					jQuery('#singkron_spp_lokal').on('click', function(){						
 						var val = jQuery('#data_master_status').val();
 						if(val == ''){
 							alert('Status Belum dipilih !!!');
 						}else{
-							if(confirm('Apakah anda yakin melakukan backup data SPP '+type_data+'? Data lokal akan diupdate sesuai data terbaru.')){
-								singkron_spp_lokal(val, type_data);
+							if(confirm('Apakah anda yakin melakukan backup data SPP '+type_data_global+'? Data lokal akan diupdate sesuai data terbaru.')){
+								singkron_spp_lokal(val, cp_obj(type_data_global));
 							}							
 						}
 					});					
@@ -364,45 +332,39 @@ function cekUrl(current_url, nomor=1){
 			// DATA Pengeluaran SPM
 			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
-				window.type_data = ['UP', 'LS', 'GU', 'TU'];
+				window.type_data_global = ['UP', 'LS', 'GU', 'TU'];
 				if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan?type=UP') != -1){
-					type_data = ['UP'];
+					type_data_global = ['UP'];
 				}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan?type=GU') != -1){
-					type_data = ['GU'];
+					type_data_global = ['GU'];
 				}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan?type=TU') != -1){
-					type_data = ['TU'];
+					type_data_global = ['TU'];
 				}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan?type=LS') != -1){
-					type_data = ['LS'];
+					type_data_global = ['LS'];
 				}
 				console.log('Surat Perintah Membayar (SPM)', title);
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
-							+'<button onclick="return false;" class="btn btn-sm btn-primary" id="singkron_spp_lokal" style="margin-left: 5px;">Singkron SPP '+type_data+' ke DB Lokal</button>'
-							+'<select class="form-control" style="width: 300px; margin-left: 5px;" id="data_master_status">'
+							+'<button onclick="return false;" class="btn btn-sm btn-primary" id="singkron_spm_lokal" style="margin-left: 5px;">Singkron SPM '+type_data_global+' ke DB Lokal</button>'
+							+'<select class="form-control" style="width: 300px; margin: 0 5px; display: inline-block; padding: 6px;" id="data_master_status">'
 								+'<option value="">Pilih Status yang akan di Backup</option>'
 								+'<option value="draft">Belum Diverifikasi</option>'
 								+'<option value="diterima">Sudah Diverifikasi</option>'
 								+'<option value="dihapus">Dihapus</option>'
 								+'<option value="ditolak">Ditolak</option>'
 							+'</select>';
-						// +'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_spm_lokal">Singkron SPM '+type_data.join(', ')+' ke DB Lokal</button>'					
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);				
 				if(title.indexOf('Pengeluaran') != -1){
-					jQuery('#singkron_spm_lokal').text('Singkron SPM '+type_data.join(', ')+' ke DB Lokal');
-					// jQuery('#singkron_spm_lokal').on('click', function(){
-					// 	if(confirm('Apakah anda yakin melakukan backup data SPM '+type_data.join(', ')+'? Data lokal akan diupdate sesuai data terbaru.')){
-					// 		singkron_spm_lokal(type_data);
-					// 	}
-					// });
+					jQuery('#singkron_spm_lokal').text('Singkron SPM '+type_data_global.join(', ')+' ke DB Lokal');
 					jQuery('#singkron_spm_lokal').on('click', function(){						
 						var val = jQuery('#data_master_status').val();
 						if(val == ''){
 							alert('Status Belum dipilih !!!');
 						}else{
-							if(confirm('Apakah anda yakin melakukan backup data SPM '+type_data+' Status '+val+'? Data lokal akan diupdate sesuai data terbaru.')){
-								singkron_spm_lokal(val, type_data);
+							if(confirm('Apakah anda yakin melakukan backup data SPM '+type_data_global+' Status '+val+'? Data lokal akan diupdate sesuai data terbaru.')){
+								singkron_spm_lokal(val, cp_obj(type_data_global));
 							}							
 						}
 					});

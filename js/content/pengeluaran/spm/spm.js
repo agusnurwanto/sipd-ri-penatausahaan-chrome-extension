@@ -1,11 +1,7 @@
-// function singkron_spm_lokal(data=['UP', 'LS', 'GU', 'TU']) {
-function singkron_spm_lokal(val, type_data) {
+function singkron_spm_lokal(val, data) {
 	jQuery('#wrap-loading').show();
-    // status = draft , diterima , dihapus , ditolak
-    // var status = 'diterima';
     var status = val;
-    // var type_data = data.shift();
-    var type_data = type_data;
+    var type_data = data.shift();
     new Promise(function(resolve, reject){
         if(typeof type_data == 'undefined'){
             return resolve();
@@ -40,7 +36,7 @@ function singkron_spm_lokal(val, type_data) {
     			});
     		}, Promise.resolve(response[last]))
     		.then(function (data_last) {
-    		    return singkron_spm_lokal(data);
+    		    return singkron_spm_lokal(val, data);
     		});
         });
     })
