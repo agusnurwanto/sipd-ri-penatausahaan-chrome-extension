@@ -57,7 +57,7 @@ function get_sub_skpd(id_skpd, callback){
 		url: url,
 		type: 'get',
 		success: function(ret){
-			update_bl_rak_nonactive(id_skpd, 'belanja')
+			update_bl_realisasi_nonactive(id_skpd, 'belanja')
 			.then(function(){
 				var last = ret.items.length-1;
 				ret.items.reduce(function(sequence, nextData){
@@ -97,7 +97,7 @@ function get_program(id_skpd, id_sub_skpd, callback){
 		url: url,
 		type: 'get',
 		success: function(ret){
-			update_bl_rak_nonactive(id_sub_skpd, 'belanja')
+			update_bl_realisasi_nonactive(id_sub_skpd, 'realisasi')
 			.then(function(){
 				var last = ret.items.length-1;
 				ret.items.reduce(function(sequence, nextData){
@@ -137,7 +137,7 @@ function get_kegiatan(id_skpd, id_sub_skpd, id_program, callback){
 		url: url,
 		type: 'get',
 		success: function(ret){
-			update_bl_rak_nonactive(id_sub_skpd, 'belanja')
+			update_bl_realisasi_nonactive(id_sub_skpd, 'realisasi')
 			.then(function(){
 				var last = ret.items.length-1;
 				ret.items.reduce(function(sequence, nextData){
@@ -177,7 +177,7 @@ function get_subgiat(id_skpd, id_sub_skpd, id_program, id_giat, callback){
 		url: url,
 		type: 'get',
 		success: function(ret){
-			update_bl_rak_nonactive(id_sub_skpd, 'belanja')
+			update_bl_realisasi_nonactive(id_sub_skpd, 'realisasi')
 			.then(function(){
 				var last = ret.items.length-1;
 				ret.items.reduce(function(sequence, nextData){
@@ -211,11 +211,11 @@ function get_subgiat(id_skpd, id_sub_skpd, id_program, id_giat, callback){
 	});
 }
 
-function update_bl_rak_nonactive(id_skpd, type){
+function update_bl_realisasi_nonactive(id_skpd, type){
 	return new Promise(function(resolve, reject){
-		pesan_loading('update_bl_rak_nonactive id_skpd='+id_skpd+' tipe='+type);
+		pesan_loading('update_bl_realisasi_nonactive id_skpd='+id_skpd+' tipe='+type);
 		var data_rak = { 
-			action: 'update_bl_rak_nonactive',
+			action: 'update_bl_realisasi_nonactive',
 			tahun_anggaran: _token.tahun,
 			api_key: config.api_key,
 			id_skpd: id_skpd,
@@ -255,45 +255,32 @@ function get_realisasi(sub, callback){
 		success: function(ret){
 			console.log('ret', ret);
 			var kode_sbl = id_skpd+'.'+id_sub_skpd+'.'+id_skpd+'.'+id_bidang_urusan+'.'+id_program+'.'+id_giat+'.'+id_sub_giat;
-			var data_rak = { 
-				action: 'singkron_anggaran_kas',
+			var data_realisasi = { 
+				action: 'singkron_realisasi_dashboard',
 				tahun_anggaran: _token.tahun,
 				api_key: config.api_key,
 				kode_sbl: kode_sbl,
 				id_skpd: id_skpd,
-				type: 'belanja',
+				type: 'realisasi',
 				sumber: 'ri',
 				data: {}
 			};
 			ret.map(function(b, i){
-				data_rak.data[i] = {}
-				data_rak.data[i].bulan_1 = b[1];
-				data_rak.data[i].bulan_2 = b[2];
-				data_rak.data[i].bulan_3 = b[3];
-				data_rak.data[i].bulan_4 = b[4];
-				data_rak.data[i].bulan_5 = b[5];
-				data_rak.data[i].bulan_6 = b[6];
-				data_rak.data[i].bulan_7 = b[7];
-				data_rak.data[i].bulan_8 = b[8];
-				data_rak.data[i].bulan_9 = b[9];
-				data_rak.data[i].bulan_10 = b[10];
-				data_rak.data[i].bulan_11 = b[11];
-				data_rak.data[i].bulan_12 = b[12];
-				data_rak.data[i].id_akun = b.id_akun;
-				data_rak.data[i].id_bidang_urusan = b.id_bidang_urusan;
-				data_rak.data[i].id_daerah = b.id_daerah;
-				data_rak.data[i].id_giat = b.id_giat;
-				data_rak.data[i].id_program = b.id_program;
-				data_rak.data[i].id_skpd = b.id_skpd;
-				data_rak.data[i].id_sub_giat = b.id_sub_giat;
-				data_rak.data[i].id_sub_skpd = b.id_sub_skpd;
-				data_rak.data[i].id_unit = b.id_unit;
-				data_rak.data[i].kode_akun = b.kode_akun;
-				data_rak.data[i].nama_akun = b.nama_akun;
-				data_rak.data[i].selisih = b.selisih;
-				data_rak.data[i].tahun = b.tahun;
-				data_rak.data[i].total_akb = b.nilai;
-				data_rak.data[i].total_rincian = b.nilai_rak;
+				data_realisasi.data[i] = {}				
+				data_realisasi.data[i].id_unit = b.id_skpd;
+                data_realisasi.data[i].id_skpd = b.id_skpd;
+                data_realisasi.data[i].id_sub_skpd = b.id_sub_skpd;
+                data_realisasi.data[i].id_program = b.id_program;
+                data_realisasi.data[i].id_giat = b.id_giat;
+                data_realisasi.data[i].id_sub_giat = b.id_sub_giat;
+                data_realisasi.data[i].id_daerah = b.id_daerah;                
+                data_realisasi.data[i].id_akun = b.id_akun;
+                data_realisasi.data[i].kode_akun = b.kode_akun;
+				data_realisasi.data[i].nama_akun = b.nama_akun;
+                data_realisasi.data[i].nilai = b.anggaran;
+                data_realisasi.data[i].realisasi = b.realisasi_rill;
+                data_realisasi.data[i].realisasi_rencana = b.realisasi_rencana;                
+				data_realisasi.data[i].tahun = b.tahun;				
 			});
 			var data_back = {
 			    message:{
@@ -301,7 +288,7 @@ function get_realisasi(sub, callback){
 			        content: {
 					    url: config.url_server_lokal,
 					    type: 'post',
-					    data: data_rak,
+					    data: data_realisasi,
 		    			return: true
 					}
 			    }
@@ -312,7 +299,7 @@ function get_realisasi(sub, callback){
 			chrome.runtime.sendMessage(data_back, function(response) {
 			    console.log('responeMessage', response);
 				if(callback){
-			    	callback(data_rak);
+			    	callback(data_realisasi);
 			    }
 			});
 		}
