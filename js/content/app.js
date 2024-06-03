@@ -671,15 +671,15 @@ function cekUrl(current_url, nomor=1){
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_belanja_dashboard_ke_lokal">Singkron Belanja Dashboard ke DB Lokal</button>'					
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_belanja_dashboard_ke_lokal">backup data realisasi APBD ke DB Lokal</button>'					
 					+'</div>';
 				jQuery('.css-jw-kc-w-cfpf-21-qf').append(btn);				
 				if(
 					title.indexOf('Statistik') != -1
 				){
-					jQuery('#singkron_belanja_dashboard_ke_lokal').text('Singkron Belanja pada Dashboards ke DB Lokal');
+					jQuery('#singkron_belanja_dashboard_ke_lokal').text('backup data realisasi APBD ke DB Lokal');
 					jQuery('#singkron_belanja_dashboard_ke_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data belanja Dashboard ? Data lokal akan diupdate sesuai data terbaru.')){
+						if(confirm('Apakah anda yakin melakukan backup data realisasi APBD ? Data lokal akan diupdate sesuai data terbaru.')){
 							singkron_belanja_dashboard_ke_lokal();						
 						}
 					});
