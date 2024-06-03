@@ -1,4 +1,4 @@
-function singkron_belanja_dashboard_ke_lokal(page=1, skpd_all=[]) {    
+function singkron_belanja_dashboard_ke_lokal() {    
 // https://service.sipd.kemendagri.go.id/referensi/strict/statistik/dashboard
 // https://service.sipd.kemendagri.go.id/pengeluaran/strict/dashboard/statistik-belanja
 // skpd https://service.sipd.kemendagri.go.id/pengeluaran/strict/dashboard/statistik-belanja/3253->id_skpd
@@ -7,22 +7,22 @@ function singkron_belanja_dashboard_ke_lokal(page=1, skpd_all=[]) {
 // subkegiatan https://service.sipd.kemendagri.go.id/pengeluaran/strict/dashboard/statistik-belanja/3253/3253/1186/8709->id_giat
 // rekening/akun https://service.sipd.kemendagri.go.id/pengeluaran/strict/dashboard/statistik-belanja/3253/3253/1186/8709->id_sub_giat
     jQuery('#wrap-loading').show();
-    pesan_loading('Get SKPD halaman = '+page);
+    // pesan_loading('Get SKPD halaman = '+page);
     var url = config.service_url+'pengeluaran/strict/dashboard/statistik-belanja';
     return new Promise(function(resolve, reduce){
 	    relayAjaxApiKey({
 			url: url,
 			type: 'get',
 			success: function(data_skpd_all){
-				if(data_skpd_all!=null && data_skpd_all.length >= 1){
-					data_skpd_all.map(function(b, i){
-						skpd_all.push(b);
-					})
-					singkron_rak_ke_lokal(page+1, skpd_all);
-					return resolve();
-				}else{
-					var last = skpd_all.length-1;
-					skpd_all.reduce(function(sequence, nextData){
+				// if(data_skpd_all!=null && data_skpd_all.length >= 1){
+				// 	data_skpd_all.map(function(b, i){
+				// 		skpd_all.push(b);
+				// 	})
+				// 	singkron_belanja_dashboard_ke_lokal(page+1, skpd_all);
+				// 	return resolve();
+				// }else{
+					var last = data_skpd_all.length-1;
+					data_skpd_all.reduce(function(sequence, nextData){
 		                return sequence.then(function(current_data){
 		            		return new Promise(function(resolve_reduce, reject_reduce){
 		            			pesan_loading('Get sub SKPD dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
@@ -39,13 +39,13 @@ function singkron_belanja_dashboard_ke_lokal(page=1, skpd_all=[]) {
 		                    console.log(e);
 		                    return Promise.resolve(nextData);
 		                });
-		            }, Promise.resolve(skpd_all[last]))
+		            }, Promise.resolve(data_skpd_all[last]))
 		            .then(function(data_last){
 		        		alert('Berhasil backup data realisasi APBD ke lokal!');
 						jQuery('#wrap-loading').hide();
 						return resolve();
 		            });
-		        }
+		        
 			}
         });
     });
@@ -59,8 +59,8 @@ function get_sub_skpd(id_skpd, callback){
 		success: function(ret){
 			update_bl_realisasi_nonactive(id_skpd, 'belanja')
 			.then(function(){
-				var last = ret.items.length-1;
-				ret.items.reduce(function(sequence, nextData){
+				var last = ret.length-1;
+				ret.reduce(function(sequence, nextData){
 	                return sequence.then(function(current_data){
 	            		return new Promise(function(resolve_reduce, reject_reduce){
 	            			pesan_loading('Get Program "'+current_data.kode_sub_skpd+' '+current_data.nama_sub_skpd+'" '+current_data.realisasi_rencana+' '+current_data.realisasi_rill);
@@ -77,7 +77,7 @@ function get_sub_skpd(id_skpd, callback){
 	                    console.log(e);
 	                    return Promise.resolve(nextData);
 	                });
-	            }, Promise.resolve(ret.items[last]))
+	            }, Promise.resolve(ret[last]))
 	            .then(function(data_last){
 	            	if(callback){
 	            		callback();
@@ -97,10 +97,10 @@ function get_program(id_skpd, id_sub_skpd, callback){
 		url: url,
 		type: 'get',
 		success: function(ret){
-			update_bl_realisasi_nonactive(id_sub_skpd, 'realisasi')
+			update_bl_realisasi_nonactive(id_sub_skpd, 'belanja')
 			.then(function(){
-				var last = ret.items.length-1;
-				ret.items.reduce(function(sequence, nextData){
+				var last = ret.length-1;
+				ret.reduce(function(sequence, nextData){
 	                return sequence.then(function(current_data){
 	            		return new Promise(function(resolve_reduce, reject_reduce){
 	            			pesan_loading('Get kegiatan "'+current_data.kode_program+' '+current_data.nama_program+'" '+current_data.kode_sub_skpd+' '+current_data.nama_sub_skpd);
@@ -117,7 +117,7 @@ function get_program(id_skpd, id_sub_skpd, callback){
 	                    console.log(e);
 	                    return Promise.resolve(nextData);
 	                });
-	            }, Promise.resolve(ret.items[last]))
+	            }, Promise.resolve(ret[last]))
 	            .then(function(data_last){
 	            	if(callback){
 	            		callback();
@@ -137,10 +137,10 @@ function get_kegiatan(id_skpd, id_sub_skpd, id_program, callback){
 		url: url,
 		type: 'get',
 		success: function(ret){
-			update_bl_realisasi_nonactive(id_sub_skpd, 'realisasi')
+			update_bl_realisasi_nonactive(id_sub_skpd, 'belanja')
 			.then(function(){
-				var last = ret.items.length-1;
-				ret.items.reduce(function(sequence, nextData){
+				var last = ret.length-1;
+				ret.reduce(function(sequence, nextData){
 	                return sequence.then(function(current_data){
 	            		return new Promise(function(resolve_reduce, reject_reduce){
 	            			pesan_loading('Get kegiatan "'+current_data.kode_giat+' '+current_data.nama_giat+'" '+current_data.kode_program+' '+current_data.nama_program);
@@ -157,7 +157,7 @@ function get_kegiatan(id_skpd, id_sub_skpd, id_program, callback){
 	                    console.log(e);
 	                    return Promise.resolve(nextData);
 	                });
-	            }, Promise.resolve(ret.items[last]))
+	            }, Promise.resolve(ret[last]))
 	            .then(function(data_last){
 	            	if(callback){
 	            		callback();
@@ -177,10 +177,10 @@ function get_subgiat(id_skpd, id_sub_skpd, id_program, id_giat, callback){
 		url: url,
 		type: 'get',
 		success: function(ret){
-			update_bl_realisasi_nonactive(id_sub_skpd, 'realisasi')
+			update_bl_realisasi_nonactive(id_sub_skpd, 'belanja')
 			.then(function(){
-				var last = ret.items.length-1;
-				ret.items.reduce(function(sequence, nextData){
+				var last = ret.length-1;
+				ret.reduce(function(sequence, nextData){
 	                return sequence.then(function(current_data){
 	            		return new Promise(function(resolve_reduce, reject_reduce){
 	            			pesan_loading('Get Sub kegiatan "'+current_data.kode_sub_giat+' '+current_data.nama_sub_giat+'" '+current_data.kode_giat+' '+current_data.nama_giat);
@@ -197,7 +197,7 @@ function get_subgiat(id_skpd, id_sub_skpd, id_program, id_giat, callback){
 	                    console.log(e);
 	                    return Promise.resolve(nextData);
 	                });
-	            }, Promise.resolve(ret.items[last]))
+	            }, Promise.resolve(ret[last]))
 	            .then(function(data_last){
 	            	if(callback){
 	            		callback();
@@ -232,10 +232,10 @@ function update_bl_realisasi_nonactive(id_skpd, type){
 				}
 		    }
 		};
-		if(typeof update_bl_rak == 'undefined'){
-			window.update_bl_rak = {};
+		if(typeof update_bl_realisasi == 'undefined'){
+			window.update_bl_realisasi = {};
 		}
-		window.update_bl_rak[id_skpd] = resolve;
+		window.update_bl_realisasi[id_skpd] = resolve;
 		chrome.runtime.sendMessage(data_back, function(response) {});
 	});
 }
@@ -261,7 +261,7 @@ function get_realisasi(sub, callback){
 				api_key: config.api_key,
 				kode_sbl: kode_sbl,
 				id_skpd: id_skpd,
-				type: 'realisasi',
+				type: 'belanja',
 				sumber: 'ri',
 				data: {}
 			};
