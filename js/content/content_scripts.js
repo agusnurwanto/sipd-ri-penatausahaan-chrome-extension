@@ -79,6 +79,10 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 			_alert = false;
 			cek_hide_loading = false;
 			singkron_spp_detail.resolve();
+		}else if(res.action == 'update_bl_realisasi_nonactive'){
+			_alert = false;
+			cek_hide_loading = false;
+			update_bl_realisasi[res.id_unit]();
 		}else if(res.action == 'singkron_stbp_detail'){
 			_alert = false;
 			cek_hide_loading = false;
