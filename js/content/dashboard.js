@@ -97,36 +97,33 @@ function get_program(id_skpd, id_sub_skpd, callback){
 		url: url,
 		type: 'get',
 		success: function(ret){
-			update_bl_realisasi_nonactive(id_sub_skpd, 'belanja')
-			.then(function(){
-				var last = ret.length-1;
-				ret.reduce(function(sequence, nextData){
-	                return sequence.then(function(current_data){
-	            		return new Promise(function(resolve_reduce, reject_reduce){
-	            			pesan_loading('Get kegiatan "'+current_data.kode_program+' '+current_data.nama_program+'" '+current_data.kode_sub_skpd+' '+current_data.nama_sub_skpd);
-	            			get_kegiatan(current_data.id_skpd, current_data.id_sub_skpd, current_data.id_program, function(){
-	            				return resolve_reduce(nextData);
-	            			});
-	            		})
-	                    .catch(function(e){
-	                        console.log(e);
-	                        return Promise.resolve(nextData);
-	                    });
-	                })
-	                .catch(function(e){
-	                    console.log(e);
-	                    return Promise.resolve(nextData);
-	                });
-	            }, Promise.resolve(ret[last]))
-	            .then(function(data_last){
-	            	if(callback){
-	            		callback();
-	            	}else{
-		        		alert('Berhasil backup data realisasi APBD ke lokal!');
-						jQuery('#wrap-loading').hide();
-	            	}
-	            });
-			});
+			var last = ret.length-1;
+			ret.reduce(function(sequence, nextData){
+                return sequence.then(function(current_data){
+            		return new Promise(function(resolve_reduce, reject_reduce){
+            			pesan_loading('Get kegiatan "'+current_data.kode_program+' '+current_data.nama_program+'" '+current_data.kode_sub_skpd+' '+current_data.nama_sub_skpd);
+            			get_kegiatan(current_data.id_skpd, current_data.id_sub_skpd, current_data.id_program, function(){
+            				return resolve_reduce(nextData);
+            			});
+            		})
+                    .catch(function(e){
+                        console.log(e);
+                        return Promise.resolve(nextData);
+                    });
+                })
+                .catch(function(e){
+                    console.log(e);
+                    return Promise.resolve(nextData);
+                });
+            }, Promise.resolve(ret[last]))
+            .then(function(data_last){
+            	if(callback){
+            		callback();
+            	}else{
+	        		alert('Berhasil backup data realisasi APBD ke lokal!');
+					jQuery('#wrap-loading').hide();
+            	}
+            });
 		}
 	});
 }
@@ -137,36 +134,33 @@ function get_kegiatan(id_skpd, id_sub_skpd, id_program, callback){
 		url: url,
 		type: 'get',
 		success: function(ret){
-			update_bl_realisasi_nonactive(id_sub_skpd, 'belanja')
-			.then(function(){
-				var last = ret.length-1;
-				ret.reduce(function(sequence, nextData){
-	                return sequence.then(function(current_data){
-	            		return new Promise(function(resolve_reduce, reject_reduce){
-	            			pesan_loading('Get kegiatan "'+current_data.kode_giat+' '+current_data.nama_giat+'" '+current_data.kode_program+' '+current_data.nama_program);
-	            			get_subgiat(current_data.id_skpd, current_data.id_sub_skpd, current_data.id_program, current_data.id_giat, function(){
-	            				return resolve_reduce(nextData);
-	            			});
-	            		})
-	                    .catch(function(e){
-	                        console.log(e);
-	                        return Promise.resolve(nextData);
-	                    });
-	                })
-	                .catch(function(e){
-	                    console.log(e);
-	                    return Promise.resolve(nextData);
-	                });
-	            }, Promise.resolve(ret[last]))
-	            .then(function(data_last){
-	            	if(callback){
-	            		callback();
-	            	}else{
-		        		alert('Berhasil backup data realisasi APBD ke lokal!');
-						jQuery('#wrap-loading').hide();
-	            	}
-	            });
-			});
+			var last = ret.length-1;
+			ret.reduce(function(sequence, nextData){
+                return sequence.then(function(current_data){
+            		return new Promise(function(resolve_reduce, reject_reduce){
+            			pesan_loading('Get kegiatan "'+current_data.kode_giat+' '+current_data.nama_giat+'" '+current_data.kode_program+' '+current_data.nama_program);
+            			get_subgiat(current_data.id_skpd, current_data.id_sub_skpd, current_data.id_program, current_data.id_giat, function(){
+            				return resolve_reduce(nextData);
+            			});
+            		})
+                    .catch(function(e){
+                        console.log(e);
+                        return Promise.resolve(nextData);
+                    });
+                })
+                .catch(function(e){
+                    console.log(e);
+                    return Promise.resolve(nextData);
+                });
+            }, Promise.resolve(ret[last]))
+            .then(function(data_last){
+            	if(callback){
+            		callback();
+            	}else{
+	        		alert('Berhasil backup data realisasi APBD ke lokal!');
+					jQuery('#wrap-loading').hide();
+            	}
+            });
 		}
 	});
 }
@@ -177,36 +171,33 @@ function get_subgiat(id_skpd, id_sub_skpd, id_program, id_giat, callback){
 		url: url,
 		type: 'get',
 		success: function(ret){
-			update_bl_realisasi_nonactive(id_sub_skpd, 'belanja')
-			.then(function(){
-				var last = ret.length-1;
-				ret.reduce(function(sequence, nextData){
-	                return sequence.then(function(current_data){
-	            		return new Promise(function(resolve_reduce, reject_reduce){
-	            			pesan_loading('Get Sub kegiatan "'+current_data.kode_sub_giat+' '+current_data.nama_sub_giat+'" '+current_data.kode_giat+' '+current_data.nama_giat);
-	            			get_realisasi(current_data, function(){
-	            				return resolve_reduce(nextData);
-	            			});
-	            		})
-	                    .catch(function(e){
-	                        console.log(e);
-	                        return Promise.resolve(nextData);
-	                    });
-	                })
-	                .catch(function(e){
-	                    console.log(e);
-	                    return Promise.resolve(nextData);
-	                });
-	            }, Promise.resolve(ret[last]))
-	            .then(function(data_last){
-	            	if(callback){
-	            		callback();
-	            	}else{
-		        		alert('Berhasil backup data realisasi APBD ke lokal!');
-						jQuery('#wrap-loading').hide();
-	            	}
-	            });
-			});
+			var last = ret.length-1;
+			ret.reduce(function(sequence, nextData){
+                return sequence.then(function(current_data){
+            		return new Promise(function(resolve_reduce, reject_reduce){
+            			pesan_loading('Get Sub kegiatan "'+current_data.kode_sub_giat+' '+current_data.nama_sub_giat+'" '+current_data.kode_giat+' '+current_data.nama_giat);
+            			get_realisasi(current_data, function(){
+            				return resolve_reduce(nextData);
+            			});
+            		})
+                    .catch(function(e){
+                        console.log(e);
+                        return Promise.resolve(nextData);
+                    });
+                })
+                .catch(function(e){
+                    console.log(e);
+                    return Promise.resolve(nextData);
+                });
+            }, Promise.resolve(ret[last]))
+            .then(function(data_last){
+            	if(callback){
+            		callback();
+            	}else{
+	        		alert('Berhasil backup data realisasi APBD ke lokal!');
+					jQuery('#wrap-loading').hide();
+            	}
+            });
 		}
 	});
 }
