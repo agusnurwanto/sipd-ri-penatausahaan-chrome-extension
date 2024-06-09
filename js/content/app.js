@@ -148,7 +148,7 @@ function cekUrl(current_url, nomor=1){
 					jQuery('.aksi-extension').remove();
 				}
 			}
-			// DATA RAK Pembiayaan Peneluaran
+			// DATA RAK Pembiayaan Pengeluaran
 			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/dpa/rencana-penarikan-dana/pengeluaran-pembiayaan') != -1)
 			{	
 				var title = jQuery('.card-title.custom-class').text();
@@ -192,7 +192,7 @@ function cekUrl(current_url, nomor=1){
 						jQuery('.aksi-extension').remove();
 					}
 			}
-			// DATA RAK Pembiayaan penerimaan
+			// DATA RAK Pendapatan
 			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/dpa/rencana-penerimaan-dana/pendapatan') != -1)
 			{	
 				var title = jQuery('.card-title.custom-class').text();
@@ -215,6 +215,129 @@ function cekUrl(current_url, nomor=1){
 					}
 			//BESARAN UP
 			}
+			// Data RAK SIPD laporan
+			else if(current_url.indexOf('penatausahaan/pengeluaran/dpa/laporan/rak/belanja') != -1){
+				var title = jQuery('.card-title.custom-class').text();
+				console.log('Halaman RAK Belanja', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_sipd_lokal">Singkron RAK Sub Kegiatan ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);
+				if(title.indexOf(' | Detail Belanja') != -1){
+					jQuery('#singkron_rak_sipd_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
+							jQuery('#wrap-loading').show();
+							var sub = current_url.split('/');
+							get_rak({
+								id_unit: sub[9],
+								id_skpd: sub[10],
+								id_sub_skpd: sub[11],
+								id_urusan: sub[12],
+								id_bidang_urusan: sub[13],
+								id_program: sub[14],
+								id_giat: sub[15],
+								id_sub_giat: sub[16]
+							}, function(){
+								alert('Berhasil singkron RAK ke lokal!');
+								jQuery('#wrap-loading').hide();
+							});
+						}
+					});
+				}else if(title.indexOf(' | Sub Belanja') != -1){
+					jQuery('#singkron_rak_sipd_lokal').text('Singkron RAK SKPD ke DB Lokal');
+					jQuery('#singkron_rak_sipd_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
+							jQuery('#wrap-loading').show();
+							var sub = current_url.split('/');
+							get_sub_keg(sub[9], function(){
+								alert('Berhasil singkron RAK ke lokal!');
+								jQuery('#wrap-loading').hide();
+	            			});
+						}
+					});
+				}else if(title.indexOf(' | Belanja') != -1){
+					jQuery('#singkron_rak_sipd_lokal').text('Singkron ALL SKPD ke DB Lokal');
+					jQuery('#singkron_rak_sipd_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_rak_ke_lokal();
+						}
+					});
+				}else if(title.indexOf('Cetak Dokumen') != -1){
+					jQuery('.container-frame-pdf').attr('contenteditable', true);
+				}else{
+					jQuery('.aksi-extension').remove();
+				}
+			}
+			// DATA Laporan RAK Pembiayaan Pengeluaran
+			else if(current_url.indexOf('penatausahaan/pengeluaran/dpa/laporan/rak/pengeluaran-pembiayaan') != -1)
+				{	
+					var title = jQuery('.card-title.custom-class').text();
+						console.log('Dokumen Rencana Anggaran Kas (RAK) | Pengeluaran Pembiayaann', title);
+						jQuery('.aksi-extension').remove();
+						var btn = ''
+							+'<div class="aksi-extension" style="display: inline-block;">'						
+								+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_pembiayaan_pengeluaran_sipd_lokal">Singkron RAK Pembiayaan ke DB Lokal</button>'					
+							+'</div>';
+						jQuery('.card-title.custom-class').append(btn);
+						if(title.indexOf(' | Pengeluaran Pembiayaan') != -1){
+							jQuery('#singkron_rak_pembiayaan_pengeluaran_sipd_lokal').text('Singkron Pembiayaan Pengeluaran ke DB Lokal');
+							jQuery('#singkron_rak_pembiayaan_pengeluaran_sipd_lokal').on('click', function(){
+								if(confirm('Apakah anda yakin melakukan backup data anggaran kas Pembiayaan Pengeluaran? Data lokal akan diupdate sesuai data terbaru.')){
+									singkron_rak_pembiayaan_pengeluaran_sipd_lokal();
+								}
+							});
+						}else{
+							jQuery('.aksi-extension').remove();
+						}
+				}
+				// DATA Laporan RAK Pembiayaan penerimaan
+				else if(current_url.indexOf('penatausahaan/pengeluaran/dpa/laporan/rak/penerimaan-pembiayaan') != -1)
+				{	
+					var title = jQuery('.card-title.custom-class').text();
+						console.log('Halaman RAK pembiayaan penerimaan', title);
+						jQuery('.aksi-extension').remove();
+						var btn = ''
+							+'<div class="aksi-extension" style="display: inline-block;">'						
+								+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_pembiayaan_penerimaan_sipd_lokal">Singkron RAK Pembiayaan ke DB Lokal</button>'					
+							+'</div>';
+						jQuery('.card-title.custom-class').append(btn);
+						if(title.indexOf(' | Penerimaan Pembiayaan') != -1){
+							jQuery('#singkron_rak_pembiayaan_penerimaan_sipd_lokal').text('Singkron Pembiayaan Penerimaan ke DB Lokal');
+							jQuery('#singkron_rak_pembiayaan_penerimaan_sipd_lokal').on('click', function(){
+								if(confirm('Apakah anda yakin melakukan backup data anggaran kas Pembiayaan Penerimaan? Data lokal akan diupdate sesuai data terbaru.')){
+									singkron_rak_pembiayaan_penerimaan_sipd_lokal();
+								}
+							});
+						}else{
+							jQuery('.aksi-extension').remove();
+						}
+				}
+				// DATA Laporan RAK Pendapatan
+				else if(current_url.indexOf('penatausahaan/pengeluaran/dpa/laporan/rak/pendapatan') != -1)
+				{	
+					var title = jQuery('.card-title.custom-class').text();
+						console.log('Halaman RAK Pendapatan', title);
+						jQuery('.aksi-extension').remove();
+						var btn = ''
+							+'<div class="aksi-extension" style="display: inline-block;">'						
+								+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_pendapatan_sipd_lokal">Singkron RAK Pembiayaan ke DB Lokal</button>'					
+							+'</div>';
+						jQuery('.card-title.custom-class').append(btn);
+						if(title.indexOf(' | Pendapatan') != -1){
+							jQuery('#singkron_rak_pendapatan_sipd_lokal').text('Singkron ALL SKPD ke DB Lokal');
+							jQuery('#singkron_rak_pendapatan_sipd_lokal').on('click', function(){
+								if(confirm('Apakah anda yakin melakukan backup data anggaran kas Pendapatan? Data lokal akan diupdate sesuai data terbaru.')){
+									singkron_rak_pendapatan_sipd_lokal();
+								}
+							});
+						}else{
+							jQuery('.aksi-extension').remove();
+						}
+				//BESARAN UP
+				}
+
 			// DATA Besaran UP
 			else if(current_url.indexOf('penatausahaan/setting/besaran-up') != -1){
 				var title = jQuery('.card-title.custom-class').text();
