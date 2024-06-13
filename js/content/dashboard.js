@@ -241,7 +241,7 @@ function get_program_pendapatan(id_skpd, id_sub_skpd, callback){
                 return sequence.then(function(current_data){
             		return new Promise(function(resolve_reduce, reject_reduce){
             			pesan_loading('Get kegiatan "'+current_data.kode_program+' '+current_data.nama_program+'" '+current_data.kode_sub_skpd+' '+current_data.nama_sub_skpd);
-            			get_kegiatan_pendapatan(current_data.id_skpd, current_data.id_sub_skpd, current_data.id_program, function(){
+            			get_realisasi_pendapatan(current_data.id_skpd, current_data.id_sub_skpd, current_data.id_program, function(){
             				return resolve_reduce(nextData);
             			});
             		})
@@ -392,6 +392,72 @@ function get_realisasi(sub, callback){
 				kode_sbl: kode_sbl,
 				id_skpd: id_skpd,
 				type: 'belanja',
+				sumber: 'ri',
+				data: {}
+			};
+			ret.map(function(b, i){
+				data_realisasi.data[i] = {}				
+				data_realisasi.data[i].id_unit = b.id_skpd;
+                data_realisasi.data[i].id_skpd = b.id_skpd;
+                data_realisasi.data[i].id_sub_skpd = b.id_sub_skpd;
+                data_realisasi.data[i].id_program = b.id_program;
+                data_realisasi.data[i].id_giat = b.id_giat;
+                data_realisasi.data[i].id_sub_giat = b.id_sub_giat;
+                data_realisasi.data[i].id_daerah = b.id_daerah;                
+                data_realisasi.data[i].id_akun = b.id_akun;
+                data_realisasi.data[i].kode_akun = b.kode_akun;
+				data_realisasi.data[i].nama_akun = b.nama_akun;
+                data_realisasi.data[i].nilai = b.anggaran;
+                data_realisasi.data[i].realisasi = b.realisasi_rill;
+                data_realisasi.data[i].realisasi_rencana = b.realisasi_rencana;                
+				data_realisasi.data[i].tahun = b.tahun;				
+			});
+			var data_back = {
+			    message:{
+			        type: "get-url",
+			        content: {
+					    url: config.url_server_lokal,
+					    type: 'post',
+					    data: data_realisasi,
+		    			return: true
+					}
+			    }
+			};
+			if(callback){
+				data_back.message.content.return = false;
+			}
+			chrome.runtime.sendMessage(data_back, function(response) {
+			    console.log('responeMessage', response);
+				if(callback){
+			    	callback(data_realisasi);
+			    }
+			});
+		}
+	});
+}
+
+function get_realisasi_pendapatan(sub, callback){	
+	var id_skpd = sub.id_skpd;
+	var id_sub_skpd = sub.id_sub_skpd;
+	var id_urusan = sub.id_urusan;
+	var id_bidang_urusan = sub.id_bidang_urusan;
+	var id_program = sub.id_program;
+	var id_giat = sub.id_giat;
+	var id_sub_giat = sub.id_sub_giat;
+	var url = config.service_url+'pengeluaran/strict/dashboard/statistik-pendapatan/'+id_skpd+'/'+id_sub_skpd+'/'+id_program+'/'+id_giat+'/'+id_sub_giat;
+	relayAjaxApiKey({
+		url: url,
+		type: 'get',
+		success: function(ret){
+			console.log('ret', ret);
+			var kode_sbl = id_skpd+'.'+id_sub_skpd+'.'+id_skpd+'.'+id_bidang_urusan+'.'+id_program+'.'+id_giat+'.'+id_sub_giat;
+			var data_realisasi = { 
+				action: 'singkron_realisasi_dashboard',
+				tahun_anggaran: _token.tahun,
+				api_key: config.api_key,
+				kode_sbl: kode_sbl,
+				id_skpd: id_skpd,
+				type: 'pendapatan',
 				sumber: 'ri',
 				data: {}
 			};
