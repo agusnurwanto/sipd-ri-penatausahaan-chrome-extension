@@ -1,4 +1,3 @@
-function singkron_belanja_dashboard_ke_lokal() {    
 // https://service.sipd.kemendagri.go.id/referensi/strict/statistik/dashboard
 // https://service.sipd.kemendagri.go.id/pengeluaran/strict/dashboard/statistik-belanja
 // skpd https://service.sipd.kemendagri.go.id/pengeluaran/strict/dashboard/statistik-belanja/3253->id_skpd
@@ -6,6 +5,23 @@ function singkron_belanja_dashboard_ke_lokal() {
 // kegiatan https://service.sipd.kemendagri.go.id/pengeluaran/strict/dashboard/statistik-belanja/3253/3253/1186->id_program
 // subkegiatan https://service.sipd.kemendagri.go.id/pengeluaran/strict/dashboard/statistik-belanja/3253/3253/1186/8709->id_giat
 // rekening/akun https://service.sipd.kemendagri.go.id/pengeluaran/strict/dashboard/statistik-belanja/3253/3253/1186/8709->id_sub_giat
+function singkron_dashboard_ke_lokal(val) {    
+	jQuery('#wrap-loading').show();
+	var type = val;
+	pesan_loading('Get data Realiasi '+type);
+	if(type == 'belanja'){		
+		singkron_belanja_dashboard_ke_lokal();
+		return resolve();
+	}else if(type == 'pendapatan'){		
+		singkron_pendapatan_dashboard_ke_lokal();
+		return resolve();
+	}else{
+		singkron_pembiayaan_dashboard_ke_lokal();
+		return resolve();
+	}
+}
+
+function singkron_belanja_dashboard_ke_lokal() {    
     jQuery('#wrap-loading').show();
     // pesan_loading('Get SKPD halaman = '+page);
     var url = config.service_url+'pengeluaran/strict/dashboard/statistik-belanja';
@@ -27,6 +43,52 @@ function singkron_belanja_dashboard_ke_lokal() {
 		            		return new Promise(function(resolve_reduce, reject_reduce){
 		            			pesan_loading('Get sub SKPD dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
 		            			get_sub_skpd(current_data.id_skpd, function(){
+		            				return resolve_reduce(nextData);
+		            			});
+		            		})
+		                    .catch(function(e){
+		                        console.log(e);
+		                        return Promise.resolve(nextData);
+		                    });
+		                })
+		                .catch(function(e){
+		                    console.log(e);
+		                    return Promise.resolve(nextData);
+		                });
+		            }, Promise.resolve(data_skpd_all[last]))
+		            .then(function(data_last){
+		        		alert('Berhasil backup data realisasi APBD ke lokal!');
+						jQuery('#wrap-loading').hide();
+						return resolve();
+		            });
+		        
+			}
+        });
+    });
+}
+
+function singkron_pendapatan_dashboard_ke_lokal() {    
+    jQuery('#wrap-loading').show();
+    // pesan_loading('Get SKPD halaman = '+page);
+    var url = config.service_url+'pengeluaran/strict/dashboard/statistik-pendapatan';
+    return new Promise(function(resolve, reduce){
+	    relayAjaxApiKey({
+			url: url,
+			type: 'get',
+			success: function(data_skpd_all){
+				// if(data_skpd_all!=null && data_skpd_all.length >= 1){
+				// 	data_skpd_all.map(function(b, i){
+				// 		skpd_all.push(b);
+				// 	})
+				// 	singkron_belanja_dashboard_ke_lokal(page+1, skpd_all);
+				// 	return resolve();
+				// }else{
+					var last = data_skpd_all.length-1;
+					data_skpd_all.reduce(function(sequence, nextData){
+		                return sequence.then(function(current_data){
+		            		return new Promise(function(resolve_reduce, reject_reduce){
+		            			pesan_loading('Get sub SKPD dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
+		            			get_sub_skpd_pendapatan(current_data.id_skpd, function(){
 		            				return resolve_reduce(nextData);
 		            			});
 		            		})
@@ -91,6 +153,46 @@ function get_sub_skpd(id_skpd, callback){
 	});
 }
 
+function get_sub_skpd_pendapatan(id_skpd, callback){
+	var url = config.service_url+'pengeluaran/strict/dashboard/statistik-pendapatan/'+id_skpd;
+	relayAjaxApiKey({
+		url: url,
+		type: 'get',
+		success: function(ret){
+			update_bl_realisasi_nonactive(id_skpd, 'pendapatan')
+			.then(function(){
+				var last = ret.length-1;
+				ret.reduce(function(sequence, nextData){
+	                return sequence.then(function(current_data){
+	            		return new Promise(function(resolve_reduce, reject_reduce){
+	            			pesan_loading('Get Program "'+current_data.kode_sub_skpd+' '+current_data.nama_sub_skpd+'" '+current_data.realisasi_rencana+' '+current_data.realisasi_rill);
+	            			get_program_pendapatan(current_data.id_skpd, current_data.id_sub_skpd, function(){
+	            				return resolve_reduce(nextData);
+	            			});
+	            		})
+	                    .catch(function(e){
+	                        console.log(e);
+	                        return Promise.resolve(nextData);
+	                    });
+	                })
+	                .catch(function(e){
+	                    console.log(e);
+	                    return Promise.resolve(nextData);
+	                });
+	            }, Promise.resolve(ret[last]))
+	            .then(function(data_last){
+	            	if(callback){
+	            		callback();
+	            	}else{
+		        		alert('Berhasil backup data realisasi APBD ke lokal!');
+						jQuery('#wrap-loading').hide();
+	            	}
+	            });
+			});
+		}
+	});
+}
+
 function get_program(id_skpd, id_sub_skpd, callback){
 	var url = config.service_url+'pengeluaran/strict/dashboard/statistik-belanja/'+id_skpd+'/'+id_sub_skpd;
 	relayAjaxApiKey({
@@ -103,6 +205,43 @@ function get_program(id_skpd, id_sub_skpd, callback){
             		return new Promise(function(resolve_reduce, reject_reduce){
             			pesan_loading('Get kegiatan "'+current_data.kode_program+' '+current_data.nama_program+'" '+current_data.kode_sub_skpd+' '+current_data.nama_sub_skpd);
             			get_kegiatan(current_data.id_skpd, current_data.id_sub_skpd, current_data.id_program, function(){
+            				return resolve_reduce(nextData);
+            			});
+            		})
+                    .catch(function(e){
+                        console.log(e);
+                        return Promise.resolve(nextData);
+                    });
+                })
+                .catch(function(e){
+                    console.log(e);
+                    return Promise.resolve(nextData);
+                });
+            }, Promise.resolve(ret[last]))
+            .then(function(data_last){
+            	if(callback){
+            		callback();
+            	}else{
+	        		alert('Berhasil backup data realisasi APBD ke lokal!');
+					jQuery('#wrap-loading').hide();
+            	}
+            });
+		}
+	});
+}
+
+function get_program_pendapatan(id_skpd, id_sub_skpd, callback){
+	var url = config.service_url+'pengeluaran/strict/dashboard/statistik-belanja/'+id_skpd+'/'+id_sub_skpd;
+	relayAjaxApiKey({
+		url: url,
+		type: 'get',
+		success: function(ret){
+			var last = ret.length-1;
+			ret.reduce(function(sequence, nextData){
+                return sequence.then(function(current_data){
+            		return new Promise(function(resolve_reduce, reject_reduce){
+            			pesan_loading('Get kegiatan "'+current_data.kode_program+' '+current_data.nama_program+'" '+current_data.kode_sub_skpd+' '+current_data.nama_sub_skpd);
+            			get_kegiatan_pendapatan(current_data.id_skpd, current_data.id_sub_skpd, current_data.id_program, function(){
             				return resolve_reduce(nextData);
             			});
             		})

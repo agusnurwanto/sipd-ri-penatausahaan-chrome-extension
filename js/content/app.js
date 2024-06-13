@@ -788,20 +788,36 @@ function cekUrl(current_url, nomor=1){
 			//DATA DASHBOARD
 			else if(current_url.indexOf('penatausahaan/dashboard') != -1	){
 				var title = jQuery('.css-jw-kc-w-cfpf-21-qf').text();
+				
 				console.log('Statistik', title);
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_belanja_dashboard_ke_lokal">backup data realisasi APBD ke DB Lokal</button>'					
+						//+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_belanja_dashboard_ke_lokal">backup data realisasi APBD ke DB Lokal</button>'					
+						+'<button onclick="return false;" class="btn btn-sm btn-primary" id="singkron_dashboard_ke_lokal" style="margin-left: 5px;">backup data realisasi APBD ke DB Lokal</button>'
+							+'<select class="form-control" style="width: 300px; margin: 0 5px; display: inline-block; padding: 6px;" id="data_master_realisasi">'
+								+'<option value="">Pilih Data yang akan di Backup</option>'
+								+'<option value="belanja">Belanja</option>'
+								+'<option value="pendapatan">Pendapatan</option>'
+								+'<option value="pembiayaan">Pembiayaan</option>'
+							+'</select>';
 					+'</div>';
 				jQuery('.css-jw-kc-w-cfpf-21-qf').append(btn);				
+				// jQuery('#data_master_realisasi').on('click', function(){
+				// 	modal_data_realisasi();
+				// });	
 				if(
 					title.indexOf('Statistik') != -1
 				){
-					jQuery('#singkron_belanja_dashboard_ke_lokal').text('backup data realisasi APBD ke DB Lokal');
-					jQuery('#singkron_belanja_dashboard_ke_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data realisasi APBD ? Data lokal akan diupdate sesuai data terbaru.')){
-							singkron_belanja_dashboard_ke_lokal();						
+					jQuery('#singkron_dashboard_ke_lokal').text('backup data realisasi APBD ke DB Lokal');
+					jQuery('#singkron_dashboard_ke_lokal').on('click', function(){
+						var val = jQuery('#data_master_realisasi').val();
+						if(val == ''){
+							alert('Status Belum dipilih !!!');
+						}else{
+							if(confirm('Apakah anda yakin melakukan backup data realisasi APBD ? Data lokal akan diupdate sesuai data terbaru.')){
+								singkron_dashboard_ke_lokal(val);						
+							}
 						}
 					});
 				}else{
