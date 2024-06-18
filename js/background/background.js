@@ -4,7 +4,7 @@ const main_js = {
 	url: 'https://sipd-ri.kemendagri.go.id/main.f4b904b6c616e74d.js',
 	content: ''
 };
-loadUnBlock(main_js.url);
+// loadUnBlock(main_js.url);
 
 function listener(details) {
 	loadUnBlock(details.url);

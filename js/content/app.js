@@ -815,7 +815,7 @@ function cekUrl(current_url, nomor=1){
 						if(val == ''){
 							alert('Status Belum dipilih !!!');
 						}else{
-							if(confirm('Apakah anda yakin melakukan backup data realisasi APBD ? Data lokal akan diupdate sesuai data terbaru.')){
+							if(confirm('Apakah anda yakin melakukan backup data realisasi '+val+' APBD ? Data lokal akan diupdate sesuai data terbaru.')){
 								singkron_dashboard_ke_lokal(val);						
 							}
 						}
