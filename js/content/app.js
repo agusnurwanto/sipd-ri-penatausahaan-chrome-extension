@@ -799,7 +799,7 @@ function cekUrl(current_url, nomor=1){
 								+'<option value="">Pilih Data yang akan di Backup</option>'
 								+'<option value="belanja">Belanja</option>'
 								+'<option value="pendapatan">Pendapatan</option>'
-								+'<option value="pembiayaan">Pembiayaan</option>'
+								// +'<option value="pembiayaan">Pembiayaan</option>'
 							+'</select>';
 					+'</div>';
 				jQuery('.css-jw-kc-w-cfpf-21-qf').append(btn);				
