@@ -451,16 +451,16 @@ function cekUrl(current_url, nomor=1){
 				}			
 			}
 			// DATA Pengeluaran SPM
-			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan') != -1	){
+			else if(current_url.indexOf('penatausahaan/pengeluaran/spm/pembuatan') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				window.type_data_global = ['UP', 'LS', 'GU', 'TU'];
-				if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan?type=UP') != -1){
+				if(current_url.indexOf('penatausahaan/pengeluaran/spm/pembuatan?type=UP') != -1){
 					type_data_global = ['UP'];
-				}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan?type=GU') != -1){
+				}else if(current_url.indexOf('penatausahaan/pengeluaran/spm/pembuatan?type=GU') != -1){
 					type_data_global = ['GU'];
-				}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan?type=TU') != -1){
+				}else if(current_url.indexOf('penatausahaan/pengeluaran/spm/pembuatan?type=TU') != -1){
 					type_data_global = ['TU'];
-				}else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spm/pembuatan?type=LS') != -1){
+				}else if(current_url.indexOf('penatausahaan/pengeluaran/spm/pembuatan?type=LS') != -1){
 					type_data_global = ['LS'];
 				}
 				console.log('Surat Perintah Membayar (SPM)', title);
@@ -536,7 +536,7 @@ function cekUrl(current_url, nomor=1){
 				}
 			}
 			// DATA Pengeluaran TBP
-			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/tbp/up-gu') != -1	){
+			else if(current_url.indexOf('penatausahaan/pengeluaran/tbp/up-gu') != -1	){
 				var title = jQuery('.card-title.custom-class').text();				
 				console.log('Tanda Bukti Pembayaran | Uang Persediaan / Ganti Uang', title);
 				jQuery('.aksi-extension').remove();
@@ -557,7 +557,7 @@ function cekUrl(current_url, nomor=1){
 				}			
 			}	
 			// DATA Pertanggung Jawaban NPD
-			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/rekapitulasi-npd') != -1	){
+			else if(current_url.indexOf('penatausahaan/pengeluaran/rekapitulasi-npd') != -1	){
 				var title = jQuery('.card-title.custom-class').text();				
 				console.log('Pertanggung Jawaban Nota Pencairan Dana', title);
 				jQuery('.aksi-extension').remove();
@@ -578,7 +578,7 @@ function cekUrl(current_url, nomor=1){
 				}			
 			}
 			// DATA Pengajuan NPD
-			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/pengajuan/npd') != -1	){
+			else if(current_url.indexOf('penatausahaan/pengeluaran/pengajuan/npd') != -1	){
 				var title = jQuery('.card-title.custom-class').text();				
 				console.log('Pengajuan | Nota Pencairan Dana', title);
 				jQuery('.aksi-extension').remove();
@@ -599,7 +599,7 @@ function cekUrl(current_url, nomor=1){
 				}			
 			}
 			// DATA Pengajuan LPJ
-			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/lpj/up-gu') != -1	){
+			else if(current_url.indexOf('penatausahaan/pengeluaran/lpj/up-gu') != -1	){
 				var title = jQuery('.card-title.custom-class').text();				
 				console.log('Laporan Pertanggung Jawaban | Pelimpahan  UP / GU', title);
 				jQuery('.aksi-extension').remove();
@@ -620,7 +620,7 @@ function cekUrl(current_url, nomor=1){
 				}			
 			}
 			// DATA Rekening Penerimaan
-			else if(current_url.indexOf('penatausahaan/penatausahaan/penerimaan/rekening/pembuatan') != -1	){
+			else if(current_url.indexOf('penatausahaan/penerimaan/rekening/pembuatan') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Rekening Bank Satuan Kerja Perangkat Daerah (SKPD) | Pembuatan', title);
 				jQuery('.aksi-extension').remove();
@@ -641,7 +641,7 @@ function cekUrl(current_url, nomor=1){
 				}
 			}
 			// DATA Rekening Penerimaan
-			else if(current_url.indexOf('penatausahaan/penatausahaan/penerimaan/stbp') != -1	){
+			else if(current_url.indexOf('penatausahaan/penerimaan/stbp') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Surat Tanda Bukti Penerimaan (STBP)', title);
 				jQuery('.aksi-extension').remove();
@@ -681,7 +681,7 @@ function cekUrl(current_url, nomor=1){
 				}
 			}
 			// DATA Otorisasi SPD Pembiayaan
-			else if(current_url.indexOf('penatausahaan/penatausahaan/pembiayaan/spd/otorisasi') != -1	){
+			else if(current_url.indexOf('penatausahaan/pembiayaan/spd/otorisasi') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Pembiayaan | Surat Penyediaan Dana (SPD) | Otorisasi', title);
 				jQuery('.aksi-extension').remove();
@@ -740,7 +740,7 @@ function cekUrl(current_url, nomor=1){
 				});
 			}
 			// DATA Daftar Rekanan
-			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/daftar-rekanan?=1') != -1	){
+			else if(current_url.indexOf('penatausahaan/pengeluaran/daftar-rekanan?=1') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Daftar Rekanan', title);
 				jQuery('.aksi-extension').remove();
@@ -763,7 +763,7 @@ function cekUrl(current_url, nomor=1){
 				}
 			}
 			// DATA Belnaja AKPD
-			else if(current_url.indexOf('penatausahaan/penatausahaan/akpd/belanja') != -1	){
+			else if(current_url.indexOf('enatausahaan/akpd/belanja') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Anggaran Kas Pemerintah Daerah (AKPD) | Belanja', title);
 				jQuery('.aksi-extension').remove();
