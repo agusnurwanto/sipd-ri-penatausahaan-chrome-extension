@@ -149,7 +149,7 @@ function cekUrl(current_url, nomor=1){
 				}
 			}
 			// DATA RAK Pembiayaan Pengeluaran
-			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/dpa/rencana-penarikan-dana/pengeluaran-pembiayaan') != -1)
+			else if(current_url.indexOf('penatausahaan/pengeluaran/dpa/rencana-penarikan-dana/pengeluaran-pembiayaan') != -1)
 			{	
 				var title = jQuery('.card-title.custom-class').text();
 					console.log('Halaman RAK pembiayaan', title);
@@ -171,7 +171,7 @@ function cekUrl(current_url, nomor=1){
 					}
 			}
 			// DATA RAK Pembiayaan penerimaan
-			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/dpa/rencana-penerimaan-dana/penerimaan-pembiayaan') != -1)
+			else if(current_url.indexOf('penatausahaan/pengeluaran/dpa/rencana-penerimaan-dana/penerimaan-pembiayaan') != -1)
 			{	
 				var title = jQuery('.card-title.custom-class').text();
 					console.log('Halaman RAK pembiayaan penerimaan', title);
@@ -193,7 +193,7 @@ function cekUrl(current_url, nomor=1){
 					}
 			}
 			// DATA RAK Pendapatan
-			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/dpa/rencana-penerimaan-dana/pendapatan') != -1)
+			else if(current_url.indexOf('penatausahaan/pengeluaran/dpa/rencana-penerimaan-dana/pendapatan') != -1)
 			{	
 				var title = jQuery('.card-title.custom-class').text();
 					console.log('Halaman RAK Pendapatan', title);
