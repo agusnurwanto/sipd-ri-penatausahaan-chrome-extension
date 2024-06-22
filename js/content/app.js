@@ -355,7 +355,7 @@ function cekUrl(current_url, nomor=1){
 			//SPD	
 			}
 			// DATA Otorisasi SPD
-			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spd/otorisasi') != -1	){
+			else if(current_url.indexOf('penatausahaan/pengeluaran/spd/otorisasi') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Surat Penyediaan Dana (SPD)', title);
 				jQuery('.aksi-extension').remove();
@@ -380,7 +380,7 @@ function cekUrl(current_url, nomor=1){
 				//SPD PA
 			}
 			// DATA Pengeluaran SPD
-			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/spd/pembuatan') != -1	){
+			else if(current_url.indexOf('penatausahaan/pengeluaran/spd/pembuatan') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Surat Penyediaan Dana (SPD)', title);
 				jQuery('.aksi-extension').remove();
@@ -401,6 +401,10 @@ function cekUrl(current_url, nomor=1){
 				}	
 			// SPP
 			}
+			// DATA PENGAJUAN (TU, DPR KKPD, DPT KKPD, NPD, Daftar Pegawai)
+
+			// DATA PERTANGGUNGJAWABAN NPD
+
 			// DATA Pengeluaran SPP
 			else if(current_url.indexOf('penatausahaan/pengeluaran/spp/pembuatan') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
@@ -535,6 +539,93 @@ function cekUrl(current_url, nomor=1){
 					jQuery('.aksi-extension').remove();
 				}
 			}
+			// DATA Pengajuan LPJ UP/GU
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/lpj/up-gu') != -1	){
+				var title = jQuery('.card-title.custom-class').text();				
+				console.log('Laporan Pertanggung Jawaban | Pelimpahan  UP / GU', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lpj_lokal">Singkron LPJ BPP ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Laporan Pertanggung Jawaban | Pelimpahan  UP / GU') != -1){
+					jQuery('#singkron_lpj_lokal').text('Singkron LPJ BPP ke DB Lokal');
+					jQuery('#singkron_lpj_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data LPJ BPP ? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_lpj_lokal();
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}			
+			}
+			// DATA Pengajuan LPJ TU
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/lpj/tu') != -1	){
+				var title = jQuery('.card-title.custom-class').text();				
+				console.log('Laporan Pertanggung Jawaban | TU', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lpj_tu_lokal">Singkron LPJ BPP TU ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Laporan Pertanggung Jawaban | TU') != -1){
+					jQuery('#singkron_lpj_tu_lokal').text('Singkron LPJ BPP TU ke DB Lokal');
+					jQuery('#singkron_lpj_tu_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data LPJ BPP ? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_lpj_tu_lokal();
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}			
+			}
+			// DATA LPJ ADMINISTRATIF
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/lpj/administratif?type=ADMINISTRATIF') != -1	){
+				var title = jQuery('.card-title.custom-class').text();				
+				console.log('Cetak', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lpj_adm_lokal">Singkron LPJ ADM BPP ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Cetak') != -1){
+					jQuery('#singkron_lpj_adm_lokal').text('Singkron LPJ BPP ke DB Lokal');
+					jQuery('#singkron_lpj_adm_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data LPJ BPP ? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_lpj_adm_lokal();
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}			
+			}
+			// DATA Daftar Rekanan
+			else if(current_url.indexOf('penatausahaan/pengeluaran/daftar-rekanan?=1') != -1	){
+				var title = jQuery('.card-title.custom-class').text();
+				console.log('Daftar Rekanan', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rekanan_lokal">Singkron Rekanan ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(
+					title.indexOf('Daftar Rekanan') != -1
+				){
+					jQuery('#singkron_rekanan_lokal').text('Singkron Rekanan ke DB Lokal');
+					jQuery('#singkron_rekanan_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data Rekanan? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_rekanan_lokal();						
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}
+			}
+
 			// DATA Pengeluaran TBP
 			else if(current_url.indexOf('penatausahaan/pengeluaran/tbp/up-gu') != -1	){
 				var title = jQuery('.card-title.custom-class').text();				
@@ -598,27 +689,7 @@ function cekUrl(current_url, nomor=1){
 					jQuery('.aksi-extension').remove();
 				}			
 			}
-			// DATA Pengajuan LPJ
-			else if(current_url.indexOf('penatausahaan/pengeluaran/lpj/up-gu') != -1	){
-				var title = jQuery('.card-title.custom-class').text();				
-				console.log('Laporan Pertanggung Jawaban | Pelimpahan  UP / GU', title);
-				jQuery('.aksi-extension').remove();
-				var btn = ''
-					+'<div class="aksi-extension" style="display: inline-block;">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lpj_lokal">Singkron LPJ BPP ke DB Lokal</button>'					
-					+'</div>';
-				jQuery('.card-title.custom-class').append(btn);				
-				if(title.indexOf('Laporan Pertanggung Jawaban | Pelimpahan  UP / GU') != -1){
-					jQuery('#singkron_lpj_lokal').text('Singkron LPJ BPP ke DB Lokal');
-					jQuery('#singkron_lpj_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data LPJ BPP ? Data lokal akan diupdate sesuai data terbaru.')){
-							singkron_lpj_lokal();
-						}
-					});
-				}else{
-					jQuery('.aksi-extension').remove();
-				}			
-			}
+			
 			// DATA Rekening Penerimaan
 			else if(current_url.indexOf('penatausahaan/penerimaan/rekening/pembuatan') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
@@ -739,29 +810,7 @@ function cekUrl(current_url, nomor=1){
 					}
 				});
 			}
-			// DATA Daftar Rekanan
-			else if(current_url.indexOf('penatausahaan/pengeluaran/daftar-rekanan?=1') != -1	){
-				var title = jQuery('.card-title.custom-class').text();
-				console.log('Daftar Rekanan', title);
-				jQuery('.aksi-extension').remove();
-				var btn = ''
-					+'<div class="aksi-extension" style="display: inline-block;">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rekanan_lokal">Singkron Rekanan ke DB Lokal</button>'					
-					+'</div>';
-				jQuery('.card-title.custom-class').append(btn);				
-				if(
-					title.indexOf('Daftar Rekanan') != -1
-				){
-					jQuery('#singkron_rekanan_lokal').text('Singkron Rekanan ke DB Lokal');
-					jQuery('#singkron_rekanan_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data Rekanan? Data lokal akan diupdate sesuai data terbaru.')){
-							singkron_rekanan_lokal();						
-						}
-					});
-				}else{
-					jQuery('.aksi-extension').remove();
-				}
-			}
+			
 			// DATA Belnaja AKPD
 			else if(current_url.indexOf('penatausahaan/akpd/belanja') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
