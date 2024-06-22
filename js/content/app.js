@@ -763,7 +763,7 @@ function cekUrl(current_url, nomor=1){
 				}
 			}
 			// DATA Belnaja AKPD
-			else if(current_url.indexOf('enatausahaan/akpd/belanja') != -1	){
+			else if(current_url.indexOf('penatausahaan/akpd/belanja') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Anggaran Kas Pemerintah Daerah (AKPD) | Belanja', title);
 				jQuery('.aksi-extension').remove();
