@@ -215,6 +215,61 @@ function cekUrl(current_url, nomor=1){
 					}
 			//BESARAN UP
 			}
+			// Data RAK SKPD
+			else if(current_url.indexOf('penatausahaan/pengeluaran/dpa/laporan/rak/skpd') != -1){
+				var title = jQuery('.card-title.custom-class').text();
+				console.log('Cetak Dokumen Rencana Anggaran Kas (RAK) | SKPD', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_rak_ke_lokal">Singkron RAK SKPD ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);
+				if(title.indexOf(' | SKPD') != -1){
+					jQuery('#singkron_rak_ke_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
+							jQuery('#wrap-loading').show();
+							var sub = current_url.split('/');
+							get_rak({
+								id_unit: sub[9],
+								id_skpd: sub[10],
+								id_sub_skpd: sub[11],
+								id_urusan: sub[12],
+								id_bidang_urusan: sub[13],
+								id_program: sub[14],
+								id_giat: sub[15],
+								id_sub_giat: sub[16]
+							}, function(){
+								alert('Berhasil singkron RAK ke lokal!');
+								jQuery('#wrap-loading').hide();
+							});
+						}
+					});
+				}else if(title.indexOf(' | Sub Belanja') != -1){
+					jQuery('#singkron_rak_sipd_lokal').text('Singkron RAK SKPD ke DB Lokal');
+					jQuery('#singkron_rak_sipd_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
+							jQuery('#wrap-loading').show();
+							var sub = current_url.split('/');
+							get_sub_keg(sub[9], function(){
+								alert('Berhasil singkron RAK ke lokal!');
+								jQuery('#wrap-loading').hide();
+	            			});
+						}
+					});
+				}else if(title.indexOf(' | Belanja') != -1){
+					jQuery('#singkron_rak_sipd_lokal').text('Singkron ALL SKPD ke DB Lokal');
+					jQuery('#singkron_rak_sipd_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
+							singkron_rak_ke_lokal();
+						}
+					});
+				}else if(title.indexOf('Cetak Dokumen') != -1){
+					jQuery('.container-frame-pdf').attr('contenteditable', true);
+				}else{
+					jQuery('.aksi-extension').remove();
+				}
+			}
 			// Data RAK SIPD laporan
 			else if(current_url.indexOf('penatausahaan/pengeluaran/dpa/laporan/rak/belanja') != -1){
 				var title = jQuery('.card-title.custom-class').text();
@@ -602,6 +657,46 @@ function cekUrl(current_url, nomor=1){
 					jQuery('.aksi-extension').remove();
 				}			
 			}
+			// DATA LPJ FUNGSIONAL
+			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/lpj/administratif?type=FUNGSIONAL') != -1	){
+				var title = jQuery('.card-title.custom-class').text();				
+				console.log('Cetak', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lpj_fungsional_lokal">Singkron LPJ FUNGSIONAL BPP ke DB Lokal</button>'					
+						+'<select class="form-control" style="width: 300px; margin: 0 5px; display: inline-block; padding: 6px;" name="bulan" id="bulan">'
+								+'<option value="1"><font face="verdana">Januari</font></option>'
+								+'<option value="2"><font face="verdana">Februari</font></option>'
+								+'<option value="3"><font face="verdana">Maret</font></option>'
+								+'<option value="4"><font face="verdana">April</font></option>'
+								+'<option value="5"><font face="verdana">Mei</font></option>'
+								+'<option value="6"><font face="verdana">Juni</font></option>'
+								+'<option value="7"><font face="verdana">Juli</font></option>'
+								+'<option value="8"><font face="verdana">Agustus</font></option>'
+								+'<option value="9"><font face="verdana">September</font></option>'
+								+'<option value="10"><font face="verdana">Oktober</font></option>'
+								+'<option value="11"><font face="verdana">November</font></option>'
+								+'<option value="12"><font face="verdana">Desember</font></option>'
+							+'</select>';
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Cetak') != -1){
+					jQuery('#singkron_lpj_fungsional_lokal').text('Singkron LPJ FUNGSIONAL BPP ke DB Lokal');
+					jQuery('#singkron_lpj_fungsional_lokal').on('click', function(){
+						var val = jQuery('#bulan').val();
+						if(val == ''){
+							alert('Bulan Belum dipilih !!!');
+						}else{							
+							if(confirm('Apakah anda yakin melakukan backup data LPJ Fungsional bulan '+val+' ? Data lokal akan diupdate sesuai data terbaru.')){
+								singkron_lpj_fungsional_lokal(val);						
+							}
+						}
+					});					
+				}else{
+					jQuery('.aksi-extension').remove();
+				}			
+			}
 			// DATA Daftar Rekanan
 			else if(current_url.indexOf('penatausahaan/pengeluaran/daftar-rekanan?=1') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
@@ -862,7 +957,7 @@ function cekUrl(current_url, nomor=1){
 					jQuery('#singkron_dashboard_ke_lokal').on('click', function(){
 						var val = jQuery('#data_master_realisasi').val();
 						if(val == ''){
-							alert('Status Belum dipilih !!!');
+							alert('Data Belum dipilih !!!');
 						}else{
 							if(confirm('Apakah anda yakin melakukan backup data realisasi '+val+' APBD ? Data lokal akan diupdate sesuai data terbaru.')){
 								singkron_dashboard_ke_lokal(val);						
