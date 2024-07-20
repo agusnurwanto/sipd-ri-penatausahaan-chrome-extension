@@ -807,7 +807,7 @@ function cekUrl(current_url, nomor=1){
 				}
 			}
 			// DATA Rekening Penerimaan
-			else if(current_url.indexOf('penatausahaan/penerimaan/stbp') != -1	){
+			else if(current_url.indexOf('penatausahaan/penerimaan/stbp/validasi') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Surat Tanda Bukti Penerimaan (STBP)', title);
 				jQuery('.aksi-extension').remove();

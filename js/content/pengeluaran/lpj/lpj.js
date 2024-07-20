@@ -242,9 +242,9 @@ function singkron_lpj_fungsional_lokal(val) {
         		});
             });
         })
-        .then(function () {
-            jQuery("#wrap-loading").hide();
+        .then(function () {            
             alert("Berhasil singkron LPJ Fungsional");
+			jQuery("#wrap-loading").hide();
         });
     });
 }
@@ -257,8 +257,7 @@ function get_singkron_lpj_fungsional(data_skpd, bulan, page=1, response_all=[], 
         url: config.service_url+'pengeluaran/strict/lpj/adm-fungs/'+data_skpd.id_skpd+'?type=SKPD&id_pegawai=0&bulan='+bulan,
         type: 'get',
         success: function (response) {
-            console.log('LPJ', response);
-			
+            console.log('LPJ', response);			
             if(response!=null && response.length >= 1){
                 response.map(function(b, i){
                     response_all.push(b);
@@ -271,10 +270,10 @@ function get_singkron_lpj_fungsional(data_skpd, bulan, page=1, response_all=[], 
     });
 }
 
-function singkron_lpj_fungsional_ke_lokal_skpd(current_data, status, callback) {
+function singkron_lpj_fungsional_ke_lokal_skpd(current_data, callback) {
 	console.log('LPJ Fungsional', current_data);
     var stbp = {
-        action: "singkron_stbp",
+        action: "singkron_lpj_fungsional",
         tahun_anggaran: _token.tahun,
         api_key: config.api_key,
         idSkpd: current_data.id_skpd,        
