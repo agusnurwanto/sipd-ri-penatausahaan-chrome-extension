@@ -45,7 +45,8 @@
 				"js/content/penerimaan/stbp/stbp.js",
 				"js/content/pembiayaan/spd.js",
 				"js/content/master/user.js",
-				"js/content/master/pegawai.js"
+				"js/content/master/pegawai.js",
+				"js/content/aklap/lra.js"
 			],
 			"run_at": "document_end"
 		}

@@ -931,25 +931,21 @@ function cekUrl(current_url, nomor=1){
 			}
 			//DATA DASHBOARD
 			else if(current_url.indexOf('penatausahaan/dashboard') != -1	){
-				var title = jQuery('.css-jw-kc-w-cfpf-21-qf').text();
-				
+				var title = jQuery('.css-jw-kc-w-cfpf-21-qf').text();				
 				console.log('Statistik', title);
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
-						//+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_belanja_dashboard_ke_lokal">backup data realisasi APBD ke DB Lokal</button>'					
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lra_aklap_ke_lokal">Singkron LRA AKLAP ke DB Lokal</button>'					
 						+'<button onclick="return false;" class="btn btn-sm btn-primary" id="singkron_dashboard_ke_lokal" style="margin-left: 5px;">backup data realisasi APBD ke DB Lokal</button>'
 							+'<select class="form-control" style="width: 300px; margin: 0 5px; display: inline-block; padding: 6px;" id="data_master_realisasi">'
 								+'<option value="">Pilih Data yang akan di Backup</option>'
 								+'<option value="belanja">Belanja</option>'
 								+'<option value="pendapatan">Pendapatan</option>'
 								// +'<option value="pembiayaan">Pembiayaan</option>'
-							+'</select>';
+							+'</select>';							
 					+'</div>';
-				jQuery('.css-jw-kc-w-cfpf-21-qf').append(btn);				
-				// jQuery('#data_master_realisasi').on('click', function(){
-				// 	modal_data_realisasi();
-				// });	
+				jQuery('.css-jw-kc-w-cfpf-21-qf').append(btn);								
 				if(
 					title.indexOf('Statistik') != -1
 				){
@@ -962,12 +958,57 @@ function cekUrl(current_url, nomor=1){
 							if(confirm('Apakah anda yakin melakukan backup data realisasi '+val+' APBD ? Data lokal akan diupdate sesuai data terbaru.')){
 								singkron_dashboard_ke_lokal(val);						
 							}
+						}					
+					});
+					jQuery('#singkron_lra_aklap_ke_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data LRA AKLAP? Data lokal akan diupdate sesuai data terbaru.')){								
+							singkron_lra_aklap_ke_lokal();						
 						}
 					});
 				}else{
 					jQuery('.aksi-extension').remove();
 				}
 			}
+
+			//DATA AKLAP LRA
+			else if(window.location.href.indexOf('jurnalUmum') != -1){
+				var title = jQuery('.card-body').text();
+				console.log('Jurnal', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lra_aklap_lokal">Singkron LRA AKLAP ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('.card-body').append(btn);				
+				if(title.indexOf('Jurnal') != -1){
+					// jQuery('.setting-kegiatan').on('click', function(){
+					// 	var id = jQuery(this).attr('id');
+					// 	proses_setting_stbp(id);
+					// });
+					jQuery('#singkron_lra_aklap_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data LRA AKLAP? Data lokal akan diupdate sesuai data terbaru.')){								
+							singkron_lra_aklap_lokal();						
+						}
+					});
+					// jQuery('#set_validasi').on('click', function(){
+					// 	set_validasi();
+					// });	
+					// jQuery('#otorisasi_stbp_all').on('click', function(){
+					// 	if(confirm('Apakah anda yakin melakukan Otorisasi data STBP Penerimaan? Data STBP Verifikasi akan diupdate menjadi sudah otorisasi.')){								
+					// 		otorisasi_stbp_all();						
+					// 	}
+					// });
+					// jQuery('#validasi_stbp_all').on('click', function(){
+					// 	if(confirm('Apakah anda yakin melakukan Validasi data STBP Penerimaan? Data STBP Otorisasi akan diupdate menjadi sudah Validasi.')){								
+					// 		validasi_stbp_all();						
+					// 	}
+					// });
+					
+				}else{
+					jQuery('.aksi-extension').remove();
+				}
+			}
+
 			// load ulang fungsi jika title masih kosong
 			if(title == ''){
 				console.log('konten halaman belum terload!');
