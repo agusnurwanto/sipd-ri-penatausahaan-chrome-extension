@@ -43,7 +43,7 @@ function get_lra(id_skpd, callback){
     tanggal = date.getDate();
     bulan = date.getMonth();
     tahun = date.getFullYear();
-    var url = config.service_url+'aklap/api/report/cetaklra?searchparams={"tanggalFrom":"'+tahun+'-01-01","tanggalTo":"'+tahun+'-'+bulan+'-'+tanggal+'","formatFile":"json","tahun":"2021","level":null,"previewLaporan":null,"is_combine":"skpd_unit","skpd":'+id_skpd+'}';
+    var url = config.service_url+'aklap/api/report/cetaklra?searchparams={"tanggalFrom":"'+tahun+'-01-01","tanggalTo":"'+tahun+'-'+bulan+'-'+tanggal+'","formatFile":"json","tahun":"2021","level":6,"previewLaporan":null,"is_combine":"skpd","skpd":'+id_skpd+'}';
 	relayAjaxApiKey({
 		url: url,
 		type: 'GET',
