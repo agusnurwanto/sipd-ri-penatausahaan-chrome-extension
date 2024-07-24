@@ -55,6 +55,8 @@ function get_lra(id_skpd, callback){
 				api_key: config.api_key,
                 id_daerah: ret.skpd.id_daerah,
 				id_skpd: id_skpd,
+				mulai_tgl: _token.tahun+'-01-01',
+				sampai_tgl: tahun+'-'+bulan+'-'+tanggal,
 				sumber: 'ri',
 				data: {}
 			};
