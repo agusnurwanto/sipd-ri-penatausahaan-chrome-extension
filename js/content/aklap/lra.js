@@ -34,6 +34,7 @@ function singkron_lra_aklap_ke_lokal(){
 
 function get_lra(id_skpd, callback){
 	console.log('id_skpd', id_skpd);	
+	arrbulan = ["01","02","03","04","05","06","07","08","09","10","11","12"];
 	date = new Date();
     millisecond = date.getMilliseconds();
     detik = date.getSeconds();
@@ -43,7 +44,7 @@ function get_lra(id_skpd, callback){
     tanggal = date.getDate();
     bulan = date.getMonth();
     tahun = date.getFullYear();
-    var url = config.service_url+'aklap/api/report/cetaklra?searchparams={"tanggalFrom":"'+tahun+'-01-01","tanggalTo":"'+tahun+'-'+bulan+'-'+tanggal+'","formatFile":"json","tahun":"2021","level":6,"previewLaporan":null,"is_combine":"skpd","skpd":'+id_skpd+'}';
+    var url = config.service_url+'aklap/api/report/cetaklra?searchparams={"tanggalFrom":"'+tahun+'-01-01","tanggalTo":"'+tahun+'-'+arrbulan[bulan]+'-'+tanggal+'","formatFile":"json","tahun":"2021","level":6,"previewLaporan":null,"is_combine":"skpd","skpd":'+id_skpd+'}';
 	relayAjaxApiKey({
 		url: url,
 		type: 'GET',
