@@ -168,6 +168,9 @@ function singkron_lpj_adm_lokal(page=1, skpd_all=[]){
 	jQuery('#wrap-loading').show();
 }
 
+function get_skpd(){	
+	// https://service.sipd.kemendagri.go.id/referensi/strict/skpd/list/89/2024
+}
 // function singkron_lpj_fungsional_lokal(val){
 //     jQuery('#wrap-loading').show();
 // 	var bulan = val;
@@ -178,74 +181,75 @@ function singkron_lpj_adm_lokal(page=1, skpd_all=[]){
 //     })
 // }
 function singkron_lpj_fungsional_lokal(val) {
-	jQuery('#wrap-loading').show();
-	var bulan = val;
-    get_view_skpd().then(function(all_skpd){        
-        new Promise(function(resolve, reject){            
-            var response_lpj_fungsional = [];
-            var last = all_skpd.length-1;
-            all_skpd.reduce(function(sequence, nextData){
-                return sequence.then(function (current_data) {
-                    return new Promise(function (resolve_reduce, reject_reduce) {
-                        get_singkron_lpj_fungsional(current_data, bulan, function(res){
-							// console.log(res);
-							// process.exit(1);
-                            res.map(function(b, i){
-                                response_lpj_fungsional.push(b);
-                            });
-                            resolve_reduce(nextData);
-                        });
-                    })
-                    .catch(function(e){
-                        console.log(e);
-                        return Promise.resolve(nextData);
-                    });
-                })
-                .catch(function(e){
-                    console.log(e);
-                    return Promise.resolve(nextData);
-                });
-            }, Promise.resolve(all_skpd[last]))
-            .then(function(){
-                console.log('response_lpj_fungsional', response_lpj_fungsional);
-        		var page_skpd = {};
-                var last = response_lpj_fungsional.length-1;
-                response_lpj_fungsional.reduce(function (sequence, nextData) {
-                    return sequence.then(function (current_data) {
-                        return new Promise(function (resolve_reduce, reject_reduce) {
-    						console.log('LPJ Fungsional', current_data);
-                            pesan_loading('Get LPJ Fungsional Bulan "'+bulan+'" dari SKPD "'+current_data.id_skpd+'" '+current_data.nama_skpd+'');
-                            if(!page_skpd[current_data.id_skpd]){
-                                page_skpd[current_data.id_skpd] = [];
-                            }
-                            page_skpd[current_data.id_skpd].push(current_data);
+	jQuery('#wrap-loading').show();	
+    get_view_skpd().then(function(all_skpd){  
+		var bulan = val;
+		console.log(bulan);      
+        // new Promise(function(resolve, reject){            
+        //     var response_lpj_fungsional = [];
+        //     var last = all_skpd.length-1;
+        //     all_skpd.reduce(function(sequence, nextData){
+        //         return sequence.then(function (current_data) {
+        //             return new Promise(function (resolve_reduce, reject_reduce) {
+        //                 get_singkron_lpj_fungsional(current_data, bulan, function(res){
+		// 					// console.log(res);
+		// 					// process.exit(1);
+        //                     res.map(function(b, i){
+        //                         response_lpj_fungsional.push(b);
+        //                     });
+        //                     resolve_reduce(nextData);
+        //                 });
+        //             })
+        //             .catch(function(e){
+        //                 console.log(e);
+        //                 return Promise.resolve(nextData);
+        //             });
+        //         })
+        //         .catch(function(e){
+        //             console.log(e);
+        //             return Promise.resolve(nextData);
+        //         });
+        //     }, Promise.resolve(all_skpd[last]))
+        //     .then(function(){
+        //         console.log('response_lpj_fungsional', response_lpj_fungsional);
+        // 		var page_skpd = {};
+        //         var last = response_lpj_fungsional.length-1;
+        //         response_lpj_fungsional.reduce(function (sequence, nextData) {
+        //             return sequence.then(function (current_data) {
+        //                 return new Promise(function (resolve_reduce, reject_reduce) {
+    	// 					console.log('LPJ Fungsional', current_data);
+        //                     pesan_loading('Get LPJ Fungsional Bulan "'+bulan+'" dari SKPD "'+current_data.id_skpd+'" '+current_data.nama_skpd+'');
+        //                     if(!page_skpd[current_data.id_skpd]){
+        //                         page_skpd[current_data.id_skpd] = [];
+        //                     }
+        //                     page_skpd[current_data.id_skpd].push(current_data);
 
-                            // melakukan reset page sesuai data per skpd
-                            current_data.page = page_skpd[current_data.id_skpd].length;
+        //                     // melakukan reset page sesuai data per skpd
+        //                     current_data.page = page_skpd[current_data.id_skpd].length;
 
-        					singkron_lpj_fungsional_ke_lokal_skpd(current_data, bulan, function(){
-                                resolve_reduce(nextData);
-          		            });
-        				})
-        				.catch(function(e){
-        					console.log(e);
-        					return Promise.resolve(nextData);
-        				});
-        			})
-        			.catch(function(e){
-        				console.log(e);
-        				return Promise.resolve(nextData);
-        			});
-        		}, Promise.resolve(response_lpj_fungsional[last]))
-        		.then(function (data_last) {
-        		    return singkron_lpj_fungsional_lokal();
-        		});
-            });
-        })
-        .then(function () {            
-            alert("Berhasil singkron LPJ Fungsional");
-			jQuery("#wrap-loading").hide();
-        });
+        // 					singkron_lpj_fungsional_ke_lokal_skpd(current_data, bulan, function(){
+        //                         resolve_reduce(nextData);
+        //   		            });
+        // 				})
+        // 				.catch(function(e){
+        // 					console.log(e);
+        // 					return Promise.resolve(nextData);
+        // 				});
+        // 			})
+        // 			.catch(function(e){
+        // 				console.log(e);
+        // 				return Promise.resolve(nextData);
+        // 			});
+        // 		}, Promise.resolve(response_lpj_fungsional[last]))
+        // 		.then(function (data_last) {
+        // 		    return singkron_lpj_fungsional_lokal();
+        // 		});
+        //     });
+        // })
+        // .then(function () {            
+        //     alert("Berhasil singkron LPJ Fungsional");
+		// 	jQuery("#wrap-loading").hide();
+        // });
     });
 }
 

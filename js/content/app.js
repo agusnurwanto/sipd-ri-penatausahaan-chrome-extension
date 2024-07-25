@@ -637,34 +637,13 @@ function cekUrl(current_url, nomor=1){
 				}			
 			}
 			// DATA LPJ ADMINISTRATIF
-			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/lpj/administratif?type=ADMINISTRATIF') != -1	){
+			else if(current_url.indexOf('penatausahaan/settlement/lpj/administratif?type=ADMINISTRATIF') != -1	){
 				var title = jQuery('.card-title.custom-class').text();				
 				console.log('Cetak', title);
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lpj_adm_lokal">Singkron LPJ ADM BPP ke DB Lokal</button>'					
-					+'</div>';
-				jQuery('.card-title.custom-class').append(btn);				
-				if(title.indexOf('Cetak') != -1){
-					jQuery('#singkron_lpj_adm_lokal').text('Singkron LPJ BPP ke DB Lokal');
-					jQuery('#singkron_lpj_adm_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data LPJ BPP ? Data lokal akan diupdate sesuai data terbaru.')){
-							singkron_lpj_adm_lokal();
-						}
-					});
-				}else{
-					jQuery('.aksi-extension').remove();
-				}			
-			}
-			// DATA LPJ FUNGSIONAL
-			else if(current_url.indexOf('penatausahaan/penatausahaan/pengeluaran/lpj/administratif?type=FUNGSIONAL') != -1	){
-				var title = jQuery('.card-title.custom-class').text();				
-				console.log('Cetak', title);
-				jQuery('.aksi-extension').remove();
-				var btn = ''
-					+'<div class="aksi-extension" style="display: inline-block;">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lpj_fungsional_lokal">Singkron LPJ FUNGSIONAL BPP ke DB Lokal</button>'					
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lpj_adm_lokal">Singkron LPJ ke DB Lokal</button>'					
 						+'<select class="form-control" style="width: 300px; margin: 0 5px; display: inline-block; padding: 6px;" name="bulan" id="bulan">'
 								+'<option value="1"><font face="verdana">Januari</font></option>'
 								+'<option value="2"><font face="verdana">Februari</font></option>'
@@ -682,7 +661,47 @@ function cekUrl(current_url, nomor=1){
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);				
 				if(title.indexOf('Cetak') != -1){
-					jQuery('#singkron_lpj_fungsional_lokal').text('Singkron LPJ FUNGSIONAL BPP ke DB Lokal');
+					jQuery('#singkron_lpj_adm_lokal').text('Singkron LPJ ADMINISTRATIF ke DB Lokal');
+					jQuery('#singkron_lpj_adm_lokal').on('click', function(){
+						var val = jQuery('#bulan').val();
+						if(val == ''){
+							alert('Bulan Belum dipilih !!!');
+						}else{							
+							if(confirm('Apakah anda yakin melakukan backup data LPJ ADMINISTRATIF bulan '+val+' ? Data lokal akan diupdate sesuai data terbaru.')){
+								singkron_lpj_adm_lokal(val);						
+							}
+						}
+					});
+				}else{
+					jQuery('.aksi-extension').remove();
+				}			
+			}
+			// DATA LPJ FUNGSIONAL
+			else if(current_url.indexOf('penatausahaan/settlement/lpj/administratif?type=FUNGSIONAL') != -1	){
+				var title = jQuery('.card-title.custom-class').text();				
+				console.log('Cetak', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lpj_fungsional_lokal">Singkron LPJ ke DB Lokal</button>'					
+						+'<select class="form-control" style="width: 300px; margin: 0 5px; display: inline-block; padding: 6px;" name="bulan" id="bulan">'
+								+'<option value="1"><font face="verdana">Januari</font></option>'
+								+'<option value="2"><font face="verdana">Februari</font></option>'
+								+'<option value="3"><font face="verdana">Maret</font></option>'
+								+'<option value="4"><font face="verdana">April</font></option>'
+								+'<option value="5"><font face="verdana">Mei</font></option>'
+								+'<option value="6"><font face="verdana">Juni</font></option>'
+								+'<option value="7"><font face="verdana">Juli</font></option>'
+								+'<option value="8"><font face="verdana">Agustus</font></option>'
+								+'<option value="9"><font face="verdana">September</font></option>'
+								+'<option value="10"><font face="verdana">Oktober</font></option>'
+								+'<option value="11"><font face="verdana">November</font></option>'
+								+'<option value="12"><font face="verdana">Desember</font></option>'
+							+'</select>';
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Cetak') != -1){
+					jQuery('#singkron_lpj_fungsional_lokal').text('Singkron LPJ FUNGSIONAL ke DB Lokal');
 					jQuery('#singkron_lpj_fungsional_lokal').on('click', function(){
 						var val = jQuery('#bulan').val();
 						if(val == ''){
