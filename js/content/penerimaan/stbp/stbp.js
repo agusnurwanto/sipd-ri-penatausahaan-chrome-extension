@@ -258,7 +258,7 @@ function set_validasi(){
 	} 
 }
 
-function otorisasi_stbp_all(status=['sudah_verifikasi']) {
+function otorisasi_stbp_all_old(status=['sudah_verifikasi']) {
 	jQuery('#wrap-loading').show();
     var type_status = status;
     new Promise(function(resolve, reject){
@@ -315,16 +315,136 @@ function otorisasi_stbp_all(status=['sudah_verifikasi']) {
     });
 }
 
+function otorisasi_stbp_all(status=['sudah_verifikasi']) {
+	jQuery('#wrap-loading').show();
+    get_view_skpd().then(function(all_skpd){
+        var type_status = status;
+        new Promise(function(resolve, reject){
+            if(typeof type_status == 'undefined'){
+                return resolve();
+            }
+            pesan_loading('Get data STBP status='+type_status);
+            var last = all_skpd.length-1;
+            all_skpd.reduce(function(sequence, nextData){
+                return sequence.then(function (current_data) {
+                    return new Promise(function (resolve_reduce, reject_reduce) {
+                        relayAjaxApiKey({			
+                            url: config.service_url+'penerimaan/strict/stbp?jenis=ALL&status='+type_status+'&skpd='+current_data.id_skpd,
+                            type: 'get',
+                            success: function (response) {
+                                if(response === null || response.length === 0) {                                                            
+                                    console.log('STBP kosong / null', response);
+                                    resolve_reduce(nextData);
+                                }else{
+                                    console.log('MAU SIMPAN Otorisasi',response);
+                                    var page_skpd = {};
+                                    var last = response.length-1;
+                                    response.reduce(function (sequence, nextData2) {
+                                        return sequence.then(function (current_data2) {
+                                            return new Promise(function (resolve_reduce, reject_reduce) {
+                                                console.log('STBP', current_data2);
+                                                pesan_loading('Get ID STBP '+current_data2.id_stbp+' Status '+type_status+' dari ID SKPD "'+current_data2.id_skpd+'"');
+                                                if(!page_skpd[current_data2.id_skpd]){
+                                                    page_skpd[current_data2.id_skpd] = [];
+                                                }
+                                                page_skpd[current_data2.id_skpd].push(current_data2);
+
+                                                // melakukan reset page sesuai data per skpd
+                                                current_data2.page = page_skpd[current_data2.id_skpd].length;
+
+                                                // simpan_otorisasi(current_data, ()=>{
+                                                //     resolve_reduce(nextData);
+                                                // });
+                                                simpan_otorisasi(current_data2).then(function(otorisasi){
+                                                    if(otorisasi === null || otorisasi.code === 422 || otorisasi.code === 500) {   
+                                                        console.log('Data STBP Belum mempunyai STS', otorisasi);
+                                                        resolve_reduce(nextData2);
+                                                    }else{ 
+                                                        chrome.runtime.sendMessage(otorisasi, function(response) {
+                                                            console.log('responeMessage', response);
+                                                            resolve_reduce(nextData2);
+                                                        });		
+                                                    }																			
+                                                })
+                                            })
+                                            .catch(function(e){
+                                                console.log(e);
+                                                return Promise.resolve(nextData2);
+                                            });
+                                        })
+                                        .catch(function(e){
+                                            console.log(e);
+                                            return Promise.resolve(nextData2);
+                                        });
+                                    }, Promise.resolve(response[last]))
+                                    .then(function (data_last) {
+                                        resolve_reduce(nextData);                              
+                                    });
+                                }
+                            },
+                        });
+                    })
+                    .catch(function(e){
+                        console.log(e);
+                        return Promise.resolve(nextData);
+                    });
+                })
+                .catch(function(e){
+                    console.log(e);
+                    return Promise.resolve(nextData);
+                });
+            }, Promise.resolve(all_skpd[last]))
+            .then(function(){
+                
+        		var page_skpd = {};
+                var last = all_skpd.length-1;
+                all_skpd.reduce(function (sequence, nextData) {
+                    return sequence.then(function (current_data) {
+                        return new Promise(function (resolve_reduce, reject_reduce) {
+    						console.log('STBP', current_data);
+                            pesan_loading('Get STBP '+type_status+' dari ID SKPD "'+current_data.id_skpd+'"');
+                            if(!page_skpd[current_data.id_skpd]){
+                                page_skpd[current_data.id_skpd] = [];
+                            }
+                            page_skpd[current_data.id_skpd].push(current_data);
+
+                            // melakukan reset page sesuai data per skpd
+                            current_data.page = page_skpd[current_data.id_skpd].length;
+                            simpan_otorisasi(current_data).then(function(otorisasi){
+                                chrome.runtime.sendMessage(otorisasi, function(response) {
+                                    console.log('responeMessage', response);
+                                    resolve_reduce(nextData);
+                                });																					
+                            })        					
+        				})
+        				.catch(function(e){
+        					console.log(e);
+        					return Promise.resolve(nextData);
+        				});
+        			})
+        			.catch(function(e){
+        				console.log(e);
+        				return Promise.resolve(nextData);
+        			});
+        		}, Promise.resolve(all_skpd[last]))
+        		.then(function (data_last) {
+        		    return otorisasi_stbp_all(status);
+        		});
+            });
+        });
+    });
+}
+
 function simpan_otorisasi(current_data){    
     return new Promise(function(resolve, reject){
     	pesan_loading("Berhasil otorisasi data STBP detail ID="+current_data.id_stbp);
+        let param = JSON.stringify({"update":"Otorisasi","status":1,"id_skpd":current_data.id_skpd})
 		relayAjaxApiKey({
 			url: config.service_url + "penerimaan/strict/stbp/status/" + current_data.id_stbp,                                   
-			type: 'PUT',	      				
-			data: {            
-                    status: 1,				
-                    update: "Otorisasi"
-				},
+			type: 'PUT',	
+            dataType: 'json',
+            contentType: 'application/json', 	      				
+			data: param,
 			beforeSend: function (xhr) {                
                 xhr.setRequestHeader("Authorization", 'Bearer '+getCookie('X-SIPD-PU-TK'));
             },
@@ -335,7 +455,7 @@ function simpan_otorisasi(current_data){
     });
 }
 
-function validasi_stbp_all2(status=['sudah_otorisasi']) {
+function validasi_stbp_all_old(status=['sudah_otorisasi']) {
 	jQuery('#wrap-loading').show();
     get_view_skpd().then(function(all_skpd){
         var type_status = status;
@@ -487,7 +607,7 @@ function validasi_stbp_all(status=['sudah_otorisasi']) {
                                                 //     resolve_reduce(nextData);
                                                 // });
                                                 simpan_validasi(current_data2).then(function(validasi){
-                                                    if(validasi === null || validasi.code === 422) {   
+                                                    if(validasi === null || validasi.code === 422 || validasi.code === 500) {   
                                                         console.log('Data STBP Belum mempunyai STS', validasi);
                                                         resolve_reduce(nextData2);
                                                     }else{ 
@@ -542,10 +662,15 @@ function validasi_stbp_all(status=['sudah_otorisasi']) {
                             // melakukan reset page sesuai data per skpd
                             current_data.page = page_skpd[current_data.id_skpd].length;
                             simpan_validasi(current_data).then(function(validasi){
-                                chrome.runtime.sendMessage(validasi, function(response) {
-                                    console.log('responeMessage', response);
-                                    resolve_reduce(nextData);
-                                });																					
+                                if(validasi === null || validasi.code === 422 || validasi.code === 500) {   
+                                    console.log('Data STBP Belum mempunyai STS', validasi);
+                                    resolve_reduce(nextData2);
+                                }else{ 
+                                    chrome.runtime.sendMessage(validasi, function(response) {
+                                        console.log('responeMessage', response);
+                                        resolve_reduce(nextData2);
+                                    });		
+                                }																				
                             })        					
         				})
         				.catch(function(e){
@@ -559,7 +684,7 @@ function validasi_stbp_all(status=['sudah_otorisasi']) {
         			});
         		}, Promise.resolve(all_skpd[last]))
         		.then(function (data_last) {
-        		    return singkron_stbp_lokal(status);
+        		    return validasi_stbp_all(status);
         		});
             });
         });
@@ -569,18 +694,27 @@ function validasi_stbp_all(status=['sudah_otorisasi']) {
 function simpan_validasi(current_data){    
     return new Promise(function(resolve, reject){
     	pesan_loading("Berhasil Validasi data STBP ID="+current_data.id_stbp);
+        let param = JSON.stringify({"update":"Validasi","status":1,"id_skpd":current_data.id_skpd})
+        let data2 = { 
+            "update": "Validasi", 
+            "status": 1, 
+            "id_skpd": current_data.id_skpd 
+        }; 
+        let data = {"update": "Validasi","status": 1,"id_skpd": current_data.id_skpd}
+        //const param = JSON.stringify({update: "Validasi", id_skpd: current_data.id_skpd,status: 1});
 		relayAjaxApiKey({
 			url: config.service_url + "penerimaan/strict/stbp/status/" + current_data.id_stbp,                                   
-			type: 'PUT',	      				
-			data: {            
-                    id_skpd: current_data.id_skpd,		
-                    status: 1,				
-                    update: "Validasi"
-				},
+			type: 'PUT',	  
+            dataType: 'json',
+            contentType: 'application/json', 				
+			// data: formData(data),
+            data: param,            
 			beforeSend: function (xhr) {                
                 xhr.setRequestHeader("Authorization", 'Bearer '+getCookie('X-SIPD-PU-TK'));
-                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            },
+                // xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("content-type", 'application/json')
+                // xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+            },           
 	      	success: function(validasi){
 	      		return resolve(validasi);
 	      	}
