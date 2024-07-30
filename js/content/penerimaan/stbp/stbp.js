@@ -106,11 +106,12 @@ function singkron_stbp_ke_lokal_skpd(current_data, status, callback) {
     stbp.data[0].nomor_stbp = current_data.nomor_stbp;
     stbp.data[0].no_rekening = current_data.no_rekening;
     stbp.data[0].metode_penyetoran = current_data.metode_penyetoran;    
+    stbp.data[0].nilai_stbp = current_data.nilai_stbp;
     stbp.data[0].keterangan_stbp = current_data.keterangan_stbp;
     stbp.data[0].is_verifikasi_stbp = current_data.is_verifikasi_stbp;
 	stbp.data[0].is_otorisasi_stbp = current_data.is_otorisasi_stbp;
 	stbp.data[0].is_validasi_stbp = current_data.is_validasi_stbp;
-	stbp.data[0].tanggal_stbp = current_data.tanggal_stbp;
+	stbp.data[0].tanggal_stbp = current_data.tanggal_stbp;    
 	stbp.data[0].tahun_anggaran = current_data.tahun;    
     stbp.data[0].id_daerah = current_data.id_daerah;
     stbp.data[0].id_unit = current_data.id_unit;
