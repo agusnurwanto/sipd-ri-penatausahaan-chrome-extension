@@ -46,7 +46,8 @@
 				"js/content/pembiayaan/spd.js",
 				"js/content/master/user.js",
 				"js/content/master/pegawai.js",
-				"js/content/aklap/lra.js"
+				"js/content/aklap/lra.js",
+				"js/content/aklap/jurnal.js"
 			],
 			"run_at": "document_end"
 		}
