@@ -833,15 +833,29 @@ function cekUrl(current_url, nomor=1){
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_stbp_lokal">Singkron STBP ke DB Lokal</button>'					
+							+'<select class="form-control" style="width: 300px; margin: 0 5px; display: inline-block; padding: 6px;" id="data_stbp_status">'
+								+'<option value="">Pilih Status yang akan di Backup</option>'
+								+'<option value="belum_verifikasi">Belum Diverifikasi</option>'
+								+'<option value="sudah_verifikasi">Sudah Diverifikasi</option>'
+								+'<option value="sudah_otorisasi">Sudah Otorisasi</option>'
+								+'<option value="sudah_validasi">Sudah Validasi</option>'
+								+'<option value="dihapus">Dihapus</option>'
+							+'</select>'
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-warning" id="otorisasi_stbp_all">Otorisasi ALL STBP </button>'
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="validasi_stbp_all">Validasi ALL STBP</button>'					
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);				
 				if(title.indexOf('Surat Tanda Bukti Penerimaan | Semua Data') != -1){
-					// jQuery('.setting-kegiatan').on('click', function(){
-					// 	var id = jQuery(this).attr('id');
-					// 	proses_setting_stbp(id);
-					// });
+					jQuery('#singkron_stbp_lokal').on('click', function(){						
+						var val = jQuery('#data_stbp_status').val();
+						if(val == ''){
+							alert('Status Belum dipilih !!!');
+						}else{
+							if(confirm('Apakah anda yakin melakukan backup data STBP '+val+'? Data lokal akan diupdate sesuai data terbaru.')){
+								singkron_stbp_lokal(val, cp_obj(type_data_global));
+							}							
+						}
+					});
 					jQuery('#singkron_stbp_lokal').on('click', function(){
 						if(confirm('Apakah anda yakin melakukan backup data STBP Penerimaan? Data lokal akan diupdate sesuai data terbaru.')){								
 							singkron_stbp_lokal();						

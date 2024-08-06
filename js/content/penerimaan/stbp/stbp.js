@@ -1,5 +1,7 @@
-function singkron_stbp_lokal(status=['belum_verifikasi', 'sudah_verifikasi', 'sudah_otorisasi', 'sudah_validasi', 'dihapus']) {
+//function singkron_stbp_lokal(status=['belum_verifikasi', 'sudah_verifikasi', 'sudah_otorisasi', 'sudah_validasi', 'dihapus']) {
+function singkron_stbp_lokal(val) {
 	jQuery('#wrap-loading').show();
+    var status = val;
     get_view_skpd().then(function(all_skpd){
         var type_status = status.shift();
         new Promise(function(resolve, reject){
