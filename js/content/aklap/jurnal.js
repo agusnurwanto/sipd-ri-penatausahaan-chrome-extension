@@ -92,7 +92,7 @@ function singkron_jurnal_ke_lokal_skpd(current_data, callback) {
                 };
                 // let lapjurnal = Object.keys(res.data.list);
                 var i;
-                for ( i = 0; i < res.data.length; i++) {
+                // for ( i = 0; i < res.data.length; i++) {
                 res.data.list.map( b => { 
                     
                     //function(b, i){       
@@ -118,7 +118,7 @@ function singkron_jurnal_ke_lokal_skpd(current_data, callback) {
                         data_jurnal.data[i].detail_jurnal[c].position	= d.position;     
                     });			
                 });
-                }
+                // }
 
                 var data_back = {
                     message: {

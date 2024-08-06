@@ -153,7 +153,7 @@ function singkron_stbp_ke_lokal_skpd(current_data, status, callback) {
                     idSkpd: current_data.id_skpd,
                     id_stbp: current_data.id_stbp,
                     sumber: 'ri',
-                    data: res[res]
+                    data: res
                 };
                 var data_back = {
                     message: {
