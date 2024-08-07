@@ -3,7 +3,7 @@ function singkron_stbp_lokal(val) {
 	jQuery('#wrap-loading').show();
     var status = val;
     get_view_skpd().then(function(all_skpd){
-        var type_status = status.shift();
+        var type_status = status;
         new Promise(function(resolve, reject){
             if(typeof type_status == 'undefined'){
                 return resolve();

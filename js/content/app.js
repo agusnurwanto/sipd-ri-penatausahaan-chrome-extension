@@ -852,7 +852,7 @@ function cekUrl(current_url, nomor=1){
 							alert('Status Belum dipilih !!!');
 						}else{
 							if(confirm('Apakah anda yakin melakukan backup data STBP '+val+'? Data lokal akan diupdate sesuai data terbaru.')){
-								singkron_stbp_lokal(val, cp_obj(type_data_global));
+								singkron_stbp_lokal(val);
 							}							
 						}
 					});
