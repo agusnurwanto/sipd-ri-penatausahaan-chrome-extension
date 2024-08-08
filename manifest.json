@@ -39,12 +39,15 @@
 				"js/content/pengeluaran/spm/spm.js",
 				"js/content/pengeluaran/tbp/tbp.js",
 				"js/content/pengeluaran/lpj/lpj.js",
+				"js/content/pengeluaran/lpj/lpj_tu.js",
 				"js/content/pengeluaran/pengajuan/npd.js",
 				"js/content/penerimaan/rekening/rekening.js",
 				"js/content/penerimaan/stbp/stbp.js",
 				"js/content/pembiayaan/spd.js",
 				"js/content/master/user.js",
-				"js/content/master/pegawai.js"
+				"js/content/master/pegawai.js",
+				"js/content/aklap/lra.js",
+				"js/content/aklap/jurnal.js"
 			],
 			"run_at": "document_end"
 		}
