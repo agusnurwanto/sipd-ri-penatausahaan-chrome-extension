@@ -261,11 +261,13 @@ function get_rak(sub, callback){
 		success: function(ret){
 			console.log('ret', ret);
 			var kode_sbl = id_skpd+'.'+id_sub_skpd+'.'+id_skpd+'.'+id_bidang_urusan+'.'+id_program+'.'+id_giat+'.'+id_sub_giat;
+			var kode_sbl_sub_keg = id_skpd+'.'+id_sub_skpd+'.'+id_program+'.'+id_giat+'.'+id_sub_giat;
 			var data_rak = { 
 				action: 'singkron_anggaran_kas',
 				tahun_anggaran: _token.tahun,
 				api_key: config.api_key,
 				kode_sbl: kode_sbl,
+				kode_sbl_sub_keg: kode_sbl_sub_keg,
 				id_skpd: id_skpd,
 				type: 'belanja',
 				sumber: 'ri',
