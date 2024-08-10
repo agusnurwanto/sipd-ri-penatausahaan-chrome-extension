@@ -970,7 +970,13 @@ function cekUrl(current_url, nomor=1){
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-warning" id="singkron_jurnal_lokal">Singkron Jurnal AKLAP ke DB Lokal</button>'					
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lra_aklap_ke_lokal">Singkron LRA AKLAP ke DB Lokal</button>'					
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lra_aklap_ke_lokal">Singkron LRA AKLAP ke DB Lokal</button>'				
+						+'<div class="col-md-3">'
+							+'Tanggal Awal LRA : <input type="date" name="tgl_mulai" id="tgl_mulai" placeholder="Tgl Awal lra" class="form-control" maxlength="10">'
+						+'</div>'
+						+'<div class="col-md-3">'
+							+'Tanggal Akhir LRA : <input type="date" name="tgl_akhir" id="tgl_akhir" placeholder="Tgl Akhir lra" class="form-control" maxlength="10">'
+						+'</div>'
 						+'<button onclick="return false;" class="btn btn-sm btn-primary" id="singkron_dashboard_ke_lokal" style="margin-left: 5px;">backup data realisasi APBD ke DB Lokal</button>'
 							+'<select class="form-control" style="width: 300px; margin: 0 5px; display: inline-block; padding: 6px;" id="data_master_realisasi">'
 								+'<option value="">Pilih Data yang akan di Backup</option>'
@@ -979,6 +985,35 @@ function cekUrl(current_url, nomor=1){
 								// +'<option value="pembiayaan">Pembiayaan</option>'
 							+'</select>';							
 					+'</div>';
+					var modal = ''
+							 +'<div class="chakra-modal__content fade modal-extension" id="modal-extension" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true" style="z-index: 99999; background: #0000003d;">'
+								+'<div class="modal-dialog" style="max-width: 1200px;" role="document">'
+									+'<div class="modal-content">'
+										+'<div class="modal-header bgpanel-theme">'													
+											+'<h4 class="modal-title text-center" style="font-weight: bold;" id="">SKPD AKLAP <span class="info-title"></span></h4>'
+											+'<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>'
+										+'</div>'
+										+'<div class="modal-body">'
+											+'<table class="table table-bordered table-hover" id="table_skpd">'
+												+'<thead>'
+													+'<tr>'
+														+'<th class="text-center" style="font-weight: bold;">No</th>'
+														+'<th class="text-center" style="font-weight: bold;"><input type="checkbox" id="select_skpd"></th>'
+														+'<th class="text-center" style="font-weight: bold;">ID</th>'
+														+'<th class="text-center" style="font-weight: bold;width: 200px"">SKPD</th>'								
+													+'</tr>'
+												+'</thead>'
+												+'<tbody></tbody>'
+											+'</table>'
+										+'</div>'
+										+'<div class="modal-footer">'
+											+'<button type="button" class="btn btn-danger" id="hapus-duplikat">Hapus Komponen</button>'
+											+'<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>'							
+										+'</div>'
+									+'</div>'
+								+'</div>'
+							+'</div>';
+				jQuery('body').append(modal);
 				jQuery('.css-jw-kc-w-cfpf-21-qf').append(btn);								
 				if(
 					title.indexOf('Statistik') != -1
@@ -995,9 +1030,16 @@ function cekUrl(current_url, nomor=1){
 						}					
 					});
 					jQuery('#singkron_lra_aklap_ke_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data LRA AKLAP? Data lokal akan diupdate sesuai data terbaru.')){								
-							singkron_lra_aklap_ke_lokal();						
+						var tgl_awal = jQuery('#tgl_mulai').val();
+						var tgl_akhir = jQuery('#tgl_akhir').val();
+						if(tgl_awal == '' || tgl_akhir == ''){
+							alert('Tanggal Belum dipilih !!!');
+						}else{
+							if(confirm('Apakah anda yakin melakukan backup data LRA AKLAP? Data lokal akan diupdate sesuai data terbaru.')){								
+								singkron_lra_aklap_ke_lokal(tgl_awal, tgl_akhir);						
+							}
 						}
+						
 					});
 					jQuery('#singkron_jurnal_lokal').on('click', function(){
 						if(confirm('Apakah anda yakin melakukan backup data Jurnal AKLAP? Data lokal akan diupdate sesuai data terbaru.')){								
