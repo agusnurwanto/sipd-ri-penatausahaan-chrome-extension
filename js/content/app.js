@@ -717,7 +717,7 @@ function cekUrl(current_url, nomor=1){
 				}			
 			}
 			// DATA Daftar Rekanan
-			else if(current_url.indexOf('penatausahaan/pengeluaran/daftar-rekanan?=1') != -1	){
+			else if(current_url.indexOf('penatausahaan/pengeluaran/partners') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('Daftar Rekanan', title);
 				jQuery('.aksi-extension').remove();
@@ -952,7 +952,7 @@ function cekUrl(current_url, nomor=1){
 				if(
 					title.indexOf('Anggaran Kas Pemerintah Daerah (AKPD) | Belanja') != -1
 				){
-					jQuery('#singkron_belanja_akpd_ke_lokal').text('Singkron Rekanan ke DB Lokal');
+					jQuery('#singkron_belanja_akpd_ke_lokal').text('Singkron AKPD ke DB Lokal');
 					jQuery('#singkron_belanja_akpd_ke_lokal').on('click', function(){
 						if(confirm('Apakah anda yakin melakukan backup data belanja AKPD ? Data lokal akan diupdate sesuai data terbaru.')){
 							singkron_belanja_akpd_ke_lokal();						
