@@ -79,8 +79,8 @@ function get_jurnal(opsi, page=1, limit=10){
                                     };
                                     chrome.runtime.sendMessage(data, function(response) {
                                         console.log('responeMessage', response);
-                                        // resolve_reduce(data_user);
-                                        alert('Berhasil singkron User ke lokal!');
+                                        resolve_reduce(jurnal);
+                                        alert('Berhasil singkron Jurnal ke lokal!');
                                         jQuery('#wrap-loading').hide();
                                     });
                                     // current_data.detail_user = user;
@@ -130,12 +130,6 @@ function get_jurnal(opsi, page=1, limit=10){
                                     resolve_reduce(nextData);
                                 }
                             });
-							// current_data.id = current_data.id;
-							// current_data.nama_pangkat = current_data.nama_pangkat;
-							// current_data.nama_golongan = current_data.nama_golongan;
-							// opsi.data.push(current_data);
-							// resolve_reduce(nextData);
-								
 		        		})
 		                .catch(function(e){
 		                    console.log(e);
