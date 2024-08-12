@@ -904,7 +904,7 @@ function cekUrl(current_url, nomor=1){
 				}
 			}
 			// DATA Pegawai
-			else if(current_url.indexOf('penatausahaan/setting/pegawai') != -1|| current_url.indexOf('penatausahaan/user') != -1)
+			else if(current_url.indexOf('penatausahaan/settings/empolyee') != -1|| current_url.indexOf('penatausahaan/settings/user') != -1)
 			{
 				var title = jQuery('.card-title.custom-class').text();
 				console.log('halaman Pegawai', title);
