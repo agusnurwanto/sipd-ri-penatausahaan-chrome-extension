@@ -825,10 +825,10 @@ function cekUrl(current_url, nomor=1){
 					jQuery('.aksi-extension').remove();
 				}
 			}
-			// DATA Rekening Penerimaan
-			else if(current_url.indexOf('penatausahaan/penerimaan/stbp/validasi') != -1	){
+			// DATA Rekening STBP pendapatan
+			else if(current_url.indexOf('penatausahaan/penerimaan/stbp/pendapatan') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
-				console.log('Surat Tanda Bukti Penerimaan (STBP)', title);
+				console.log('Surat Tanda Bukti Penerimaan | Pendapatan', title);
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
@@ -845,7 +845,61 @@ function cekUrl(current_url, nomor=1){
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="validasi_stbp_all">Validasi ALL STBP</button>'					
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);				
-				if(title.indexOf('Surat Tanda Bukti Penerimaan | Semua Data') != -1){
+				if(title.indexOf('Surat Tanda Bukti Penerimaan | Pendapatan') != -1){
+					jQuery('#singkron_stbp_lokal').on('click', function(){						
+						var val = jQuery('#data_stbp_status').val();
+						if(val == ''){
+							alert('Status Belum dipilih !!!');
+						}else{
+							if(confirm('Apakah anda yakin melakukan backup data STBP '+val+'? Data lokal akan diupdate sesuai data terbaru.')){
+								singkron_stbp_lokal(val);
+							}							
+						}
+					});
+					jQuery('#singkron_stbp_lokal').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan backup data STBP Penerimaan? Data lokal akan diupdate sesuai data terbaru.')){								
+							singkron_stbp_lokal();						
+						}
+					});
+					jQuery('#set_validasi').on('click', function(){
+						set_validasi();
+					});	
+					jQuery('#otorisasi_stbp_all').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan Otorisasi data STBP Penerimaan? Data STBP Verifikasi akan diupdate menjadi sudah otorisasi.')){								
+							otorisasi_stbp_all();						
+						}
+					});
+					jQuery('#validasi_stbp_all').on('click', function(){
+						if(confirm('Apakah anda yakin melakukan Validasi data STBP Penerimaan? Data STBP Otorisasi akan diupdate menjadi sudah Validasi.')){								
+							validasi_stbp_all();						
+						}
+					});
+					
+				}else{
+					jQuery('.aksi-extension').remove();
+				}
+			}
+			// DATA Rekening STBP pembiayaan
+			else if(current_url.indexOf('penatausahaan/penerimaan/stbp/pembiayaan') != -1	){
+				var title = jQuery('.card-title.custom-class').text();
+				console.log('Surat Tanda Bukti Penerimaan | Pembiayaan', title);
+				jQuery('.aksi-extension').remove();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_stbp_lokal">Singkron STBP ke DB Lokal</button>'					
+							+'<select class="form-control" style="width: 300px; margin: 0 5px; display: inline-block; padding: 6px;" id="data_stbp_status">'
+								+'<option value="">Pilih Status yang akan di Backup</option>'
+								+'<option value="belum_verifikasi">Belum Diverifikasi</option>'
+								+'<option value="sudah_verifikasi">Sudah Diverifikasi</option>'
+								+'<option value="sudah_otorisasi">Sudah Otorisasi</option>'
+								+'<option value="sudah_validasi">Sudah Validasi</option>'
+								+'<option value="dihapus">Dihapus</option>'
+							+'</select>'
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-warning" id="otorisasi_stbp_all">Otorisasi ALL STBP </button>'
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="validasi_stbp_all">Validasi ALL STBP</button>'					
+					+'</div>';
+				jQuery('.card-title.custom-class').append(btn);				
+				if(title.indexOf('Surat Tanda Bukti Penerimaan | Pembiayaan') != -1){
 					jQuery('#singkron_stbp_lokal').on('click', function(){						
 						var val = jQuery('#data_stbp_status').val();
 						if(val == ''){
