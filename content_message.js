@@ -1,17 +1,3 @@
-function cek_extension() {
-	if(typeof Image2 == 'undefined'){
-		window.Image2 = Image;
-	}
-	window.Image = function(){ return {} };
-	setTimeout(function(){
-		window.Image = Image2;
-		console.log('set Image');
-	}, 15000);
-}
-
-// dirun pertama sebelum yg lain
-cek_extension();
-
 window.addEventListener('message', function(event) {
 	var command = event.data.command;
 	var opsi = event.data.data;

@@ -96,38 +96,76 @@ function singkron_lra_aklap_ke_lokal_modal(opsi, page=1, limit=10){
 	});
 }
 
-function singkron_lra_aklap_ke_lokal(tgl_awal, tgl_akhir){
-    jQuery('#wrap-loading').show();
+function pilih_skpd_lra(){
+	jQuery('#wrap-loading').show();
     var url = config.service_url+'referensi/strict/skpd/list/'+config.api_key+'/'+_token.tahun;
     relayAjaxApiKey({
 		url: url,
 		type: 'get',
 		success: function(skpd_all){
-			var last = skpd_all.length-1;
-			skpd_all.reduce(function(sequence, nextData){
-                return sequence.then(function(current_data){
-            		return new Promise(function(resolve_reduce, reject_reduce){
-            			pesan_loading('Get LRA dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
-            			get_lra(current_data.id_skpd, tgl_awal, tgl_akhir,  function(){
-            				return resolve_reduce(nextData);
-            			});
-            		})
-                    .catch(function(e){
-                        console.log(e);
-                        return Promise.resolve(nextData);
-                    });
-                })
-                .catch(function(e){
-                    console.log(e);
-                    return Promise.resolve(nextData);
-                });
-            }, Promise.resolve(skpd_all[last]))
-            .then(function(data_last){
-        		alert('Berhasil singkron LRA AKLAP ke lokal!');
-				jQuery('#wrap-loading').hide();
-            });
+			var html = '';
+			skpd_all.map(function(b, i) {
+				html += ''
+				+'<tr>'
+					+'<td class="text-center"><input type="checkbox" value="'+b.id_skpd+'"></td>'
+					+'<td class="text-center">'+b.kode_skpd+'</td>'
+					+'<td>'+b.nama_skpd+'</td>'
+				+'</tr>';
+			});
+			jQuery('#table_skpd tbody').html(html);
+			run_script('show_modal_sm', {order: [[1, "asc"]]});
+			jQuery('#wrap-loading').hide();
 		}
 	});
+}
+
+function singkron_lra_aklap_ke_lokal(){
+	var tgl_awal = jQuery('#tgl_mulai').val();
+	var tgl_akhir = jQuery('#tgl_akhir').val();
+	if(tgl_awal == '' || tgl_akhir == ''){
+		return alert('Tanggal Belum dipilih !!!');
+	}
+	var skpd_all = [];
+	jQuery('#table_skpd tbody input[type="checkbox"]').map(function(i, b){
+		if(jQuery(b).is(':checked')){
+			var tr = jQuery(b).closest('tr');
+			skpd_all.push({
+				id_skpd: jQuery(b).val(),
+				kode_skpd: tr.find('td').eq(1).text(),
+				nama_skpd: tr.find('td').eq(2).text()
+			});
+		}
+	});
+	if(skpd_all.length == 0){
+		return alert('Pilih SKPD dulu!');
+	}
+	if(confirm('Apakah anda yakin melakukan backup data LRA AKLAP? Data lokal akan diupdate sesuai data terbaru.')){						
+	    jQuery('#wrap-loading').show();
+		var last = skpd_all.length-1;
+		skpd_all.reduce(function(sequence, nextData){
+	        return sequence.then(function(current_data){
+	    		return new Promise(function(resolve_reduce, reject_reduce){
+	    			pesan_loading('Get LRA dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
+	    			get_lra(current_data.id_skpd, tgl_awal, tgl_akhir,  function(){
+	    				return resolve_reduce(nextData);
+	    			});
+	    		})
+	            .catch(function(e){
+	                console.log(e);
+	                return Promise.resolve(nextData);
+	            });
+	        })
+	        .catch(function(e){
+	            console.log(e);
+	            return Promise.resolve(nextData);
+	        });
+	    }, Promise.resolve(skpd_all[last]))
+	    .then(function(data_last){
+			alert('Berhasil singkron LRA AKLAP ke lokal!');
+			jQuery('#wrap-loading').hide();
+			run_script('hide_modal');
+	    });
+	}	
 }
 
 function get_lra(id_skpd, tgl_awal, tgl_akhir, callback){
