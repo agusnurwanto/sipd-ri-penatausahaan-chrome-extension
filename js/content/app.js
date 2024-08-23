@@ -1017,21 +1017,22 @@ function cekUrl(current_url, nomor=1){
 				}
 			}
 			//DATA DASHBOARD
-			else if(current_url.indexOf('penatausahaan/dashboard') != -1	){
+			else if(current_url.indexOf('penatausahaan/dashboard') != -1){
 				var title = jQuery('.css-jw-kc-w-cfpf-21-qf').text();				
 				console.log('Statistik', title);
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: block; margin: 20px auto; text-align: center;">'
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-warning" id="singkron_jurnal_lokal">Singkron Jurnal AKLAP ke DB Lokal</button>'
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lra_aklap_ke_lokal">Singkron LRA AKLAP ke DB Lokal</button><br>'
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lra_aklap_ke_lokal">Singkron LRA AKLAP ke DB Lokal</button>'
+						+'<hr style="margin: 20px;">'
 						+'<button onclick="return false;" class="btn btn-sm btn-primary" id="singkron_dashboard_ke_lokal">backup data realisasi APBD ke DB Lokal</button>'
-							+'<select class="form-control" style="width: 300px; margin: 0 5px; display: inline-block; padding: 6px;" id="data_master_realisasi">'
-								+'<option value="">Pilih Data yang akan di Backup</option>'
-								+'<option value="belanja">Belanja</option>'
-								+'<option value="pendapatan">Pendapatan</option>'
-								// +'<option value="pembiayaan">Pembiayaan</option>'
-							+'</select>';							
+						+'<select class="form-control" style="width: 300px; margin: 0 5px; display: inline-block; padding: 6px;" id="data_master_realisasi">'
+							+'<option value="">Pilih Data yang akan di Backup</option>'
+							+'<option value="belanja">Belanja</option>'
+							+'<option value="pendapatan">Pendapatan</option>'
+							// +'<option value="pembiayaan">Pembiayaan</option>'
+						+'</select>';							
 					+'</div>';
 				var modal = ''
 				 	+'<div class="fade modal-extension" id="modal-extension" tabindex="-1" role="dialog" data-backdrop="static" style="z-index: 99999; position: relative;">'

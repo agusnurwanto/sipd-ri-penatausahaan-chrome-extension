@@ -14,7 +14,7 @@ function singkron_spd_pembiayaan_lokal(){
                 return sequence.then(function(current_data){
             		return new Promise(function(resolve_reduce, reject_reduce){
             			pesan_loading('Get SPD dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
-            			get_spd_skpd(current_data.id_skpd, function(){
+            			get_spd_skpd_pembiayaan(current_data.id_skpd, function(){
             				return resolve_reduce(nextData);
             			});
             		})
@@ -36,7 +36,7 @@ function singkron_spd_pembiayaan_lokal(){
 	});
 }
 
-function get_spd_skpd(id_skpd, callback){
+function get_spd_skpd_pembiayaan(id_skpd, callback){
 	var url = config.service_url+'pengeluaran-pembiayaan/strict/spd/otorisasi/list-spd/'+id_skpd;
 	relayAjaxApiKey({
 		url: url,
@@ -48,7 +48,7 @@ function get_spd_skpd(id_skpd, callback){
 	                return sequence.then(function(current_data){
 	            		return new Promise(function(resolve_reduce, reject_reduce){
 	            			pesan_loading('Get Laporan SPD Pembiayaan"'+current_data.id_skpd+' '+current_data.nomor_spd+'" '+current_data.periode_spd+' '+current_data.nilai);
-	            			get_otoritas_spd_sub_skpd(current_data.id_skpd, function(){
+	            			get_otoritas_spd_sub_skpd_pembiayaan(current_data.id_skpd, function(){
 	            				return resolve_reduce(nextData);
 	            			});
 	            		})
@@ -238,7 +238,7 @@ function get_otoritas_spd_skpd(){
             		return new Promise(function(resolve_reduce, reject_reduce){
             			pesan_loading('Get SPD dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
 						
-            			get_otoritas_spd_sub_skpd(current_data.id_skpd, function(){
+            			get_otoritas_spd_sub_skpd_pembiayaan(current_data.id_skpd, function(){
             				return resolve_reduce(nextData);
             			});
             		})
@@ -260,7 +260,7 @@ function get_otoritas_spd_skpd(){
 	});
 }
 
-function get_otoritas_spd_sub_skpd(id_sub_skpd, callback){
+function get_otoritas_spd_sub_skpd_pembiayaan(id_sub_skpd, callback){
 	var url = config.service_url+'pengeluaran/strict/spd/otorisasi/list-spd/'+id_sub_skpd;
 	relayAjaxApiKey({
 		url: url,
@@ -278,7 +278,7 @@ function get_otoritas_spd_sub_skpd(id_sub_skpd, callback){
 						var nomor_spd = current_data.nomor_spd;
 						var periode_spd = current_data.periode_spd;
             			pesan_loading('Get Laporan SPD "'+current_data.id_skpd+' '+current_data.nomor_spd+'" '+current_data.periode_spd+' '+current_data.nilai);
-            			get_spd_view(current_data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, function(){
+            			get_spd_view_pembiayaan(current_data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, function(){
             				return resolve_reduce(nextData);
             			});
             		})
@@ -304,7 +304,7 @@ function get_otoritas_spd_sub_skpd(id_sub_skpd, callback){
 	});
 }
 
-function get_spd_view(data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, callback){
+function get_spd_view_pembiayaan(data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, callback){
 	var id_spd = id_spd;						
 	var is_otorisasi_spd = is_otorisasi_spd;
 	var kode_tahap = kode_tahap;
@@ -321,7 +321,7 @@ function get_spd_view(data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_s
                 return sequence.then(function(current_data){
             		return new Promise(function(resolve_reduce, reject_reduce){
             			pesan_loading('Get View Sub SKPD "'+current_data.id_skpd+' '+current_data.kode_skpd+'" '+current_data.nama_skpd+' '+current_data.nilai);
-            			get_sub_spd_view(current_data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, function(){
+            			get_sub_spd_view_pembiayaan(current_data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, function(){
             				return resolve_reduce(nextData);
             			});
             		})
@@ -347,7 +347,7 @@ function get_spd_view(data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_s
 	});
 }
 
-function get_sub_spd_view(data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, callback){
+function get_sub_spd_view_pembiayaan(data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, callback){
 	console.log('sub view',data);
 	var id_spd = id_spd;						
 	var is_otorisasi_spd = is_otorisasi_spd;
@@ -366,7 +366,7 @@ function get_sub_spd_view(data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nom
                 return sequence.then(function(current_data){
             		return new Promise(function(resolve_reduce, reject_reduce){
             			pesan_loading('Get View SPD Kegiatan "'+current_data.nama_skpd+' '+current_data.kode_giat+' '+current_data.nama_giat+' '+current_data.nilai);
-            			get_giat_spd_view(current_data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, function(){
+            			get_giat_spd_view_pembiayaan(current_data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, function(){
             				return resolve_reduce(nextData);
             			});
             		})
@@ -392,7 +392,7 @@ function get_sub_spd_view(data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nom
 	});
 }
 
-function get_giat_spd_view(data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, callback){
+function get_giat_spd_view_pembiayaan(data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, callback){
 	var id_spd = id_spd;						
 	var is_otorisasi_spd = is_otorisasi_spd;
 	var kode_tahap = kode_tahap;
@@ -409,7 +409,7 @@ function get_giat_spd_view(data, id_spd, is_otorisasi_spd, kode_tahap, nilai, no
                 return sequence.then(function(current_data){
             		return new Promise(function(resolve_reduce, reject_reduce){
             			pesan_loading('Get View SPD SUB Kegiatan "'+current_data.nama_skpd+' '+current_data.kode_sub_giat+'" '+current_data.nama_sub_giat+' '+current_data.nilai);
-            			get_sub_giat_spd_view(current_data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, function(){
+            			get_sub_giat_spd_view_pembiayaan(current_data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, function(){
             				return resolve_reduce(nextData);
             			});
             		})
@@ -435,7 +435,7 @@ function get_giat_spd_view(data, id_spd, is_otorisasi_spd, kode_tahap, nilai, no
 	});
 }
 
-function get_sub_giat_spd_view(data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, callback){
+function get_sub_giat_spd_view_pembiayaan(data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, callback){
 	var id_spd = id_spd;						
 	var is_otorisasi_spd = is_otorisasi_spd;
 	var kode_tahap = kode_tahap;
@@ -452,7 +452,7 @@ function get_sub_giat_spd_view(data, id_spd, is_otorisasi_spd, kode_tahap, nilai
                 return sequence.then(function(current_data){
             		return new Promise(function(resolve_reduce, reject_reduce){
             			pesan_loading('Get View SPD Rekening "'+current_data.nama_skpd+' '+current_data.kode_akun+'" '+current_data.nama_akun+' '+current_data.nilai);
-            			get_detail_spd(current_data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, function(){
+            			get_detail_spd_pembiayaan(current_data, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, function(){
             				return resolve_reduce(nextData);
             			});
             		})
@@ -478,7 +478,7 @@ function get_sub_giat_spd_view(data, id_spd, is_otorisasi_spd, kode_tahap, nilai
 	});
 }
 
-function get_detail_spd(sub, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, callback){
+function get_detail_spd_pembiayaan(sub, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_spd, periode_spd, callback){
 	console.log('sub', sub);
 	// console.log('id_spd', id_spd);
 	var id_daerah = sub.id_daerah;
