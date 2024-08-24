@@ -4,35 +4,30 @@
 //https://service.sipd.kemendagri.go.id/pengeluaran/strict/spd/pembuatan/laporan-spd/1392/1049
 function singkron_spd_lokal(){
     jQuery('#wrap-loading').show();
-    var url = config.service_url+'pengeluaran/strict/spd/otorisasi';
-    relayAjaxApiKey({
-		url: url,
-		type: 'get',
-		success: function(skpd_all){
-			var last = skpd_all.length-1;
-			skpd_all.reduce(function(sequence, nextData){
-                return sequence.then(function(current_data){
-            		return new Promise(function(resolve_reduce, reject_reduce){
-            			pesan_loading('Get SPD dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
-            			get_spd_skpd(current_data.id_skpd, function(){
-            				return resolve_reduce(nextData);
-            			});
-            		})
-                    .catch(function(e){
-                        console.log(e);
-                        return Promise.resolve(nextData);
-                    });
-                })
+	get_view_skpd().then(function(skpd_all){
+		var last = skpd_all.length-1;
+		skpd_all.reduce(function(sequence, nextData){
+            return sequence.then(function(current_data){
+        		return new Promise(function(resolve_reduce, reject_reduce){
+        			pesan_loading('Get SPD dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
+        			get_spd_skpd(current_data.id_skpd, function(){
+        				return resolve_reduce(nextData);
+        			});
+        		})
                 .catch(function(e){
                     console.log(e);
                     return Promise.resolve(nextData);
                 });
-            }, Promise.resolve(skpd_all[last]))
-            .then(function(data_last){
-        		alert('Berhasil singkron SPD ke lokal!');
-				jQuery('#wrap-loading').hide();
+            })
+            .catch(function(e){
+                console.log(e);
+                return Promise.resolve(nextData);
             });
-		}
+        }, Promise.resolve(skpd_all[last]))
+        .then(function(data_last){
+    		alert('Berhasil singkron SPD ke lokal!');
+			jQuery('#wrap-loading').hide();
+        });
 	});
 }
 
@@ -547,14 +542,13 @@ function get_detail_spd(sub, id_spd, is_otorisasi_spd, kode_tahap, nilai, nomor_
 					}
 			    }
 			};
-			if(callback){
+			if(!callback){
 				data_back.message.content.return = false;
+			}else{
+				window.singkron_detail_spd = callback;
 			}
 			chrome.runtime.sendMessage(data_back, function(response) {
 			    console.log('responeMessage', response);
-				if(callback){
-			    	callback(data_spd);
-			    }
 			});
 		}
 	});

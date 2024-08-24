@@ -98,24 +98,19 @@ function singkron_lra_aklap_ke_lokal_modal(opsi, page=1, limit=10){
 
 function pilih_skpd_lra(){
 	jQuery('#wrap-loading').show();
-    var url = config.service_url+'referensi/strict/skpd/list/'+config.api_key+'/'+_token.tahun;
-    relayAjaxApiKey({
-		url: url,
-		type: 'get',
-		success: function(skpd_all){
-			var html = '';
-			skpd_all.map(function(b, i) {
-				html += ''
-				+'<tr>'
-					+'<td class="text-center"><input type="checkbox" value="'+b.id_skpd+'"></td>'
-					+'<td class="text-center">'+b.kode_skpd+'</td>'
-					+'<td>'+b.nama_skpd+'</td>'
-				+'</tr>';
-			});
-			jQuery('#table_skpd tbody').html(html);
-			run_script('show_modal_sm', {order: [[1, "asc"]]});
-			jQuery('#wrap-loading').hide();
-		}
+	get_view_skpd().then(function(skpd_all){
+		var html = '';
+		skpd_all.map(function(b, i) {
+			html += ''
+			+'<tr>'
+				+'<td class="text-center"><input type="checkbox" value="'+b.id_skpd+'"></td>'
+				+'<td class="text-center">'+b.kode_skpd+'</td>'
+				+'<td>'+b.nama_skpd+'</td>'
+			+'</tr>';
+		});
+		jQuery('#table_skpd tbody').html(html);
+		run_script('show_modal_sm', {order: [[1, "asc"]]});
+		jQuery('#wrap-loading').hide();
 	});
 }
 
@@ -234,16 +229,4 @@ function get_lra(id_skpd, tgl_awal, tgl_akhir, callback){
 			});
 		}
 	});
-}
-
-function get_view_skpd(){    
-    return new Promise(function(resolve, reject){    	
-		relayAjaxApiKey({
-			url: config.service_url+'referensi/strict/skpd/list/'+_token.id_daerah+'/'+_token.tahun,                                    
-			type: 'GET',
-	      	success: function(skpd){
-	      		return resolve(skpd);
-	      	}
-	    });
-    });
 }

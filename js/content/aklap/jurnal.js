@@ -179,15 +179,3 @@ function get_jurnal(opsi, page=1, limit=10){
 		});
 	});
 }
-
-function get_view_skpd(){    
-    return new Promise(function(resolve, reject){    	
-		relayAjaxApiKey({
-			url: config.service_url+'referensi/strict/skpd/list/'+_token.id_daerah+'/'+_token.tahun,                                    
-			type: 'GET',
-	      	success: function(skpd){
-	      		return resolve(skpd);
-	      	}
-	    });
-    });
-}
