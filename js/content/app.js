@@ -886,7 +886,7 @@ function cekUrl(current_url, nomor=1){
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_stbp_lokal">Singkron STBP ke DB Lokal</button>'					
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_stbp_pembiayaan_lokal">Singkron STBP Pembiayaan ke DB Lokal</button>'					
 							+'<select class="form-control" style="width: 300px; margin: 0 5px; display: inline-block; padding: 6px;" id="data_stbp_status">'
 								+'<option value="">Pilih Status yang akan di Backup</option>'
 								+'<option value="belum_verifikasi">Belum Diverifikasi</option>'
@@ -900,13 +900,13 @@ function cekUrl(current_url, nomor=1){
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);				
 				if(title.indexOf('Surat Tanda Bukti Penerimaan | Pembiayaan') != -1){
-					jQuery('#singkron_stbp_lokal').on('click', function(){						
+					jQuery('#singkron_stbp_pembiayaan_lokal').on('click', function(){						
 						var val = jQuery('#data_stbp_status').val();
 						if(val == ''){
 							alert('Status Belum dipilih !!!');
 						}else{
 							if(confirm('Apakah anda yakin melakukan backup data STBP '+val+'? Data lokal akan diupdate sesuai data terbaru.')){
-								singkron_stbp_lokal(val);
+								singkron_stbp_pembiayaan_lokal(val);
 							}							
 						}
 					});
@@ -1115,30 +1115,12 @@ function cekUrl(current_url, nomor=1){
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lra_aklap_lokal">Singkron LRA AKLAP ke DB Lokal</button>'					
 					+'</div>';
 				jQuery('.card-body').append(btn);				
-				if(title.indexOf('Jurnal') != -1){
-					// jQuery('.setting-kegiatan').on('click', function(){
-					// 	var id = jQuery(this).attr('id');
-					// 	proses_setting_stbp(id);
-					// });
+				if(title.indexOf('Jurnal') != -1){					
 					jQuery('#singkron_lra_aklap_lokal').on('click', function(){
 						if(confirm('Apakah anda yakin melakukan backup data LRA AKLAP? Data lokal akan diupdate sesuai data terbaru.')){								
 							singkron_lra_aklap_lokal();						
 						}
 					});
-					// jQuery('#set_validasi').on('click', function(){
-					// 	set_validasi();
-					// });	
-					// jQuery('#otorisasi_stbp_all').on('click', function(){
-					// 	if(confirm('Apakah anda yakin melakukan Otorisasi data STBP Penerimaan? Data STBP Verifikasi akan diupdate menjadi sudah otorisasi.')){								
-					// 		otorisasi_stbp_all();						
-					// 	}
-					// });
-					// jQuery('#validasi_stbp_all').on('click', function(){
-					// 	if(confirm('Apakah anda yakin melakukan Validasi data STBP Penerimaan? Data STBP Otorisasi akan diupdate menjadi sudah Validasi.')){								
-					// 		validasi_stbp_all();						
-					// 	}
-					// });
-					
 				}else{
 					jQuery('.aksi-extension').remove();
 				}

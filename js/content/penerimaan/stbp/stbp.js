@@ -73,6 +73,80 @@ function singkron_stbp_lokal(val) {
     });
 }
 
+function singkron_stbp_pembiayaan_lokal(val) {
+	jQuery('#wrap-loading').show();
+    var status = val;
+    get_view_skpd().then(function(all_skpd){
+        var type_status = status;
+        new Promise(function(resolve, reject){
+            if(typeof type_status == 'undefined'){
+                return resolve();
+            }
+            var response_stbp = [];
+            var last = all_skpd.length-1;
+            all_skpd.reduce(function(sequence, nextData){
+                return sequence.then(function (current_data) {
+                    return new Promise(function (resolve_reduce, reject_reduce) {
+                        singkron_stbp_lokal_per_jenis(current_data, type_status, 1, [], function(res){
+                            res.map(function(b, i){
+                                response_stbp.push(b);
+                            });
+                            resolve_reduce(nextData);
+                        });
+                    })
+                    .catch(function(e){
+                        console.log(e);
+                        return Promise.resolve(nextData);
+                    });
+                })
+                .catch(function(e){
+                    console.log(e);
+                    return Promise.resolve(nextData);
+                });
+            }, Promise.resolve(all_skpd[last]))
+            .then(function(){
+                console.log('response_stbp', response_stbp);
+        		var page_skpd = {};
+                var last = response_stbp.length-1;
+                response_stbp.reduce(function (sequence, nextData) {
+                    return sequence.then(function (current_data) {
+                        return new Promise(function (resolve_reduce, reject_reduce) {
+    						console.log('STBP', current_data);
+                            pesan_loading('Get STBP '+type_status+' dari ID SKPD "'+current_data.id_skpd+'"');
+                            if(!page_skpd[current_data.id_skpd]){
+                                page_skpd[current_data.id_skpd] = [];
+                            }
+                            page_skpd[current_data.id_skpd].push(current_data);
+
+                            // melakukan reset page sesuai data per skpd
+                            current_data.page = page_skpd[current_data.id_skpd].length;
+
+        					singkron_stbp_ke_lokal_skpd(current_data, type_status, function(){
+                                resolve_reduce(nextData);
+          		            });
+        				})
+        				.catch(function(e){
+        					console.log(e);
+        					return Promise.resolve(nextData);
+        				});
+        			})
+        			.catch(function(e){
+        				console.log(e);
+        				return Promise.resolve(nextData);
+        			});
+        		}, Promise.resolve(response_stbp[last]))
+        		.then(function (data_last) {
+        		    return singkron_stbp_lokal(status);
+        		});
+            });
+        })
+        .then(function () {
+            jQuery("#wrap-loading").hide();
+            alert("Berhasil singkron STBP");
+        });
+    });
+}
+
 function singkron_stbp_lokal_per_jenis(data_skpd, status, page=1, response_all=[], cb){
     pesan_loading('Get data STBP ID SKPD='+data_skpd.kode_skpd+' '+data_skpd.nama_skpd+' , status='+status+', halaman='+page);
     relayAjaxApiKey({
