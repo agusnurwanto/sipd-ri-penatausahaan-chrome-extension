@@ -1022,9 +1022,8 @@ function cekUrl(current_url, nomor=1){
 				console.log('Statistik', title);
 				jQuery('.aksi-extension').remove();
 				var btn = ''
-					+'<div class="aksi-extension" style="display: block; margin: 20px auto; text-align: center;">'
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-warning" id="singkron_jurnal_lokal">Singkron Jurnal AKLAP ke DB Lokal</button>'
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lra_aklap_ke_lokal">Singkron LRA AKLAP ke DB Lokal</button>'
+					+'<div class="aksi-extension" style="display: block; margin: 20px auto; text-align: center;">'						
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_lra_aklap_ke_lokal">Singkron Jurnal dan LRA AKLAP ke DB Lokal</button>'
 						+'<hr style="margin: 20px;">'
 						+'<button onclick="return false;" class="btn btn-sm btn-primary" id="singkron_dashboard_ke_lokal">backup data realisasi APBD ke DB Lokal</button>'
 						+'<select class="form-control" style="width: 300px; margin: 0 5px; display: inline-block; padding: 6px;" id="data_master_realisasi">'
@@ -1059,6 +1058,7 @@ function cekUrl(current_url, nomor=1){
 									+'</table>'
 								+'</div>'
 								+'<div class="modal-footer">'
+									+'<button type="button" class="btn btn-sm btn-danger" id="singkron_jurnal_lokal">Backup Jurnal ke DB lokal</button>'
 									+'<button type="button" class="btn btn-sm btn-primary" id="proses_singkron_lra">Backup LRA ke DB lokal</button>'
 									+'<button type="button" class="btn btn-sm  btn-default" data-dismiss="modal">Tutup</button>'							
 								+'</div>'
@@ -1088,9 +1088,7 @@ function cekUrl(current_url, nomor=1){
 						singkron_lra_aklap_ke_lokal();
 					});
 					jQuery('#singkron_jurnal_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data Jurnal AKLAP? Data lokal akan diupdate sesuai data terbaru.')){								
-							singkron_jurnal_lokal();						
-						}
+						singkron_jurnal_aklap_ke_lokal();				
 					});
 
 					jQuery('#select_skpd').on('click', function(){
