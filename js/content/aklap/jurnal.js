@@ -1,3 +1,49 @@
+function singkron_jurnal_aklap_ke_lokal(){	
+	var skpd_all = [];
+	jQuery('#table_skpd tbody input[type="checkbox"]').map(function(i, b){
+		if(jQuery(b).is(':checked')){
+			var tr = jQuery(b).closest('tr');
+			skpd_all.push({
+				id_skpd: jQuery(b).val(),
+				kode_skpd: tr.find('td').eq(1).text(),
+				nama_skpd: tr.find('td').eq(2).text()
+			});
+		}
+	});
+	if(skpd_all.length == 0){
+		return alert('Pilih SKPD dulu!');
+	}
+	if(confirm('Apakah anda yakin melakukan backup data Jurnal AKLAP? Data lokal akan diupdate sesuai data terbaru.')){						
+	    jQuery('#wrap-loading').show();
+		var last = skpd_all.length-1;
+        var page=1;
+        var limit=10;
+		skpd_all.reduce(function(sequence, nextData){
+	        return sequence.then(function(current_data){
+	    		return new Promise(function(resolve_reduce, reject_reduce){
+	    			pesan_loading('Get Jurnal dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
+	    			get_jurnal(current_data.id_skpd, page, limit, function(){
+	    				return resolve_reduce(nextData);
+	    			});
+	    		})
+	            .catch(function(e){
+	                console.log(e);
+	                return Promise.resolve(nextData);
+	            });
+	        })
+	        .catch(function(e){
+	            console.log(e);
+	            return Promise.resolve(nextData);
+	        });
+	    }, Promise.resolve(skpd_all[last]))
+	    .then(function(data_last){
+			alert('Berhasil singkron Jurnal AKLAP ke lokal!');
+			jQuery('#wrap-loading').hide();
+			run_script('hide_modal');
+	    });
+	}	
+}
+
 function singkron_jurnal_lokal(){
     jQuery('#wrap-loading').show();
     get_jurnal({data: []})
@@ -6,176 +52,245 @@ function singkron_jurnal_lokal(){
 		jQuery('#wrap-loading').hide();
     })
 }
+function get_jurnal(id_skpd, page, limit, callback){
+    var url = config.service_url+'aklap/api/buku-jurnal/list?skpd='+id_skpd+'&per_page='+limit+'&page='+page;
+    relayAjaxApiKey({
+		url: url,
+		type: 'GET',
+		success: function(data){
+			console.log('data', data.data.list);
+            console.log('last', data.data.length);
+            var last = data.data.length-1;
+			var jurnal = { 
+                action: 'singkron_jurnal',
+                tahun_anggaran: _token.tahun,
+                api_key: config.api_key,                    
+                id_skpd: id_skpd,
+                sumber: 'ri',
+                data: {},
+                page: page,
+            };
 
-function get_jurnal(opsi, page=1, limit=10){
-	return new Promise(function(resolve, reject){
-		pesan_loading('Get Buku Jurnal page='+page);
-	    relayAjaxApiKey({
-            url: config.service_url+'aklap/api/common/skpd/get-skpd?keyword=&page='+page,
-			// url: config.service_url+'pegawai/strict/pegawai?page='+page+'&limit='+limit,
-			type: 'get',
-            dataType: "JSON",
-            beforeSend: function (xhr) {                
-                xhr.setRequestHeader("Authorization", 'Bearer '+getCookie('X-SIPD-PU-TK'));
-            },
-			success: function(data){    
-                console.log('SKPD Buku Jurnal', data.data.data);
-				var last = data.data.length-1;
-				data.data.data.reduce(function(sequence, nextData){
-		            return sequence.then(function(current_data){
-		        		return new Promise(function(resolve_reduce, reject_reduce){
-		        			pesan_loading('Get SKPD '+current_data.nama_skpd);
-							console.log(current_data);
-                            relayAjaxApiKey({
-                                url: config.service_url+'aklap/api/buku-jurnal/list?skpd='+current_data.id+'&per_page='+limit+'&page='+page,
-                                type: 'get',
-                                dataType: "JSON",
-                                beforeSend: function (xhr) {                
-                                    xhr.setRequestHeader("Authorization", 'Bearer '+getCookie('X-SIPD-PU-TK'));
-                                },
-                                success: function(jurnal){
-                                    pesan_loading('Get Jurnal '+jurnal.data.list);
-                                    console.log(jurnal.data.list);
-                                    var last = jurnal.data.length-1;
-                                    var data = { 
-                                        action: 'singkron_jurnal',
-                                        type: 'ri',
-                                        tahun_anggaran: _token.tahun,
-                                        api_key: config.api_key,
-                                        id_skpd: current_data.id,
-                                        sumber: 'ri',
-                                        data_jurnal: {}
-                                    };
-                                        jurnal.data.list.map(function(b, i){
-                                        data.data_jurnal[i] = {}
-                                        data.data_jurnal[i].id_jurnal = b.id;
-                                        data.data_jurnal[i].tanggal_jurnal = b.tanggal_jurnal;
-                                        data.data_jurnal[i].skpd_id = b.skpd_id;
-                                        data.data_jurnal[i].nama_skpd = b.nama_skpd;
-                                        data.data_jurnal[i].nomor_jurnal = b.nomor_jurnal;
-                                        data.data_jurnal[i].dokumen_sumber = b.dokumen_sumber;
-                                        data.data_jurnal[i].detail_jurnal	= {};	
-                                        console.log(b.details);
-                                        b.details.map(function(d, c){
-                                            data.data_jurnal[i].detail_jurnal[c]	= {};					               
-                                            data.data_jurnal[i].detail_jurnal[c].account_id	= d.account_id;
-                                            data.data_jurnal[i].detail_jurnal[c].id_detail	= d.id;
-                                            data.data_jurnal[i].detail_jurnal[c].amount = d.amount;
-                                            data.data_jurnal[i].detail_jurnal[c].kode_rekening	= d.kode_rekening;                        
-                                            data.data_jurnal[i].detail_jurnal[c].nama_rekening  = d.nama_rekening;
-                                            data.data_jurnal[i].detail_jurnal[c].position	= d.position;     
-                                        });	
-                                    });
-                                    var data = {
-                                        message:{
-                                            type: "get-url",
-                                            content: {
-                                                url: config.url_server_lokal,
-                                                type: 'post',
-                                                data: data,
-                                                return: false
-                                            }
-                                        }
-                                    };
-                                    chrome.runtime.sendMessage(data, function(response) {
-                                        console.log('responeMessage', response);
-                                        resolve_reduce(jurnal);
-                                        alert('Berhasil singkron Jurnal ke lokal!');
-                                        jQuery('#wrap-loading').hide();
-                                    });
-                                    // current_data.detail_user = user;
-                                    // current_data.skpd = {
-                                    //     'idSkpd': current_data.id_skpd,
-                                    //     'namaSkpd': '',
-                                    //     'kodeSkpd': '',
-                                    //     'idDaerah': current_data.id_daerah
-                                    // };
-                                    // if(skpd_all[current_data.id_skpd]){
-                                    //     current_data.skpd.namaSkpd = skpd_all[current_data.id_skpd].nama_skpd;
-                                    //     current_data.skpd.kodeSkpd = skpd_all[current_data.id_skpd].kode_skpd;
-                                    // }
-                                    // current_data.userName = user.nip_user;
-                                    // current_data.nip = user.nip_user;
-                                    // current_data.fullName = user.nama_user;
-                                    // current_data.nomorHp = '';
-                                    // current_data.rank = '';
-                                    // current_data.npwp = user.npwp_user;
-                                    // current_data.jabatan = {
-                                    //     'idJabatan': '',
-                                    //     'namaJabatan': current_data.nama_role,
-                                    //     'idRole': current_data.id_role,
-                                    //     'order': ''
-                                    // };
-                                    // current_data.kpa = '';
-                                    // current_data.bank = '';
-                                    // current_data.group = '';
-                                    // current_data.password = '';
-                                    // current_data.konfirmasiPassword = '';
-                                    // current_data.kodeBank = '';
-                                    // current_data.nama_rekening = '';
-                                    // current_data.nomorRekening = '';
-                                    // current_data.pangkatGolongan = '';
-                                    // current_data.tahunPegawai = current_data.tahun_pegawai;
-                                    // current_data.kodeDaerah = '';
-                                    // current_data.is_from_sipd = '';
-                                    // current_data.is_from_generate = '';
-                                    // current_data.is_from_external = '';
-                                    // current_data.idSubUnit = '';
-                                    // current_data.lahir_user = user.lahir_user;
-                                    // current_data.nik = user.nik_user;
-                                    // current_data.idUser = current_data.id_user;
-                                    // current_data.idPegawai = '';
-                                    // current_data.alamat = user.alamat;
-                                    // opsi.data.push(current_data);
-                                    resolve_reduce(nextData);
-                                }
-                            });
-		        		})
-		                .catch(function(e){
-		                    console.log(e);
-		                    return Promise.resolve(nextData);
-		                });
-		            })
-		            .catch(function(e){
-		                console.log(e);
-		                return Promise.resolve(nextData);
-		            });
-		        }, Promise.resolve(data.data.data[last]))
-		        .then(function(data_last){
-		        	var data_back = {
-					    message:{
-					        type: "get-url",
-					        content: {
-							    url: config.url_server_lokal,
-							    type: 'post',
-							    data: { 
-									action: 'singkron_panggol_penatausahaan',
-									tahun_anggaran: _token.tahun,
-									api_key: config.api_key,
-									type: 'ri',
-									data: opsi.data
-								},
-				    			return: false
-							}
-					    }
-					};
-					chrome.runtime.sendMessage(data_back, function(response) {
-					    console.log('responeMessage', response);
-					});
-
-					if(data.data.length >= limit){
-						// dikosongkan lagi setelah data dikirim ke lokal
-						opsi.data = [];
-						page++;
-						get_jurnal(opsi, page, limit)
-						.then(function(newdata){
-							resolve(newdata);
-						});
-					}else{
-						resolve(opsi.data);
+            data.data.list.map( function(b, i){
+                jurnal.data[i] = {}	
+                console.log('Jurnal', b); 
+                jurnal.data[i].id_skpd = id_skpd;
+                jurnal.data[i].id_jurnal = b.id;
+                jurnal.data[i].tanggal_jurnal = b.tanggal_jurnal;
+                jurnal.data[i].skpd_id = b.skpd_id;
+                jurnal.data[i].nama_skpd = b.nama_skpd;
+                jurnal.data[i].nomor_jurnal = b.nomor_jurnal;
+                jurnal.data[i].dokumen_sumber = b.dokumen_sumber;
+                console.log('detail Jurnal', b.details); 
+                jurnal.data[i].detail_jurnal	= {};
+                b.details.map(function(d, c){
+                    console.log('detail D', d); 
+                    jurnal.data[0].detail_jurnal[c]	= {};					   
+                    jurnal.data[0].detail_jurnal[c].id_jurnal	= b.id;          
+                    jurnal.data[0].detail_jurnal[c].account_id	= d.account_id;
+                    jurnal.data[0].detail_jurnal[c].id_detail	= d.id;
+                    jurnal.data[0].detail_jurnal[c].amount = d.amount;
+                    jurnal.data[0].detail_jurnal[c].kode_rekening	= d.kode_rekening;                        
+                    jurnal.data[0].detail_jurnal[c].nama_rekening  = d.nama_rekening;
+                    jurnal.data[0].detail_jurnal[c].position	= d.position;     
+                });		
+            });
+            var data_back = {
+			    message:{
+			        type: "get-url",
+			        content: {
+					    url: config.url_server_lokal,
+					    type: 'post',
+					    data: jurnal,
+		    			return: true
 					}
-		        });
+			    }
+			};
+			if(callback){
+				data_back.message.content.return = false;
 			}
-		});
+			chrome.runtime.sendMessage(data_back, function(response) {
+			    console.log('responeMessage', response);
+				if(callback){
+			    	callback(jurnal);
+			    }                
+			});
+            // if(data.data.length >= limit){
+            //     // dikosongkan lagi setelah data dikirim ke lokal
+            //     opsi.data = [];
+            //     page++;
+            //     get_jurnal(opsi, page, limit)
+            //     .then(function(newdata){
+            //         resolve(newdata);
+            //     });
+            // }else{
+            //     resolve(opsi.data);
+            // }
+		}
+	});
+}
+
+function get_jurnal1(id_skpd, page, limit){
+    // console.log('id_skpd', id_skpd);
+	return new Promise(function(resolve, reject){
+		pesan_loading('Get Jurnal page='+page);
+	    relayAjaxApiKey({
+            url: config.service_url+'aklap/api/buku-jurnal/list?skpd='+id_skpd+'&per_page='+limit+'&page='+page,
+			type: 'get',
+			success: function(data){
+                console.log('data', data.data.list);
+                console.log('last', data.data.length);
+                var last = data.data.length-1;
+                data.data.list.reduce(function(sequence, nextData){
+                    return sequence.then(function(current_data){
+                        return new Promise(function(resolve_reduce, reject_reduce){
+                            // console.log('current_data', current_data);
+                            var jurnal = { 
+                                action: 'singkron_jurnal',
+                                tahun_anggaran: _token.tahun,
+                                api_key: config.api_key,                    
+                                id_skpd: id_skpd,
+                                sumber: 'ri',
+                                data: {},
+                                page: page,
+                            };
+                            // data.data.list.map( function(b, i){   
+                            console.log('data current_data', current_data.id); 				
+                            // jurnal.data[i] = {}			
+                            jurnal.data[0] = {}	
+                            jurnal.data[0].id_skpd = id_skpd;
+                            jurnal.data[0].id_jurnal = current_data.id;
+                            jurnal.data[0].tanggal_jurnal = current_data.tanggal_jurnal;
+                            jurnal.data[0].skpd_id = current_data.skpd_id;
+                            jurnal.data[0].nama_skpd = current_data.nama_skpd;
+                            jurnal.data[0].nomor_jurnal = current_data.nomor_jurnal;
+                            jurnal.data[0].dokumen_sumber = current_data.dokumen_sumber;
+                            console.log('detail Jurnal', current_data.details); 
+                            jurnal.data[0].detail_jurnal	= {};
+                            current_data.details.map(function(d, c){
+                                console.log('detail D', d); 
+                                jurnal.data[0].detail_jurnal[c]	= {};					   
+                                jurnal.data[0].detail_jurnal[c].id_jurnal	= current_data.id;          
+                                jurnal.data[0].detail_jurnal[c].account_id	= d.account_id;
+                                jurnal.data[0].detail_jurnal[c].id_detail	= d.id;
+                                jurnal.data[0].detail_jurnal[c].amount = d.amount;
+                                jurnal.data[0].detail_jurnal[c].kode_rekening	= d.kode_rekening;                        
+                                jurnal.data[0].detail_jurnal[c].nama_rekening  = d.nama_rekening;
+                                jurnal.data[0].detail_jurnal[c].position	= d.position;     
+                            });		
+                        })
+                        .catch(function(e){
+                            console.log(e);
+                            return Promise.resolve(nextData);
+                        });
+                
+                    })
+                    .catch(function(e){
+                        console.log(e);
+                        return Promise.resolve(nextData);
+                    });
+                }, Promise.resolve(data.data.list[last]))
+                .then(function(data_last){
+                    var data_back = {
+                        message:{
+                            type: "get-url",
+                            content: {
+                                url: config.url_server_lokal,
+                                type: 'post',
+                                data: { 
+                                    action: 'singkron_jurnal',
+                                    tahun_anggaran: _token.tahun,
+                                    api_key: config.api_key,                    
+                                    id_skpd: id_skpd,
+                                    data: jurnal
+                                },
+                                return: false
+                            }
+                        }
+                    };
+                    if(!callback){
+                        data_back.message.content.return = false;
+                    }else{
+                        window.get_jurnal = callback;
+                    }
+                    
+                    if(data.data.length >= limit){
+                        // dikosongkan lagi setelah data dikirim ke lokal
+                        jurnal.data = [];
+                        page++;
+                        get_jurnal(jurnal, id_skpd, page, limit)
+                        .then(function(newdata){
+                            resolve(newdata);
+                        });
+                    }else{
+                        resolve(jurnal.data);
+                    }
+                });
+                // pesan_loading('data Jurnal', current_data);
+                // var jurnal = { 
+                //     action: 'singkron_jurnal',
+                //     tahun_anggaran: _token.tahun,
+                //     api_key: config.api_key,                    
+                //     id_skpd: id_skpd,
+                //     sumber: 'ri',
+                //     data: {},
+                //     page: page,
+                // };
+                // data.data.list.map( function(b, i){   
+                //     console.log('data Jurnal', b); 				
+                //     jurnal.data[i] = {}				
+                //     jurnal.data[i].id_skpd = id_skpd;
+                //     jurnal.data[i].id_jurnal = b.id;
+                //     jurnal.data[i].tanggal_jurnal = b.tanggal_jurnal;
+                //     jurnal.data[i].skpd_id = b.skpd_id;
+                //     jurnal.data[i].nama_skpd = b.nama_skpd;
+                //     jurnal.data[i].nomor_jurnal = b.nomor_jurnal;
+                //     jurnal.data[i].dokumen_sumber = b.dokumen_sumber;
+                //     console.log('detail Jurnal', b.details); 
+                //     jurnal.data[i].detail_jurnal	= {};
+                //     b.details.map(function(d, c){
+                //         jurnal.data[i].detail_jurnal[c]	= {};					               
+                //         jurnal.data[i].detail_jurnal[c].id_jurnal	= b.id_jurnal;
+                //         jurnal.data[i].detail_jurnal[c].account_id	= d.account_id;
+                //         jurnal.data[i].detail_jurnal[c].id_detail	= d.id;
+                //         jurnal.data[i].detail_jurnal[c].amount = d.amount;
+                //         jurnal.data[i].detail_jurnal[c].kode_rekening	= d.kode_rekening;                        
+                //         jurnal.data[i].detail_jurnal[c].nama_rekening  = d.nama_rekening;
+                //         jurnal.data[i].detail_jurnal[c].position	= d.position;     
+                //     });		
+                // });
+                // var data_back = {
+                //     message:{
+                //         type: "get-url",
+                //         content: {
+                //             url: config.url_server_lokal,
+                //             type: 'post',
+                //             data: jurnal,
+                //             return: false
+                //         }
+                //     }
+                // };
+                // if(callback){
+                //     data_back.message.content.return = false;
+                // }
+                // chrome.runtime.sendMessage(data_back, function(response) {
+                //     console.log('responeMessage', response);
+                //     if(callback){
+                //         callback(jurnal);
+                //     }
+                // });
+                // if(data.data.length >= limit){
+                //     // dikosongkan lagi setelah data dikirim ke lokal
+                //     opsi.data = [];
+                //     page++;
+                //     get_jurnal(opsi, id_skpd, page, limit)
+                //     .then(function(newdata){
+                //         resolve(newdata);
+                //     });
+                // }else{
+                //     resolve(opsi.data);
+                // }
+            }
+        }); 
 	});
 }
