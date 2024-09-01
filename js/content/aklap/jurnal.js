@@ -18,6 +18,7 @@ function singkron_jurnal_aklap_ke_lokal(){
 		var last = skpd_all.length-1;
         var page=1;
         var limit=10;
+        var opsi = {data: []};
 		skpd_all.reduce(function(sequence, nextData){
 	        return sequence.then(function(current_data){
 	    		return new Promise(function(resolve_reduce, reject_reduce){
@@ -53,6 +54,7 @@ function singkron_jurnal_lokal(){
     })
 }
 function get_jurnal(id_skpd, page, limit, callback){
+    pesan_loading('Get data Jurnal, skpd='+id_skpd+', page='+page);
     var url = config.service_url+'aklap/api/buku-jurnal/list?skpd='+id_skpd+'&per_page='+limit+'&page='+page;
     relayAjaxApiKey({
 		url: url,
@@ -102,8 +104,9 @@ function get_jurnal(id_skpd, page, limit, callback){
 					    url: config.url_server_lokal,
 					    type: 'post',
 					    data: jurnal,
-		    			return: true
-					}
+		    			// return: false
+					},
+                    return: false
 			    }
 			};
 			if(callback){
@@ -111,9 +114,21 @@ function get_jurnal(id_skpd, page, limit, callback){
 			}
 			chrome.runtime.sendMessage(data_back, function(response) {
 			    console.log('responeMessage', response);
-				if(callback){
-			    	callback(jurnal);
-			    }                
+				// if(callback){
+			    // 	callback(jurnal);
+			    // }                
+                if(data.data.length >= limit){
+                    // dikosongkan lagi setelah data dikirim ke lokal
+                    // opsi.data = [];
+                    page++;
+                    get_jurnal(id_skpd, page, limit)
+                    .then(function(newdata){
+                        resolve(newdata);
+                    });
+                }else{
+                    // resolve(opsi.data);
+                    	callback(jurnal);
+                }
 			});
             // if(data.data.length >= limit){
             //     // dikosongkan lagi setelah data dikirim ke lokal
