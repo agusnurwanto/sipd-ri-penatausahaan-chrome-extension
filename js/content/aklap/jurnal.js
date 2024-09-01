@@ -72,7 +72,7 @@ function get_jurnal(id_skpd, page, limit, callback){
                 data: {},
                 page: page,
             };
-
+            
             data.data.list.map( function(b, i){
                 jurnal.data[i] = {}	
                 console.log('Jurnal', b); 
@@ -104,32 +104,45 @@ function get_jurnal(id_skpd, page, limit, callback){
 					    url: config.url_server_lokal,
 					    type: 'post',
 					    data: jurnal,
-		    			// return: false
-					},
-                    return: false
+		    			return: false
+					}
+                    // return: false
 			    }
 			};
-			if(callback){
-				data_back.message.content.return = false;
-			}
-			chrome.runtime.sendMessage(data_back, function(response) {
-			    console.log('responeMessage', response);
-				// if(callback){
-			    // 	callback(jurnal);
-			    // }                
-                if(data.data.length >= limit){
-                    // dikosongkan lagi setelah data dikirim ke lokal
-                    // opsi.data = [];
-                    page++;
-                    get_jurnal(id_skpd, page, limit)
-                    .then(function(newdata){
-                        resolve(newdata);
-                    });
-                }else{
-                    // resolve(opsi.data);
-                    	callback(jurnal);
+            if(data.data.pagination.current_page >= data.data.pagination.max_page)
+            {
+                data_back.message.content.return = true;
+                // resolve(jurnal);                
+                alert('Berhasil singkron Jurnal AKLAP ke lokal!');
+                jQuery('#wrap-loading').hide();
+                run_script('hide_modal');
+                return;
+            }
+            else
+            {
+                if(callback){
+                    data_back.message.content.return = false;
                 }
-			});
+                chrome.runtime.sendMessage(data_back, function(response) {
+                    console.log('responeMessage', response);
+                    // if(callback){
+                    // 	callback(jurnal);
+                    // }                
+                    if(data.data.length >= limit){
+                        // dikosongkan lagi setelah data dikirim ke lokal
+                        // opsi.data = [];
+                        page++;
+                        get_jurnal(id_skpd, page, limit)
+                        .then(function(newdata){
+                            resolve(newdata);
+                        });
+                    }else{
+                        // resolve(opsi.data);
+                            callback(jurnal);
+                    }
+                });
+            }
+			
             // if(data.data.length >= limit){
             //     // dikosongkan lagi setelah data dikirim ke lokal
             //     opsi.data = [];
