@@ -432,6 +432,9 @@ function otorisasi_stbp_all(status=['sudah_verifikasi']) {
                                                 // simpan_otorisasi(current_data, ()=>{
                                                 //     resolve_reduce(nextData);
                                                 // });
+                                                if(typeof current_data.id_stbp === 'undefined'){
+                                                    resolve_reduce(nextData2);
+                                                }
                                                 simpan_otorisasi(current_data2).then(function(otorisasi){
                                                     if(otorisasi === null || otorisasi.code === 422 || otorisasi.code === 500) {   
                                                         console.log('Data STBP Belum mempunyai STS', otorisasi);
