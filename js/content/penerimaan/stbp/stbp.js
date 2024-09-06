@@ -648,7 +648,7 @@ function validasi_stbp_all(status=['sudah_otorisasi']) {
     get_view_skpd().then(function(all_skpd){
         var type_status = status;
         new Promise(function(resolve, reject){
-            if(typeof type_status == 'undefined'){
+            if(typeof type_status === 'undefined'){
                 return resolve();
             }
             pesan_loading('Get data STBP status='+type_status);
@@ -735,9 +735,11 @@ function validasi_stbp_all(status=['sudah_otorisasi']) {
                                 page_skpd[current_data.id_skpd] = [];
                             }
                             page_skpd[current_data.id_skpd].push(current_data);
-
                             // melakukan reset page sesuai data per skpd
                             current_data.page = page_skpd[current_data.id_skpd].length;
+                            if(typeof current_data.id_stbp === 'undefined'){
+                                resolve_reduce(nextData2);
+                            }
                             simpan_validasi(current_data).then(function(validasi){
                                 if(validasi === null || validasi.code === 422 || validasi.code === 500) {   
                                     console.log('Data STBP Belum mempunyai STS', validasi);
@@ -769,7 +771,7 @@ function validasi_stbp_all(status=['sudah_otorisasi']) {
 }
 
 function simpan_validasi(current_data){    
-    return new Promise(function(resolve, reject){
+    return new Promise(function(resolve, reject){        
     	pesan_loading("Berhasil Validasi data STBP ID="+current_data.id_stbp);
         let param = JSON.stringify({"update":"Validasi","status":1,"id_skpd":current_data.id_skpd})
         let data2 = { 
