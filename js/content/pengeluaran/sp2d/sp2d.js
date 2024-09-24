@@ -21,9 +21,9 @@ function singkron_sp2d_lokal(data=['UP', 'LS', 'GU', 'TU' ]){
 						// melakukan reset page sesuai data per skpd
 						current_data.page = page_skpd[current_data.id_skpd].length;
 
-						singkron_sp2d_ke_lokal_skpd(current_data, type_data, status, ()=>{
+						setTimeout(singkron_sp2d_ke_lokal_skpd(current_data, type_data, status, ()=>{
 							resolve_reduce(nextData);
-				  		});
+				  		}), 9000);
 					})
 					.catch(function(e){
 						console.log(e);
@@ -45,7 +45,7 @@ function singkron_sp2d_lokal(data=['UP', 'LS', 'GU', 'TU' ]){
 	  	alert("Berhasil singkron SP2D");
 	});
 }
-
+//5 seconds
 function singkron_sp2d_lokal_per_jenis(type_data, status, page=1, response_all=[], cb){
     pesan_loading('Get data SP2D jenis='+type_data+' , status='+status+', halaman='+page);
     relayAjaxApiKey({
