@@ -1,4 +1,4 @@
-function singkron_sp2d_lokal(data=['UP', 'LS', 'GU', 'TU']){
+function singkron_sp2d_lokal(data=['UP', 'LS', 'GU', 'TU' ]){
 	jQuery('#wrap-loading').show();
 	var status = 'ditransfer';
 	var type_data = data.shift();
@@ -58,6 +58,10 @@ function singkron_sp2d_lokal_per_jenis(type_data, status, page=1, response_all=[
                     response_all.push(b);
                 })
                 singkron_sp2d_lokal_per_jenis(type_data, status, page+1, response_all, cb);
+			}else if(response ==='Too Many Requests'){
+				// cb(response_all);
+				// cb();
+				return Promise.resolve(nextData);
             }else{
                 cb(response_all);
             }
