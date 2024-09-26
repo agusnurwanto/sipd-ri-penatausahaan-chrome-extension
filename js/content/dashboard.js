@@ -70,30 +70,33 @@ function singkron_pendapatan_dashboard_ke_lokal() {
 			url: url,
 			type: 'get',
 			success: function(data_skpd_all){
-				var last = data_skpd_all.length-1;
-				data_skpd_all.reduce(function(sequence, nextData){
-	                return sequence.then(function(current_data){
-	            		return new Promise(function(resolve_reduce, reject_reduce){
-	            			pesan_loading('Get sub SKPD dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
-	            			get_sub_skpd_pendapatan(current_data.id_skpd, function(){
-	            				return resolve_reduce(nextData);
-	            			});
-	            		})
-	                    .catch(function(e){
-	                        console.log(e);
-	                        return Promise.resolve(nextData);
-	                    });
-	                })
-	                .catch(function(e){
-	                    console.log(e);
-	                    return Promise.resolve(nextData);
-	                });
-	            }, Promise.resolve(data_skpd_all[last]))
-	            .then(function(data_last){
-	        		alert('Berhasil backup data realisasi pendapatan APBD ke lokal!');
-					jQuery('#wrap-loading').hide();
-					return resolve();
-	            });
+				update_bl_realisasi_nonactive(false, 'pendapatan')
+				.then(function(){
+					var last = data_skpd_all.length-1;
+					data_skpd_all.reduce(function(sequence, nextData){
+		                return sequence.then(function(current_data){
+		            		return new Promise(function(resolve_reduce, reject_reduce){
+		            			pesan_loading('Get sub SKPD dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
+		            			get_sub_skpd_pendapatan(current_data.id_skpd, function(){
+		            				return resolve_reduce(nextData);
+		            			});
+		            		})
+		                    .catch(function(e){
+		                        console.log(e);
+		                        return Promise.resolve(nextData);
+		                    });
+		                })
+		                .catch(function(e){
+		                    console.log(e);
+		                    return Promise.resolve(nextData);
+		                });
+		            }, Promise.resolve(data_skpd_all[last]))
+		            .then(function(data_last){
+		        		alert('Berhasil backup data realisasi pendapatan APBD ke lokal!');
+						jQuery('#wrap-loading').hide();
+						return resolve();
+		            });
+		        });
 			}
         });
     });
@@ -107,30 +110,33 @@ function singkron_pembiayaan_dashboard_ke_lokal() {
 			url: url,
 			type: 'get',
 			success: function(data_skpd_all){
-				var last = data_skpd_all.length-1;
-				data_skpd_all.reduce(function(sequence, nextData){
-	                return sequence.then(function(current_data){
-	            		return new Promise(function(resolve_reduce, reject_reduce){
-	            			pesan_loading('Get sub SKPD dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
-	            			get_sub_skpd_pembiayaan(current_data.id_skpd, function(){
-	            				return resolve_reduce(nextData);
-	            			});
-	            		})
-	                    .catch(function(e){
-	                        console.log(e);
-	                        return Promise.resolve(nextData);
-	                    });
-	                })
-	                .catch(function(e){
-	                    console.log(e);
-	                    return Promise.resolve(nextData);
-	                });
-	            }, Promise.resolve(data_skpd_all[last]))
-	            .then(function(data_last){
-	        		alert('Berhasil backup data realisasi pembiayaan APBD ke lokal!');
-					jQuery('#wrap-loading').hide();
-					return resolve();
-	            });
+				update_bl_realisasi_nonactive(false, 'pembiayaan')
+				.then(function(){
+					var last = data_skpd_all.length-1;
+					data_skpd_all.reduce(function(sequence, nextData){
+		                return sequence.then(function(current_data){
+		            		return new Promise(function(resolve_reduce, reject_reduce){
+		            			pesan_loading('Get sub SKPD dari SKPD "'+current_data.kode_skpd+' '+current_data.nama_skpd+'"');
+		            			get_sub_skpd_pembiayaan(current_data.id_skpd, function(){
+		            				return resolve_reduce(nextData);
+		            			});
+		            		})
+		                    .catch(function(e){
+		                        console.log(e);
+		                        return Promise.resolve(nextData);
+		                    });
+		                })
+		                .catch(function(e){
+		                    console.log(e);
+		                    return Promise.resolve(nextData);
+		                });
+		            }, Promise.resolve(data_skpd_all[last]))
+		            .then(function(data_last){
+		        		alert('Berhasil backup data realisasi pembiayaan APBD ke lokal!');
+						jQuery('#wrap-loading').hide();
+						return resolve();
+		            });
+		        });
 			}
         });
     });
@@ -377,14 +383,18 @@ function get_subgiat(id_skpd, id_sub_skpd, id_bidang_urusan, id_program, id_giat
 
 function update_bl_realisasi_nonactive(id_skpd, type){
 	return new Promise(function(resolve, reject){
-		pesan_loading('update_bl_realisasi_nonactive id_skpd='+id_skpd+' tipe='+type);
 		var data_rak = { 
 			action: 'update_bl_realisasi_nonactive',
 			tahun_anggaran: _token.tahun,
 			api_key: config.api_key,
-			id_skpd: id_skpd,
 			type: type
 		};
+		if(type == 'belanja'){
+			data_rak.id_skpd = id_skpd;
+			pesan_loading('update_bl_realisasi_nonactive id_skpd='+id_skpd+' tipe='+type);
+		}else{
+			pesan_loading('update_bl_realisasi_nonactive tipe='+type);
+		}
 		var data_back = {
 		    message:{
 		        type: "get-url",
@@ -487,36 +497,33 @@ function get_sub_skpd_pendapatan(id_skpd, callback){
 		url: url,
 		type: 'get',
 		success: function(ret){
-			update_bl_realisasi_nonactive(id_skpd, 'pendapatan')
-			.then(function(){
-				var last = ret.length-1;
-				ret.reduce(function(sequence, nextData){
-	                return sequence.then(function(current_data){
-	            		return new Promise(function(resolve_reduce, reject_reduce){
-	            			pesan_loading('Get realisasi pendapatan "'+current_data.kode_sub_skpd+' '+current_data.nama_sub_skpd+'"');
-	            			get_realisasi_pendapatan(current_data, function(){
-	            				return resolve_reduce(nextData);
-	            			});
-	            		})
-	                    .catch(function(e){
-	                        console.log(e);
-	                        return Promise.resolve(nextData);
-	                    });
-	                })
-	                .catch(function(e){
-	                    console.log(e);
-	                    return Promise.resolve(nextData);
-	                });
-	            }, Promise.resolve(ret[last]))
-	            .then(function(data_last){
-	            	if(callback){
-	            		callback();
-	            	}else{
-		        		alert('Berhasil backup data realisasi Pendapatan APBD ke lokal!');
-						jQuery('#wrap-loading').hide();
-	            	}
-            	});
-	        });
+			var last = ret.length-1;
+			ret.reduce(function(sequence, nextData){
+                return sequence.then(function(current_data){
+            		return new Promise(function(resolve_reduce, reject_reduce){
+            			pesan_loading('Get realisasi pendapatan "'+current_data.kode_sub_skpd+' '+current_data.nama_sub_skpd+'"');
+            			get_realisasi_pendapatan(current_data, function(){
+            				return resolve_reduce(nextData);
+            			});
+            		})
+                    .catch(function(e){
+                        console.log(e);
+                        return Promise.resolve(nextData);
+                    });
+                })
+                .catch(function(e){
+                    console.log(e);
+                    return Promise.resolve(nextData);
+                });
+            }, Promise.resolve(ret[last]))
+            .then(function(data_last){
+            	if(callback){
+            		callback();
+            	}else{
+	        		alert('Berhasil backup data realisasi Pendapatan APBD ke lokal!');
+					jQuery('#wrap-loading').hide();
+            	}
+            });
 		}
 	});
 }
@@ -527,36 +534,33 @@ function get_sub_skpd_pembiayaan(id_skpd, callback){
 		url: url,
 		type: 'get',
 		success: function(ret){
-			update_bl_realisasi_nonactive(id_skpd, 'pembiayaan')
-			.then(function(){
-				var last = ret.length-1;
-				ret.reduce(function(sequence, nextData){
-	                return sequence.then(function(current_data){
-	            		return new Promise(function(resolve_reduce, reject_reduce){
-	            			pesan_loading('Get realisasi pembiayaan "'+current_data.kode_sub_skpd+' '+current_data.nama_sub_skpd+'"');
-	            			get_realisasi_pembiayaan(current_data, function(){
-	            				return resolve_reduce(nextData);
-	            			});
-	            		})
-	                    .catch(function(e){
-	                        console.log(e);
-	                        return Promise.resolve(nextData);
-	                    });
-	                })
-	                .catch(function(e){
-	                    console.log(e);
-	                    return Promise.resolve(nextData);
-	                });
-	            }, Promise.resolve(ret[last]))
-	            .then(function(data_last){
-	            	if(callback){
-	            		callback();
-	            	}else{
-		        		alert('Berhasil backup data realisasi APBD ke lokal!');
-						jQuery('#wrap-loading').hide();
-	            	}
-	            });
-	        });
+			var last = ret.length-1;
+			ret.reduce(function(sequence, nextData){
+                return sequence.then(function(current_data){
+            		return new Promise(function(resolve_reduce, reject_reduce){
+            			pesan_loading('Get realisasi pembiayaan "'+current_data.kode_sub_skpd+' '+current_data.nama_sub_skpd+'"');
+            			get_realisasi_pembiayaan(current_data, function(){
+            				return resolve_reduce(nextData);
+            			});
+            		})
+                    .catch(function(e){
+                        console.log(e);
+                        return Promise.resolve(nextData);
+                    });
+                })
+                .catch(function(e){
+                    console.log(e);
+                    return Promise.resolve(nextData);
+                });
+            }, Promise.resolve(ret[last]))
+            .then(function(data_last){
+            	if(callback){
+            		callback();
+            	}else{
+	        		alert('Berhasil backup data realisasi APBD ke lokal!');
+					jQuery('#wrap-loading').hide();
+            	}
+            });
 		}
 	});
 }

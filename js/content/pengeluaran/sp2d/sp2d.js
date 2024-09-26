@@ -213,10 +213,15 @@ function get_detail_sp2d(current_data, tipe, resolve){
             }
         },
         error: function(err){
-        	if(err.message == 'Too Many Requests'){
+        	if(
+        		err.responseJSON == 'Too Many Requests'
+        		|| err.responseJSON == ''
+        	){
 				setTimeout(function(){
 					get_detail_sp2d(current_data, tipe, resolve);
 				}, (Math.random()*5)*1000);
+            }else{
+            	resolve();
             }
             console.log('Error get detail SP2D! id='+current_data.id_sp_2_d, err);
         }
