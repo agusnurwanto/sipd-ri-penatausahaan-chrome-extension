@@ -6,11 +6,6 @@ window.addEventListener('message', function(event) {
 		case 'run':
 			eval(opsi);
 			break;
-		case 'cek_extension':
-			if(opsi == 'image'){
-				cek_extension();
-			}
-			break;
     	case 'show_modal':
     		if(!opsi){
 	    		window.options_datatable = {
@@ -62,22 +57,6 @@ window.addEventListener('message', function(event) {
     			}
     		}
 			jQuery('#modal-extension').modal('show');
-			break;
-    	case 'show_modal_usulan_ssh':
-    		window.options_datatable = {
-    			'columnDefs': [
-    				{ 'width': '300px', 'targets': 6 }, 
-    				{ orderable: false, targets: 1 }], 
-    				lengthMenu: [ [10, 250, 500, -1], [10, 250, 500, 'All'] 
-    			]
-    		};
-    		jQuery("#usulan-ssh").modal("show");
-    		console.log('tampilkan popup usulan ssh');
-			break;
-    	case 'show_modal_sumber_dana':
-    		window.options_datatable = { lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "All"]] };
-    		jQuery("#modal-extension-rekap-sumber-dana-sub-keg").modal("show");
-    		console.log('tampilkan popup rekap sumber dana');
 			break;
 	}
 });

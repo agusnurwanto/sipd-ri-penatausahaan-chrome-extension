@@ -362,18 +362,6 @@ function singkron_lpj_adm_lokal(page=1, skpd_all=[]){
 	jQuery('#wrap-loading').show();
 }
 
-function get_skpd(){	
-	// https://service.sipd.kemendagri.go.id/referensi/strict/skpd/list/89/2024
-}
-// function singkron_lpj_fungsional_lokal(val){
-//     jQuery('#wrap-loading').show();
-// 	var bulan = val;
-//     get_lpj_fungsional({data: []})
-//     .then(function(lpj_fungsional){
-// 		alert('Berhasil singkron LPJ ke lokal!');
-// 		jQuery('#wrap-loading').hide();
-//     })
-// }
 function singkron_lpj_fungsional_lokal(val) {
 	jQuery('#wrap-loading').show();	
     get_view_skpd().then(function(all_skpd){  

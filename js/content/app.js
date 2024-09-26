@@ -1034,10 +1034,10 @@ function cekUrl(current_url, nomor=1){
 						+'</select>';							
 					+'</div>';
 				var modal = ''
-				 	+'<div class="fade modal-extension" id="modal-extension" tabindex="-1" role="dialog" data-backdrop="static" style="z-index: 99999; position: relative;">'
+				 	+'<div class="fade modal modal-extension" id="modal-extension" tabindex="-1" role="dialog" data-backdrop="static" style="z-index: 99999; position: relative;">'
 						+'<div class="modal-dialog" style="max-width: 1200px;" role="document">'
 							+'<div class="modal-content">'
-								+'<div class="modal-header bgpanel-theme">'													
+								+'<div class="modal-header bgpanel-theme">'
 									+'<h4 class="modal-title text-center" style="font-weight: bold;" id="">SKPD AKLAP <span class="info-title"></span></h4>'
 									+'<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>'
 								+'</div>'
