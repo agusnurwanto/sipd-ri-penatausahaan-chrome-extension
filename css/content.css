@@ -180,3 +180,7 @@ thead{
     background: #FFEB3B;
     border-radius: 50%;
 }
+
+.modal-backdrop.fade.in {
+    opacity: 0.6;
+}

@@ -21,9 +21,9 @@ function singkron_sp2d_lokal(data=['UP', 'LS', 'GU', 'TU' ]){
 						// melakukan reset page sesuai data per skpd
 						current_data.page = page_skpd[current_data.id_skpd].length;
 
-						setTimeout(singkron_sp2d_ke_lokal_skpd(current_data, type_data, status, ()=>{
+						singkron_sp2d_ke_lokal_skpd(current_data, type_data, status, ()=>{
 							resolve_reduce(nextData);
-				  		}), 9000);
+				  		});
 					})
 					.catch(function(e){
 						console.log(e);
@@ -159,53 +159,66 @@ function singkron_sp2d_ke_lokal_skpd(current_data, tipe, status, callback) {
 	chrome.runtime.sendMessage(data_back, (resp) => {
 	  	pesan_loading("Kirim data SP2D ID SKPD="+current_data.id_skpd+" tipe="+tipe+" status="+status+" nomor="+current_data.nomor_sp_2_d);
 	});
-	
-	var url = config.service_url + "pengeluaran/strict/sp2d/pembuatan/cetak/" + current_data.id_sp_2_d;
     new Promise(function (resolve, reject) {
-        jQuery.ajax({
-            url: url,
-            type: 'get',
-            dataType: "JSON",
-            beforeSend: function (xhr) {                
-                xhr.setRequestHeader("Authorization", 'Bearer '+getCookie('X-SIPD-PU-TK'));
-            },
-            success: function (res) {
-                console.log('response detail sp2d', res);
-                var sp2d_detail = {
-                    action: "singkron_sp2d_detail",
-                    tahun_anggaran: _token.tahun,
-                    api_key: config.api_key,
-                    idSkpd: current_data.id_skpd,
-                    id_sp_2_d: current_data.id_sp_2_d,
-                    tipe: tipe,
-                    sumber: 'ri',
-                    data: res[res.jenis.toLowerCase()]
-                };
-                var data_back = {
-                    message: {
-                        type: "get-url",
-                        content: {
-                            url: config.url_server_lokal,
-                            type: "post",
-                            data: sp2d_detail,
-                            return: true
-                        },
-                    }
-                };
-                chrome.runtime.sendMessage(data_back, (resp) => {
-                    window.singkron_sp2d_detail = {
-                        resolve: resolve
-                    };
-                    pesan_loading("Kirim data SP2D detail ID="+current_data.id_sp_2_d+" tipe="+tipe);
-                });
-            },
-            error: function(err){
-                console.log('Error get detail SP2D! id='+current_data.id_sp_2_d, err);
-                resolve();
-            }
-        });
+		get_detail_sp2d(current_data, tipe, resolve);
     })
     .then(function () {
         callback();
+    });
+}
+
+function get_detail_sp2d(current_data, tipe, resolve){
+	var url = config.service_url + "pengeluaran/strict/sp2d/pembuatan/cetak/" + current_data.id_sp_2_d;
+    jQuery.ajax({
+        url: url,
+        type: 'get',
+        dataType: "JSON",
+        beforeSend: function (xhr) {                
+            xhr.setRequestHeader("Authorization", 'Bearer '+getCookie('X-SIPD-PU-TK'));
+        },
+        success: function (res) {
+        	if(res.message == 'Too Many Requests'){
+				setTimeout(function(){
+					get_detail_sp2d(current_data, tipe, resolve);
+				}, (Math.random()*5)*1000);
+            }else{
+	            console.log('response detail sp2d', res);
+	            var sp2d_detail = {
+	                action: "singkron_sp2d_detail",
+	                tahun_anggaran: _token.tahun,
+	                api_key: config.api_key,
+	                idSkpd: current_data.id_skpd,
+	                id_sp_2_d: current_data.id_sp_2_d,
+	                tipe: tipe,
+	                sumber: 'ri',
+	                data: res[res.jenis.toLowerCase()]
+	            };
+	            var data_back = {
+	                message: {
+	                    type: "get-url",
+	                    content: {
+	                        url: config.url_server_lokal,
+	                        type: "post",
+	                        data: sp2d_detail,
+	                        return: true
+	                    },
+	                }
+	            };
+	            chrome.runtime.sendMessage(data_back, (resp) => {
+	                window.singkron_sp2d_detail = {
+	                    resolve: resolve
+	                };
+	                pesan_loading("Kirim data SP2D detail ID="+current_data.id_sp_2_d+" tipe="+tipe);
+	            });
+            }
+        },
+        error: function(err){
+        	if(err.message == 'Too Many Requests'){
+				setTimeout(function(){
+					get_detail_sp2d(current_data, tipe, resolve);
+				}, (Math.random()*5)*1000);
+            }
+            console.log('Error get detail SP2D! id='+current_data.id_sp_2_d, err);
+        }
     });
 }
