@@ -587,3 +587,13 @@ function get_view_skpd(){
 function cp_obj(obj){
 	return JSON.parse(JSON.stringify(obj));
 }
+
+function cekTanggalDalamRange(tanggal_cek, tanggal_mulai, tanggal_akhir) {
+    // Mengubah string tanggal ke dalam objek Date
+    let mulai = new Date(tanggal_mulai);
+    let akhir = new Date(tanggal_akhir);
+    let cek = new Date(tanggal_cek);
+
+    // Mengecek apakah tanggal_cek berada dalam rentang
+    return cek >= mulai && cek <= akhir;
+}

@@ -44,6 +44,9 @@ function singkron_jurnal_aklap_ke_lokal(){
 }
 
 function get_jurnal(id_skpd, page, callback, all_data = [], total_all = 0){
+    var tgl_mulai = jQuery('#tgl_mulai').val();
+    var tgl_akhir = jQuery('#tgl_akhir').val();
+
     if(page == 1){
         pesan_loading('Get data Jurnal, skpd='+id_skpd+', page='+page);
     }else{
@@ -67,48 +70,54 @@ function get_jurnal(id_skpd, page, callback, all_data = [], total_all = 0){
             
             data.data.list.map( function(b, i){
                 all_data.push(b);
-                jurnal.data[i] = {};
-                jurnal.data[i].id_skpd = id_skpd;
-                jurnal.data[i].id_jurnal = b.id;
-                jurnal.data[i].tanggal_jurnal = b.tanggal_jurnal;
-                jurnal.data[i].skpd_id = b.skpd_id;
-                jurnal.data[i].nama_skpd = b.nama_skpd;
-                jurnal.data[i].nomor_jurnal = b.nomor_jurnal;
-                jurnal.data[i].dokumen_sumber = b.dokumen_sumber;
-                jurnal.data[i].detail_jurnal	= {};
-                b.details.map(function(d, c){
-                    jurnal.data[0].detail_jurnal[c]	= {};					   
-                    jurnal.data[0].detail_jurnal[c].id_jurnal	= b.id;          
-                    jurnal.data[0].detail_jurnal[c].account_id	= d.account_id;
-                    jurnal.data[0].detail_jurnal[c].id_detail	= d.id;
-                    jurnal.data[0].detail_jurnal[c].amount = d.amount;
-                    jurnal.data[0].detail_jurnal[c].kode_rekening	= d.kode_rekening;                        
-                    jurnal.data[0].detail_jurnal[c].nama_rekening  = d.nama_rekening;
-                    jurnal.data[0].detail_jurnal[c].position	= d.position;     
-                });		
+                if(cekTanggalDalamRange(b.tanggal_jurnal, tgl_mulai, tgl_akhir)){
+                    jurnal.data[i] = {};
+                    jurnal.data[i].id_skpd = id_skpd;
+                    jurnal.data[i].id_jurnal = b.id;
+                    jurnal.data[i].tanggal_jurnal = b.tanggal_jurnal;
+                    jurnal.data[i].skpd_id = b.skpd_id;
+                    jurnal.data[i].nama_skpd = b.nama_skpd;
+                    jurnal.data[i].nomor_jurnal = b.nomor_jurnal;
+                    jurnal.data[i].dokumen_sumber = b.dokumen_sumber;
+                    jurnal.data[i].detail_jurnal	= {};
+                    b.details.map(function(d, c){
+                        jurnal.data[0].detail_jurnal[c]	= {};					   
+                        jurnal.data[0].detail_jurnal[c].id_jurnal	= b.id;          
+                        jurnal.data[0].detail_jurnal[c].account_id	= d.account_id;
+                        jurnal.data[0].detail_jurnal[c].id_detail	= d.id;
+                        jurnal.data[0].detail_jurnal[c].amount = d.amount;
+                        jurnal.data[0].detail_jurnal[c].kode_rekening	= d.kode_rekening;                        
+                        jurnal.data[0].detail_jurnal[c].nama_rekening  = d.nama_rekening;
+                        jurnal.data[0].detail_jurnal[c].position	= d.position;     
+                    });
+                }
             });
-           new Promise(function(resolve, reject){
-                var data_back = {
-    			    message:{
-    			        type: "get-url",
-    			        content: {
-    					    url: config.url_server_lokal,
-    					    type: 'post',
-    					    data: jurnal,
-    		    		    return: true
-    					},
-    			    }
-    			};
-                chrome.runtime.sendMessage(data_back, function(response) {
-                    console.log('responeMessage', response);
-                    if(typeof singkron_jurnal == 'undefined'){
-                        window.singkron_jurnal = {};
-                    }
+            new Promise(function(resolve, reject){
+                if(jurnal.data.length >= 1){
+                    var data_back = {
+        			    message:{
+        			        type: "get-url",
+        			        content: {
+        					    url: config.url_server_lokal,
+        					    type: 'post',
+        					    data: jurnal,
+        		    		    return: true
+        					},
+        			    }
+        			};
+                    chrome.runtime.sendMessage(data_back, function(response) {
+                        console.log('responeMessage', response);
+                        if(typeof singkron_jurnal == 'undefined'){
+                            window.singkron_jurnal = {};
+                        }
 
-                    window.singkron_jurnal[id_skpd] = {
-                        resolve: resolve
-                    };
-                });
+                        window.singkron_jurnal[id_skpd] = {
+                            resolve: resolve
+                        };
+                    });
+                }else{
+                    resolve();
+                }
             })
             .then(function(){
                 if(all_data.length < data.data.total){
@@ -116,7 +125,7 @@ function get_jurnal(id_skpd, page, callback, all_data = [], total_all = 0){
                 }else{
                     callback();
                 }
-            })
+            });
 		}
 	});
 }

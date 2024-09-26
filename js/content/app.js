@@ -1033,6 +1033,10 @@ function cekUrl(current_url, nomor=1){
 							// +'<option value="pembiayaan">Pembiayaan</option>'
 						+'</select>';							
 					+'</div>';
+
+				var date = new Date();
+				var tgl_mulai = (date.getFullYear())+'-01-01';
+				var tgl_akhir = (date.getFullYear())+'-'+(('0' + (date.getMonth() + 1)).slice(-2))+'-'+('0' + date.getDate()).slice(-2);
 				var modal = ''
 				 	+'<div class="fade modal modal-extension" id="modal-extension" tabindex="-1" role="dialog" data-backdrop="static" style="z-index: 99999; position: relative;">'
 						+'<div class="modal-dialog" style="max-width: 1200px;" role="document">'
@@ -1042,9 +1046,9 @@ function cekUrl(current_url, nomor=1){
 									+'<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>'
 								+'</div>'
 								+'<div class="modal-body">'
-									+'<div style="margin: 20px;">'
-										+'<label>Tanggal Awal LRA: <input type="date" name="tgl_mulai" id="tgl_mulai" placeholder="Tgl Awal lra" class="form-control" style="width: 250px; display: inline-block;"></label>'
-										+'<label style="margin-left: 20px;">Tanggal Akhir LRA: <input type="date" name="tgl_akhir" id="tgl_akhir" placeholder="Tgl Akhir lra" class="form-control" style="width: 250px; display: inline-block;"></label>'
+									+'<div style="margin: 20px; text-align: center;">'
+										+'<label>Tanggal Awal LRA: <input type="date" name="tgl_mulai" id="tgl_mulai" placeholder="Tgl Awal lra" class="form-control" style="width: 250px; display: inline-block;" value="'+tgl_mulai+'"></label>'
+										+'<label style="margin-left: 20px;">Tanggal Akhir LRA: <input type="date" name="tgl_akhir" id="tgl_akhir" placeholder="Tgl Akhir lra" class="form-control" style="width: 250px; display: inline-block;" value="'+tgl_akhir+'"></label>'
 									+'</div>'
 									+'<table class="table table-bordered table-hover" id="table_skpd">'
 										+'<thead>'
