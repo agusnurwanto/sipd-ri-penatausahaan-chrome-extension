@@ -93,7 +93,7 @@ function get_jurnal(id_skpd, page, callback, all_data = [], total_all = 0){
                 }
             });
             new Promise(function(resolve, reject){
-                if(jurnal.data.length >= 1){
+                if(jQuery.isEmptyObject(jurnal.data) == false){
                     var data_back = {
         			    message:{
         			        type: "get-url",
