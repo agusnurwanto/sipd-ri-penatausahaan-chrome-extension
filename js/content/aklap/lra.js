@@ -11,51 +11,6 @@ function singkron_lra_aklap_ke_lokal_modal(opsi, page=1, limit=10){
         },	
 		success: function(data){
 			console.log('SKPD', data.data.data);
-			// window.units_skpd = data.data.data;	
-			// var last = data.data.length-1;
-			// var skpd_all = '';
-			// data.data.data.reduce(function(sequence, nextData){
-	        //     return sequence.then(function(b){
-	        // 		return new Promise(function(resolve_reduce, reject_reduce){		
-			// 				console.log('SKPD B', b);				
-			// 				if(data.data.lengt == 0){
-			// 					return resolve_reduce(nextData);
-			// 				}
-			// 				var keyword = b.id+'-'+b.nama_skpd;
-			// 				skpd_all[keyword] = b;
-			// 				body += ''
-			// 					+'<tr>'								
-			// 						+'<td class="text-center"><input type="checkbox" value="'+keyword+'"></td>'
-			// 						+'<td>'+b.id+' - '+b.nama_skpd+'</td>'																	
-			// 					+'</tr>';
-			// 				resolve_reduce(nextData);
-	        // 		})
-	        //         .catch(function(e){
-	        //             console.log(e);
-	        //             return Promise.resolve(nextData);
-	        //         });
-	        //     })
-	        //     .catch(function(e){
-	        //         console.log(e);
-	        //         return Promise.resolve(nextData);
-	        //     });
-	        // }, Promise.resolve(data.data.data[last]))
-	        // .then(function(data_last){
-			// 	if(data.data.length >= limit){
-			// 		// dikosongkan lagi setelah data dikirim ke lokal
-			// 		opsi.data.data = [];
-			// 		page++;
-			// 		singkron_lra_aklap_ke_lokal(opsi, page, limit)
-			// 		.then(function(newdata){
-			// 			resolve(newdata);
-			// 		});
-			// 	}else{
-			// 		resolve(opsi.data.data);
-			// 	}
-			// 	jQuery('#table-extension tbody').html(body);
-			// 	run_script('show_modal_sm', {order: [[1, "asc"]]});
-			// 	hide_loading();
-	        // });
 		
 			window.data_all_skpd = {};
 			var no = 0;
@@ -76,17 +31,6 @@ function singkron_lra_aklap_ke_lokal_modal(opsi, page=1, limit=10){
 						+'</tr>';
 				l1++;
 			});
-			
-			// for(var i in data_all_skpd){
-			// 	window.skpd_duplikat = {};
-			// 	console.log('SKPD B', i);
-			// 	var id = [];
-				
-			// 	var skpd = duplikat_skpd[i].detail;
-			// 	skpd.map(function(b, n){
-					
-			// 	});
-			// }
 			pesan_loading('data_all_skpd = '+l1);
 			jQuery('#modal-extension .modal-title .info-title').html('( Jumlah Semua Data: '+l1+')');
 			jQuery('#table_skpd tbody').html(html_skpd);
@@ -182,7 +126,6 @@ function get_lra(id_skpd, tgl_awal, tgl_akhir, callback){
 		url: url,
 		type: 'GET',
 		success: function(ret){
-			console.log('ret', ret.data);
 			var lra = { 
 				action: 'singkron_aklap_lra',
 				tahun_anggaran: _token.tahun,
@@ -192,41 +135,79 @@ function get_lra(id_skpd, tgl_awal, tgl_akhir, callback){
 				mulai_tgl: awal,
 				sampai_tgl: akhir,
 				sumber: 'ri',
-				data: {}
+				page: 0,
+				data: []
 			};
-            // let lapspd = Object.keys(ret)
             
+            var all_data = [];
+            var current_data = [];
+            var per_page = 50;
 			ret.data.map( function(b, i){    				
-				lra.data[i] = {}				
-				lra.data[i].id_skpd = id_skpd;						
-				lra.data[i].kode_rekening = b.kode_rekening;
-				lra.data[i].level = b.level;
-				lra.data[i].nama_rekening = b.nama_rekening;
-				lra.data[i].nominal = b.nominal;
-				lra.data[i].presentase = b.presentase;
-                lra.data[i].previous_realisasi = b.previous_realisasi;
-                lra.data[i].realisasi = b.realisasi;
+				var new_data = {}				
+				new_data.id_skpd = id_skpd;						
+				new_data.kode_rekening = b.kode_rekening;
+				new_data.level = b.level;
+				new_data.nama_rekening = b.nama_rekening;
+				new_data.nominal = b.nominal;
+				new_data.presentase = b.presentase;
+                new_data.previous_realisasi = b.previous_realisasi;
+                new_data.realisasi = b.realisasi;
+                current_data.push(new_data);
+                if(current_data.length >= per_page){
+                	all_data.push(current_data);
+                	current_data = [];
+                }
 			});
-			var data_back = {
-			    message:{
-			        type: "get-url",
-			        content: {
-					    url: config.url_server_lokal,
-					    type: 'post',
-					    data: lra,
-		    			return: true
-					}
-			    }
-			};
-			if(callback){
-				data_back.message.content.return = false;
+			if(current_data.length >= 1){
+				all_data.push(current_data);
 			}
-			chrome.runtime.sendMessage(data_back, function(response) {
-			    console.log('responeMessage', response);
-				if(callback){
+			console.log('all_data', all_data);
+			var last = all_data.length-1;
+			all_data.reduce(function(sequence, nextData){
+		        return sequence.then(function(current_data){
+		    		return new Promise(function(resolve_reduce, reject_reduce){
+		    			lra.data = current_data;
+		    			lra.page += 1;
+
+		    			pesan_loading('Kirim LRA ke lokal ID SKPD '+id_skpd+', page '+lra.page+' dari '+all_data.length);
+						var data_back = {
+						    message:{
+						        type: "get-url",
+						        content: {
+								    url: config.url_server_lokal,
+								    type: 'post',
+								    data: lra,
+					    			return: true
+								}
+						    }
+						};
+						chrome.runtime.sendMessage(data_back, function(response) {
+						    console.log('responeMessage', response);
+						    if(typeof singkron_aklap_lra == 'undefined'){
+			                    window.singkron_aklap_lra = {};
+			                }
+
+			                window.singkron_aklap_lra[id_skpd] = {
+			                    resolve: resolve_reduce,
+			                    nextData: nextData
+			                };
+						});
+		    		})
+		            .catch(function(e){
+		                console.log(e);
+		                return Promise.resolve(nextData);
+		            });
+		        })
+		        .catch(function(e){
+		            console.log(e);
+		            return Promise.resolve(nextData);
+		        });
+		    }, Promise.resolve(all_data[last]))
+		    .then(function(data_last){
+                if(callback){
 			    	callback(lra);
 			    }
-			});
+		    });
 		}
 	});
 }

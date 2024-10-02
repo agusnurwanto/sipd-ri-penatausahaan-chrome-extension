@@ -108,6 +108,10 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 			_alert = false;
 			cek_hide_loading = false;
 			singkron_jurnal[res.id_skpd].resolve();
+		}else if(res.action == 'singkron_aklap_lra'){
+			_alert = false;
+			cek_hide_loading = false;
+			singkron_aklap_lra[res.id_skpd].resolve(singkron_aklap_lra[res.id_skpd].nextData);
 		}else if(res.action == 'singkron_kategori_ssh'){
 			_alert = false;
 			cek_hide_loading = false;

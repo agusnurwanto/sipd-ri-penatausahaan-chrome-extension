@@ -67,6 +67,9 @@ function get_jurnal(id_skpd, page, callback, all_data = [], total_all = 0){
                 data: {},
                 page: page
             };
+            if(jQuery('#reset_tanggal').is(':checked') == true){
+                jurnal.page += 2; // disable reset active data, karena jika page 1 kolom aktive dibuat 0
+            }
             
             data.data.list.map( function(b, i){
                 all_data.push(b);

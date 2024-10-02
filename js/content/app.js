@@ -1047,8 +1047,9 @@ function cekUrl(current_url, nomor=1){
 								+'</div>'
 								+'<div class="modal-body">'
 									+'<div style="margin: 20px; text-align: center;">'
-										+'<label>Tanggal Awal LRA: <input type="date" name="tgl_mulai" id="tgl_mulai" placeholder="Tgl Awal lra" class="form-control" style="width: 250px; display: inline-block;" value="'+tgl_mulai+'"></label>'
-										+'<label style="margin-left: 20px;">Tanggal Akhir LRA: <input type="date" name="tgl_akhir" id="tgl_akhir" placeholder="Tgl Akhir lra" class="form-control" style="width: 250px; display: inline-block;" value="'+tgl_akhir+'"></label>'
+										+'<label>Tanggal Awal LRA: <input type="date" id="tgl_mulai" placeholder="Tgl Awal lra" class="form-control cek_tanggal" style="width: 250px; display: inline-block;" value="'+tgl_mulai+'"></label>'
+										+'<label style="margin-left: 20px;">Tanggal Akhir LRA: <input type="date" id="tgl_akhir" placeholder="Tgl Akhir lra" class="form-control cek_tanggal" style="width: 250px; display: inline-block;" value="'+tgl_akhir+'"></label>'
+										+'<label style="margin-left: 20px;">Reset Tanggal / Semua: <input type="checkbox" id="reset_tanggal" checked></label>'
 									+'</div>'
 									+'<table class="table table-bordered table-hover" id="table_skpd">'
 										+'<thead>'
@@ -1100,6 +1101,26 @@ function cekUrl(current_url, nomor=1){
 							jQuery('#table_skpd tbody input[type="checkbox"]').prop('checked', true);
 						}else{
 							jQuery('#table_skpd tbody input[type="checkbox"]').prop('checked', false);
+						}
+					});
+
+					jQuery('.cek_tanggal').on('change', function(){
+						var tgl_mulai_skr = jQuery('#tgl_mulai').val();
+						var tgl_akhir_skr = jQuery('#tgl_akhir').val();
+						if(
+							tgl_mulai_skr == tgl_mulai
+							&& tgl_akhir_skr == tgl_akhir
+						){
+							jQuery('#reset_tanggal').prop('checked', true);
+						}else{
+							jQuery('#reset_tanggal').prop('checked', false);
+						}
+					});
+
+					jQuery('#reset_tanggal').on('click', function(){
+						if(jQuery(this).is(':checked') == true){
+							jQuery('#tgl_mulai').val(tgl_mulai);
+							jQuery('#tgl_akhir').val(tgl_akhir);
 						}
 					});
 				}else{
