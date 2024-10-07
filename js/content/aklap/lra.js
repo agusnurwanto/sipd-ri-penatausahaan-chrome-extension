@@ -121,6 +121,12 @@ function get_lra(id_skpd, tgl_awal, tgl_akhir, callback){
     tanggal = date.getDate();
     bulan = date.getMonth();
     tahun = date.getFullYear();
+	//PerSKPD
+	// var url = config.service_url+'aklap/api/report/cetaklra?searchparams={"tanggalFrom":"'+awal+'","tanggalTo":"'+akhir+'","formatFile":"json","tahun":"2021","level":null,"previewLaporan":null,"is_combine":"skpd","skpd":'+id_skpd+'}';
+	//SKPD dan unit
+	// var url = config.service_url+'aklap/api/report/cetaklra?searchparams={"tanggalFrom":"'+awal+'","tanggalTo":"'+akhir+'","formatFile":"json","tahun":"2021","level":null,"previewLaporan":null,"is_combine":"skpd_unit","skpd":'+id_skpd+'}';
+	//SKPD dan unit Konsolidasi
+	// var url = config.service_url+'aklap/api/report/cetaklra?searchparams={"tanggalFrom":"'+awal+'","tanggalTo":"'+akhir+'","formatFile":"json","tahun":"2021","level":null,"previewLaporan":null,"is_combine":"skpd_mandiri","skpd":'+id_skpd+'}';
     var url = config.service_url+'aklap/api/report/cetaklra?searchparams={"tanggalFrom":"'+awal+'","tanggalTo":"'+akhir+'","formatFile":"json","tahun":"2021","level":6,"previewLaporan":null,"is_combine":"skpd","skpd":'+id_skpd+'}';
 	relayAjaxApiKey({
 		url: url,
