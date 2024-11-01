@@ -560,14 +560,34 @@ function cekUrl(current_url, nomor=1){
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_sp2d_lokal">Singkron SP2D ke DB Lokal</button>'					
+					+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_sp2d_lokal">Singkron SP2D ke DB Lokal</button>'					
+					+'<select class="form-control" style="width: 150px; margin: 0 5px; display: inline-block; padding: 6px;" name="bulan" id="bulan">'
+								+'<option value="1"><font face="verdana">Januari</font></option>'
+								+'<option value="2"><font face="verdana">Februari</font></option>'
+								+'<option value="3"><font face="verdana">Maret</font></option>'
+								+'<option value="4"><font face="verdana">April</font></option>'
+								+'<option value="5"><font face="verdana">Mei</font></option>'
+								+'<option value="6"><font face="verdana">Juni</font></option>'
+								+'<option value="7"><font face="verdana">Juli</font></option>'
+								+'<option value="8"><font face="verdana">Agustus</font></option>'
+								+'<option value="9"><font face="verdana">September</font></option>'
+								+'<option value="10"><font face="verdana">Oktober</font></option>'
+								+'<option value="11"><font face="verdana">November</font></option>'
+								+'<option value="12"><font face="verdana">Desember</font></option>'
+					+'</select>';
+					
 					+'</div>';
-				jQuery('.card-title.custom-class').append(btn);				
+				jQuery('.card-title.custom-class').append(btn);	
 				if(title.indexOf('Surat Perintah Pencairan Dana |') != -1){
-					jQuery('#singkron_sp2d_lokal').on('click', function(){
-						if(confirm('Apakah anda yakin melakukan backup data SP2D? Data lokal akan diupdate sesuai data terbaru.')){
-							// singkron_sp2d_lokal(type_data);	
-							singkron_sp2d_lokal();						
+					jQuery('#singkron_sp2d_lokal').text('Singkron SP2D ke DB Lokal');
+					jQuery('#singkron_sp2d_lokal').on('click', function(){						
+						var bulan = jQuery('#bulan').val();
+						if(bulan == ''){
+							alert('Bulan Belum dipilih !!!');
+						}else{							
+							if(confirm('Apakah anda yakin melakukan backup data SP2D ? Data lokal akan diupdate sesuai data terbaru.')){
+								singkron_sp2d_lokal(bulan);						
+							}
 						}
 					});
 				}else{
@@ -1036,6 +1056,7 @@ function cekUrl(current_url, nomor=1){
 
 				var date = new Date();
 				var tgl_mulai = (date.getFullYear())+'-01-01';
+				// var tgl_mulai = (date.getFullYear())+'-'+(('0' + (date.getMonth() + 1)).slice(-2))+'-'+('0' + date.getDate()).slice(-2);
 				var tgl_akhir = (date.getFullYear())+'-'+(('0' + (date.getMonth() + 1)).slice(-2))+'-'+('0' + date.getDate()).slice(-2);
 				var modal = ''
 				 	+'<div class="fade modal modal-extension" id="modal-extension" tabindex="-1" role="dialog" data-backdrop="static" style="z-index: 99999; position: relative;">'

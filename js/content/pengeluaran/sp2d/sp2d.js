@@ -1,12 +1,14 @@
-function singkron_sp2d_lokal(data=['UP', 'LS', 'GU', 'TU' ]){
+function singkron_sp2d_lokal(bulan, data=['UP', 'LS', 'GU', 'TU' ]){
 	jQuery('#wrap-loading').show();
+	pesan_loading('Get data SP2D Bulan "'+bulan);
+	var bulan = bulan;
 	var status = 'ditransfer';
 	var type_data = data.shift();
 	new Promise(function(resolve, reject){
 		if(typeof type_data == 'undefined'){
 			return resolve();
 		}
-		singkron_sp2d_lokal_per_jenis(type_data, status, 1, [], function(response){
+		singkron_sp2d_lokal_per_jenis(bulan, type_data, status, 1, [], function(response){
 			var page_skpd = {};
 			var last = response.length-1;
 			response.reduce(function (sequence, nextData) {
@@ -46,10 +48,10 @@ function singkron_sp2d_lokal(data=['UP', 'LS', 'GU', 'TU' ]){
 	});
 }
 //5 seconds
-function singkron_sp2d_lokal_per_jenis(type_data, status, page=1, response_all=[], cb){
-    pesan_loading('Get data SP2D jenis='+type_data+' , status='+status+', halaman='+page);
+function singkron_sp2d_lokal_per_jenis(bulan, type_data, status, page=1, response_all=[], cb){
+    pesan_loading('Get data SP2D jenis='+type_data+', bulan='+bulan+' , status='+status+', halaman='+page);
     relayAjaxApiKey({
-        url: config.service_url+'pengeluaran/strict/sp2d/pembuatan/index?jenis='+type_data+'&status='+status+'&page='+page,
+        url: config.service_url+'pengeluaran/strict/sp2d/pembuatan/index?jenis='+type_data+'&status='+status+'&page='+page+'&nomor_sp2d='+bulan+'/'+_token.tahun,
         type: 'get',
         success: function (response) {
             console.log('SP2D', response);
@@ -57,10 +59,10 @@ function singkron_sp2d_lokal_per_jenis(type_data, status, page=1, response_all=[
                 response.map(function(b, i){
                     response_all.push(b);
                 })
-                singkron_sp2d_lokal_per_jenis(type_data, status, page+1, response_all, cb);
+                singkron_sp2d_lokal_per_jenis(bulan, type_data, status, page+1, response_all, cb);
 			}else if(response == 'Too Many Requests'){
 				setTimeout(function(){
-					singkron_sp2d_lokal_per_jenis(type_data, status, page, response_all, cb);
+					singkron_sp2d_lokal_per_jenis(bulan, type_data, status, page, response_all, cb);
 				}, (Math.random()*5)*1000);
             }else{
                 cb(response_all);
