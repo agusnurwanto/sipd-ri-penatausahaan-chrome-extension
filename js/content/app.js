@@ -562,6 +562,7 @@ function cekUrl(current_url, nomor=1){
 					+'<div class="aksi-extension" style="display: inline-block;">'						
 					+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_sp2d_lokal">Singkron SP2D ke DB Lokal</button>'					
 					+'<select class="form-control" style="width: 150px; margin: 0 5px; display: inline-block; padding: 6px;" name="bulan" id="bulan">'
+								+'<option value="0"><font face="verdana">Pilih Bulan</font></option>'
 								+'<option value="1"><font face="verdana">Januari</font></option>'
 								+'<option value="2"><font face="verdana">Februari</font></option>'
 								+'<option value="3"><font face="verdana">Maret</font></option>'
@@ -582,7 +583,7 @@ function cekUrl(current_url, nomor=1){
 					jQuery('#singkron_sp2d_lokal').text('Singkron SP2D ke DB Lokal');
 					jQuery('#singkron_sp2d_lokal').on('click', function(){						
 						var bulan = jQuery('#bulan').val();
-						if(bulan == ''){
+						if(bulan == ''|| bulan == undefined || bulan == 0){
 							alert('Bulan Belum dipilih !!!');
 						}else{							
 							if(confirm('Apakah anda yakin melakukan backup data SP2D ? Data lokal akan diupdate sesuai data terbaru.')){
