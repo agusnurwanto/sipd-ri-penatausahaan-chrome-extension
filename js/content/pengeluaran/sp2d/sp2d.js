@@ -1,7 +1,8 @@
-function singkron_sp2d_lokal(bulan, data=['UP', 'LS', 'GU', 'TU' ]){
+function singkron_sp2d_lokal(val, data=['UP', 'LS', 'GU', 'TU' ]){
 	jQuery('#wrap-loading').show();
 	pesan_loading('Get data SP2D Bulan "'+bulan);
-	var bulan = bulan;
+	var bulan = val;
+	console.log(bulan); 
 	var status = 'ditransfer';
 	var type_data = data.shift();
 	new Promise(function(resolve, reject){
@@ -49,7 +50,7 @@ function singkron_sp2d_lokal(bulan, data=['UP', 'LS', 'GU', 'TU' ]){
 }
 //5 seconds
 function singkron_sp2d_lokal_per_jenis(bulan, type_data, status, page=1, response_all=[], cb){
-    pesan_loading('Get data SP2D jenis='+type_data+', bulan='+bulan+' , status='+status+', halaman='+page);
+    pesan_loading('Get data SP2D Bulan "'+bulan+'" jenis='+type_data+', status='+status+', halaman='+page);
     relayAjaxApiKey({
         url: config.service_url+'pengeluaran/strict/sp2d/pembuatan/index?jenis='+type_data+'&status='+status+'&page='+page+'&nomor_sp2d='+bulan+'/'+_token.tahun,
         type: 'get',
