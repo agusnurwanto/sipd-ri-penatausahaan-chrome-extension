@@ -1183,58 +1183,7 @@ function cekUrl(current_url, nomor=1){
 		){
 			cek_reload = false;
 		}else if(current_url.indexOf('/penatausahaan/login') != -1){
-			var lihat_pass = ''
-				+'<label style="margin-top: 35px; margin-bottom: 10px;"><input type="checkbox" onclick="lihat_password(this)"> Lihat Password</label>';
-				// +'<a class="btn btn-lg btn-warning w-100" onclick="login_sipd()" id="login-ext">Login Chrome Extension</a>';
-			var password = jQuery('input[name="password"]');
-			if(
-				password.length >= 1
-				&& jQuery('#login-ext').length < 1
-			){
-				password.after(lihat_pass);
-				cek_reload = false;
-				jQuery('#prov-autocomplete').after('<span style="color: red; font-weight: bold" id="id_prov"></span>')
-				jQuery('#prov-autocomplete').on('change paste keyup', function(){
-					var prov = jQuery(this).val();
-					console.log('get_prov_login', prov);
-					if(prov == ''){
-						return;
-					}
-					get_prov_login()
-					.then(function(prov_all){
-						prov_all.map(function(b, i){
-							if(b.nama_daerah == prov){
-								jQuery('#id_prov').html('id_prov = '+b.id_daerah+' | kode = '+b.kode_ddn+' | '+b.nama_daerah);
-								jQuery('#id_prov').attr('id_prov', b.id_daerah);
-							}
-						});
-					});
-				});
-				jQuery('#kabkot-autocomplete').after('<span style="color: red; font-weight: bold" id="id_kab"></span>')
-				jQuery('#kabkot-autocomplete').on('change paste keyup', function(){
-					var id_prov = jQuery('#id_prov').attr('id_prov');
-					var kab = jQuery(this).val();
-					console.log('get_kab_login', kab, id_prov);
-					if(kab == '' || typeof id_prov == 'undefined' || id_prov == ''){
-						return;
-					}
-					get_kab_login(id_prov)
-					.then(function(kab_all){
-						kab_all.map(function(b, i){
-							if(b.nama_daerah == kab){
-								jQuery('#id_kab').html('id_kab = '+b.id_daerah+' | kode = '+b.kode_ddn+' | '+b.nama_daerah);
-							}
-						});
-					});
-				});
-
-				var lihat_id = ''
-					+'<span style="margin-top: 15px; margin-bottom: 15px;" class="btn btn-sm btn-info" id="lihat_id_daerah"> Lihat ID daerah</span>';
-				jQuery('label[for="prov-autocomplete"]').before(lihat_id);
-				jQuery('#lihat_id_daerah').on('click', function(){
-					lihat_id_daerah();
-				});
-			}
+			cek_reload = false;
 		}else if(current_url == 'https://sipd.kemendagri.go.id/logout'){
 			return window.location = current_url.replace('go.id/logout', 'go.id/penatausahaan/logout');
 		}

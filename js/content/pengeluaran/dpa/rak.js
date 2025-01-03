@@ -1,18 +1,23 @@
-function singkron_rak_ke_lokal(page=1, skpd_all=[]){
+function singkron_rak_ke_lokal(page=1, skpd_all=[], page_size=10){
     jQuery('#wrap-loading').show();
     pesan_loading('Get SKPD halaman = '+page);
     // var url = config.service_url+'referensi/strict/dpa/penarikan/belanja?page='+page+'&limit=10';
-    var url = config.service_url+'referensi/strict/dpa/penarikan/pembiayaan?page='+page+'&limit=10';
+    var url = config.service_url+'referensi/strict/dpa/penarikan/pembiayaan?page='+page+'&limit='+page_size;
     return new Promise(function(resolve, reduce){
 	    relayAjaxApiKey({
 			url: url,
 			type: 'get',
-			success: function(data_skpd_all){
-				if(data_skpd_all!=null && data_skpd_all.length >= 1){
-					data_skpd_all.map(function(b, i){
-						skpd_all.push(b);
-					})
-					singkron_rak_ke_lokal(page+1, skpd_all);
+			success: function(data_skpd_all, status, res){
+				var total_count = +(res.getResponseHeader('x-pagination-total-count'));
+				page_size = +(res.getResponseHeader('x-pagination-page-size'));
+				var page_count = +(res.getResponseHeader('x-pagination-page-count'));
+				var current_page = +(res.getResponseHeader('x-pagination-current-page'));
+				data_skpd_all.map(function(b, i){
+					skpd_all.push(b);
+				});
+				console.log('page_count > current_page', page_count+' > '+current_page);
+				if(page_count > current_page){
+					singkron_rak_ke_lokal(current_page+1, skpd_all, page_size);
 					return resolve();
 				}else{
 					var last = skpd_all.length-1;
@@ -45,21 +50,26 @@ function singkron_rak_ke_lokal(page=1, skpd_all=[]){
     });
 }
 
-function singkron_rak_pendapatan_sipd_lokal(page=1, skpd_all=[]){
+function singkron_rak_pendapatan_sipd_lokal(page=1, skpd_all=[], page_size=10){
     jQuery('#wrap-loading').show();
     pesan_loading('Get SKPD halaman = '+page);
     // var url = config.service_url+'referensi/strict/dpa/penerimaan/pendapatan?page='+page+'&limit=10';
-    var url = config.service_url+'referensi/strict/dpa/penarikan/pembiayaan?page='+page+'&limit=10';
+    var url = config.service_url+'referensi/strict/dpa/penarikan/pembiayaan?page='+page+'&limit='+page_size;
     return new Promise(function(resolve, reduce){
 		relayAjaxApiKey({
 			url: url,
 			type: 'get',
-			success: function(data_skpd_all){
-				if(data_skpd_all!=null && data_skpd_all.length >= 1){
-					data_skpd_all.map(function(b, i){
-						skpd_all.push(b);
-					})
-					singkron_rak_pendapatan_sipd_lokal(page+1, skpd_all);
+			success: function(data_skpd_all, status, res){
+				var total_count = +(res.getResponseHeader('x-pagination-total-count'));
+				page_size = +(res.getResponseHeader('x-pagination-page-size'));
+				var page_count = +(res.getResponseHeader('x-pagination-page-count'));
+				var current_page = +(res.getResponseHeader('x-pagination-current-page'));
+				data_skpd_all.map(function(b, i){
+					skpd_all.push(b);
+				});
+				console.log('page_count > current_page', page_count+' > '+current_page);
+				if(page_count > current_page){
+					singkron_rak_pendapatan_sipd_lokal(current_page+1, skpd_all, page_size);
 					return resolve();
 				}else{
 					var last = skpd_all.length-1;
@@ -327,21 +337,26 @@ function get_rak(sub, callback){
 	});
 }
 
-function singkron_rak_pembiayaan_penerimaan_sipd_lokal(page=1, skpd_all=[]){
+function singkron_rak_pembiayaan_penerimaan_sipd_lokal(page=1, skpd_all=[], page_size=10){
     jQuery('#wrap-loading').show();
     pesan_loading('Get SKPD halaman = '+page);
     // var url = config.service_url+'referensi/strict/dpa/penerimaan/pembiayaan?page='+page+'&limit=10';
-    var url = config.service_url+'referensi/strict/dpa/penarikan/pembiayaan?page='+page+'&limit=10';
+    var url = config.service_url+'referensi/strict/dpa/penarikan/pembiayaan?page='+page+'&limit='+page_size;
     return new Promise(function(resolve, reduce){
 		relayAjaxApiKey({
 			url: url,
 			type: 'get',
-			success: function(data_skpd_all){
-				if(data_skpd_all!=null && data_skpd_all.length >= 1){
-					data_skpd_all.map(function(b, i){
-						skpd_all.push(b);
-					})
-					singkron_rak_pembiayaan_penerimaan_sipd_lokal(page+1, skpd_all);
+			success: function(data_skpd_all, status, res){
+				var total_count = +(res.getResponseHeader('x-pagination-total-count'));
+				page_size = +(res.getResponseHeader('x-pagination-page-size'));
+				var page_count = +(res.getResponseHeader('x-pagination-page-count'));
+				var current_page = +(res.getResponseHeader('x-pagination-current-page'));
+				data_skpd_all.map(function(b, i){
+					skpd_all.push(b);
+				});
+				console.log('page_count > current_page', page_count+' > '+current_page);
+				if(page_count > current_page){
+					singkron_rak_pembiayaan_penerimaan_sipd_lokal(current_page+1, skpd_all, page_size);
 					return resolve();
 				}else{
 					var last = skpd_all.length-1;
@@ -458,20 +473,25 @@ function get_rak_pemb_penerimaan(sub, callback){
 	});
 }
 
-function singkron_rak_pembiayaan_pengeluaran_sipd_lokal(page=1, skpd_all=[]){
+function singkron_rak_pembiayaan_pengeluaran_sipd_lokal(page=1, skpd_all=[], page_size=10){
     jQuery('#wrap-loading').show();
     pesan_loading('Get SKPD halaman = '+page);
-    var url = config.service_url+'referensi/strict/dpa/penarikan/pembiayaan?page='+page+'&limit=10';
+    var url = config.service_url+'referensi/strict/dpa/penarikan/pembiayaan?page='+page+'&limit='+page_size;
     return new Promise(function(resolve, reduce){
 		relayAjaxApiKey({
 			url: url,
 			type: 'get',
-			success: function(data_skpd_all){
-				if(data_skpd_all!=null && data_skpd_all.length >= 1){
-					data_skpd_all.map(function(b, i){
-						skpd_all.push(b);
-					})
-					singkron_rak_pembiayaan_pengeluaran_sipd_lokal(page+1, skpd_all);
+			success: function(data_skpd_all, status, res){
+				var total_count = +(res.getResponseHeader('x-pagination-total-count'));
+				page_size = +(res.getResponseHeader('x-pagination-page-size'));
+				var page_count = +(res.getResponseHeader('x-pagination-page-count'));
+				var current_page = +(res.getResponseHeader('x-pagination-current-page'));
+				data_skpd_all.map(function(b, i){
+					skpd_all.push(b);
+				});
+				console.log('page_count > current_page', page_count+' > '+current_page);
+				if(page_count > current_page){
+					singkron_rak_pembiayaan_pengeluaran_sipd_lokal(current_page+1, skpd_all, page_size);
 					return resolve();
 				}else{
 					var last = skpd_all.length-1;
