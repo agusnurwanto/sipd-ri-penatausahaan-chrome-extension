@@ -158,6 +158,9 @@ function relayAjax(options, retries=20, delay=5000, timeout=1800000){
     		if (retries > 0) {
 	            console.log('Koneksi error. Coba lagi '+retries, options, jqXHR, exception);
 	            var new_delay = Math.random() * (delay/1000);
+	            if(jqXHR.status == '429'){
+	            	new_delay += 10;
+	            }
 	            setTimeout(function(){
 	            	if(jqXHR.status == '403'){
 	            		console.log('res', res);
