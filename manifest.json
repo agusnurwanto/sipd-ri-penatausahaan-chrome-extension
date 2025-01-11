@@ -47,7 +47,9 @@
 				"js/content/master/user.js",
 				"js/content/master/pegawai.js",
 				"js/content/aklap/lra.js",
-				"js/content/aklap/jurnal.js"
+				"js/content/aklap/jurnal.js",
+				"js/content/aklap/jurnal_umum.js",
+				"js/content/aklap/tna.js"
 			],
 			"run_at": "document_end"
 		}
