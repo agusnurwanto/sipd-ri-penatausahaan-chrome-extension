@@ -220,6 +220,8 @@ function get_detail_sp2d(current_data, tipe, bulan, resolve){
         	if(
         		err.responseJSON == 'Too Many Requests'
         		|| err.responseJSON == ''
+        		|| err.responseText == 'Too Many Requests'
+        		|| err.responseText == ''
         	){
 				setTimeout(function(){
 					get_detail_sp2d(current_data, tipe, bulan, resolve);
