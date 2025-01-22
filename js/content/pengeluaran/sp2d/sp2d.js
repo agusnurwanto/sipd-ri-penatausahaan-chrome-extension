@@ -2,9 +2,23 @@ function singkron_sp2d_lokal(bulan){
 	if(bulan == '' || bulan == 'undefined' || bulan == 0){
 		return alert('Bulan Belum dipilih !!!');
 	}
+	var id_status = prompt('Masukan ID status SP2D yang mau dibackup. 1=ditransfer (Sudah Ditransfer), 2=proses_transfer (Sedang Diproses), 3=diterima (Belum Ditransfer), 4=gagal_transfer (Transfer Gagal), 5=dihapus, 6=ditolak', 1);
+
+	var status = 'ditransfer';
+	if(id_status == '2'){
+		status = 'proses_transfer';
+	}else if(id_status == '3'){
+		status = 'diterima';
+	}else if(id_status == '4'){
+		status = 'gagal_transfer';
+	}else if(id_status == '5'){
+		status = 'dihapus';
+	}else if(id_status == '6'){
+		status = 'ditolak';
+	}
+	
 	jQuery('#wrap-loading').show();
 	pesan_loading('Get data SP2D Bulan '+bulan);
-	var status = 'ditransfer';
 	singkron_sp2d_lokal_per_jenis(bulan, status, 1, [], function(response){
 		var page_skpd = {};
 		var last = response.length-1;

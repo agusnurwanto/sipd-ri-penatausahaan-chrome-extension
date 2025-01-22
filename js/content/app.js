@@ -461,18 +461,18 @@ function cekUrl(current_url, nomor=1){
 			// DATA PERTANGGUNGJAWABAN NPD
 
 			// DATA Pengeluaran SPP
-			else if(current_url.indexOf('penatausahaan/pengeluaran/spp/pembuatan') != -1	){
+			else if(current_url.indexOf('penatausahaan/pengeluaran/spp/') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
 				window.type_data_global = ['UP', 'LS', 'GU', 'TU', 'KKPD'];
-				if(current_url.indexOf('penatausahaan/pengeluaran/spp/pembuatan?type=UP') != -1){
+				if(current_url.toUpperCase().indexOf('UP') != -1){
 					type_data_global = ['UP'];
-				}else if(current_url.indexOf('penatausahaan/pengeluaran/spp/pembuatan?type=GU') != -1){
+				}else if(current_url.toUpperCase().indexOf('GU') != -1){
 					type_data_global = ['GU'];
-				}else if(current_url.indexOf('penatausahaan/pengeluaran/spp/pembuatan?type=TU') != -1){
+				}else if(current_url.toUpperCase().indexOf('TU') != -1){
 					type_data_global = ['TU'];
-				}else if(current_url.indexOf('penatausahaan/pengeluaran/spp/pembuatan?type=LS') != -1){
+				}else if(current_url.toUpperCase().indexOf('LS') != -1){
 					type_data_global = ['LS'];				
-				}else if(current_url.indexOf('penatausahaan/pengeluaran/spp/pembuatan/kkpd?type=GU') != -1){
+				}else if(current_url.toUpperCase().indexOf('KKPD') != -1){
 					type_data_global = ['KKPD'];
 				}
 				console.log('Surat Permintaan Pembayaran (SPP)', title);
