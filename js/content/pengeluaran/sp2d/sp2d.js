@@ -16,7 +16,7 @@ function singkron_sp2d_lokal(bulan){
 	}else if(id_status == '6'){
 		status = 'ditolak';
 	}
-	
+
 	jQuery('#wrap-loading').show();
 	pesan_loading('Get data SP2D Bulan '+bulan);
 	singkron_sp2d_lokal_per_jenis(bulan, status, 1, [], function(response){
@@ -61,8 +61,12 @@ function singkron_sp2d_lokal_per_jenis(bulan, status, page=1, response_all=[], c
     }else{
     	pesan_loading('Get data SP2D Bulan "'+bulan+'" , status='+status+', halaman='+page);
     }
+    var url = config.service_url+'pengeluaran/strict/sp2d/pembuatan/index?status='+status+'&page='+page+'&nomor_sp2d=/'+bulan+'/'+_token.tahun+'&limit=10';
+    if(bulan == 'Semua Bulan'){
+    	url = config.service_url+'pengeluaran/strict/sp2d/pembuatan/index?status='+status+'&page='+page+'&limit=10';
+    }
     relayAjaxApiKey({
-        url: config.service_url+'pengeluaran/strict/sp2d/pembuatan/index?status='+status+'&page='+page+'&nomor_sp2d=/'+bulan+'/'+_token.tahun+'&limit=10',
+        url: url,
         type: 'get',
         success: function (response, textStatus, request) {
             console.log('SP2D', response, textStatus, request);
