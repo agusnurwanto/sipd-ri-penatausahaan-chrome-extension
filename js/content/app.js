@@ -763,16 +763,16 @@ function cekUrl(current_url, nomor=1){
 			}
 
 			// DATA Pengeluaran TBP
-			else if(current_url.indexOf('penatausahaan/pengeluaran/tbp/up-gu') != -1	){
+			else if(current_url.indexOf('penatausahaan/pengeluaran/tbp/') != -1	){
 				var title = jQuery('.card-title.custom-class').text();				
-				console.log('Tanda Bukti Pembayaran | Uang Persediaan / Ganti Uang', title);
+				console.log('Tanda Bukti Pembayaran', title);
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
 						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_tbp_lokal">Singkron TBP ke DB Lokal</button>'					
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);				
-				if(title.indexOf('Tanda Bukti Pembayaran | Uang Persediaan / Ganti Uang') != -1){
+				if(title.indexOf('Tanda Bukti Pembayaran') != -1){
 					jQuery('#singkron_tbp_lokal').text('Singkron TBP ke DB Lokal');
 					jQuery('#singkron_tbp_lokal').on('click', function(){
 						if(confirm('Apakah anda yakin melakukan backup data TBP ? Data lokal akan diupdate sesuai data terbaru.')){

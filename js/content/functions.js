@@ -148,6 +148,7 @@ function relayAjax(options, retries=20, delay=5000, timeout=1800000){
     		|| (
     			jqXHR.status == '500'
     			&& res.message != 'Request tidak diperbolehkan'
+    			&& res.message.indexOf('scan into dest[0]: cannot scan NULL into *string"') != -1
     		)
     		|| (
     			jqXHR.status == '403'
