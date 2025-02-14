@@ -1,8 +1,4 @@
-// NPD
-//GET https://service.sipd.kemendagri.go.id/pengeluaran/strict/npd/index?page=1&limit=5&nomor=&tanggal_mulai=&tanggal_akhir=&nilai_awal=0&nilai_akhir=10000000000&status_verifikasi=&lb_status_verifikasi=Tampilkan+Semua&status_dokumen=&lb_status_dokumen=Aktif&jenis_dokumen=&lb_jenis_dokumen=Tampilkan+Semua&status_dokumen_pnp=&lb_status_dokumen_pnp=Tampilkan+Semua&keterangan=&skpd=0&lb_skpd=Tampilkan+Semua&sub_skpd=0&lb_sub_skpd=Tampilkan+Semua
-// Cetak/detail NPD
-// https://service.sipd.kemendagri.go.id/pengeluaran/strict/npd/cetak/24841
-function singkron_npd_lokal() {
+function singkron_npd_lokal_bpp() {
 	jQuery('#wrap-loading').show();
     // var status = val;
     // var type_data = data.shift();
@@ -40,7 +36,7 @@ function singkron_npd_lokal() {
     			});
     		}, Promise.resolve(response[last]))
     		.then(function (data_last) {
-    		    return singkron_npd_lokal(val, data);
+    		    return singkron_npd_lokal_bpp();
     		});
         });
     })
@@ -50,11 +46,11 @@ function singkron_npd_lokal() {
     });
 }
 
-function singkron_npd_lokal_per_skpd(type_data, status, page=1, response_all=[], cb){
+function singkron_npd_lokal_per_skpd(page=1, response_all=[], cb){
     pesan_loading('Get data NPD halaman='+page);
     relayAjaxApiKey({
         //https://service.sipd.kemendagri.go.id/pengeluaran/strict/npd/index?page=1&limit=5&nomor=&tanggal_mulai=&tanggal_akhir=&nilai_awal=0&nilai_akhir=10000000000&status_verifikasi=&lb_status_verifikasi=Tampilkan+Semua&status_dokumen=&lb_status_dokumen=Aktif&jenis_dokumen=&lb_jenis_dokumen=Tampilkan+Semua&status_dokumen_pnp=&lb_status_dokumen_pnp=Tampilkan+Semua&keterangan=&skpd=0&lb_skpd=Tampilkan+Semua&sub_skpd=0&lb_sub_skpd=Tampilkan+Semua
-        url: config.service_url+'https://service.sipd.kemendagri.go.id/pengeluaran/strict/npd/index?page='+page+'&limit=5&nomor=&tanggal_mulai=&tanggal_akhir=&nilai_awal=0&nilai_akhir=10000000000&status_verifikasi=&lb_status_verifikasi=Tampilkan+Semua&status_dokumen=&lb_status_dokumen=Aktif&jenis_dokumen=&lb_jenis_dokumen=Tampilkan+Semua&status_dokumen_pnp=&lb_status_dokumen_pnp=Tampilkan+Semua&keterangan=&skpd=0&lb_skpd=Tampilkan+Semua&sub_skpd=0&lb_sub_skpd=Tampilkan+Semua',
+        url: config.service_url+'pengeluaran/strict/npd/index?page='+page+'&limit=5&nomor=&tanggal_mulai=&tanggal_akhir=&nilai_awal=0&nilai_akhir=10000000000&status_verifikasi=&lb_status_verifikasi=Tampilkan+Semua&status_dokumen=&lb_status_dokumen=Aktif&jenis_dokumen=&lb_jenis_dokumen=Tampilkan+Semua&status_dokumen_pnp=&lb_status_dokumen_pnp=Tampilkan+Semua&keterangan=&skpd=0&lb_skpd=Tampilkan+Semua&sub_skpd=0&lb_sub_skpd=Tampilkan+Semua',
         type: 'get',
         success: function (response) {
             console.log('NPD', response);
@@ -112,7 +108,7 @@ function singkron_npd_ke_lokal_skpd(current_data, callback) {
     spm.data[0].kurang_lebih_by = current_data.kurang_lebih_by;
     spm.data[0].is_validasi_npd = current_data.is_validasi_npd;
     spm.data[0].validasi_npd_at = current_data.validasi_npd_at;
-    spm.data[0].validasi_npd_by = validasi_npd_by;
+    spm.data[0].validasi_npd_by = current_data.validasi_npd_by;
     spm.data[0].validasi_npd_by_name = current_data.validasi_npd_by_name;
     spm.data[0].validasi_npd_by_nip = current_data.validasi_npd_by_nip;
     spm.data[0].validasi_npd_by_role = current_data.validasi_npd_by_role;
@@ -156,9 +152,9 @@ function singkron_npd_ke_lokal_skpd(current_data, callback) {
     chrome.runtime.sendMessage(data_back, (resp) => {
         pesan_loading("Kirim data NPD ID SKPD="+current_data.id_skpd+" keterangan = "+current_data.keterangan_npd);
     });
-    if(tipe == 'UP'){
-        return callback();
-    }
+    // if(tipe == 'UP'){
+    //     return callback();
+    // }
 
     new Promise(function (resolve, reject) {
         jQuery.ajax({
@@ -177,7 +173,7 @@ function singkron_npd_ke_lokal_skpd(current_data, callback) {
                     idSkpd: current_data.id_skpd,
                     id_npd: current_data.id_npd,                    
                     sumber: 'ri',
-                    data: res[res.jenis.toLowerCase()]
+                    data: res[res]
                 };
                 var data_back = {
                     message: {

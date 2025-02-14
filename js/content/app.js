@@ -457,6 +457,7 @@ function cekUrl(current_url, nomor=1){
 			}
 			// SPP
 			// DATA PENGAJUAN (TU, DPR KKPD, DPT KKPD, NPD, Daftar Pegawai)
+
 			// DATA PENGAJUAN NPD BPP
 			else if(current_url.indexOf('penatausahaan/settlement/submission/npd') != -1	){
 				var title = jQuery('.card-title.custom-class').text();
@@ -464,20 +465,21 @@ function cekUrl(current_url, nomor=1){
 				jQuery('.aksi-extension').remove();
 				var btn = ''
 					+'<div class="aksi-extension" style="display: inline-block;">'						
-						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_npd_lokal">Singkron SPD ke DB Lokal</button>'					
+						+'<button style="margin-left: 20px;" class="btn btn-sm btn-danger" id="singkron_npd_lokal_bpp">Singkron SPD ke DB Lokal</button>'					
 					+'</div>';
 				jQuery('.card-title.custom-class').append(btn);				
 				if(title.indexOf('Pengajuan | Nota Pencairan Dana') != -1){
-					jQuery('#singkron_npd_lokal').text('Singkron NPD SKPD ke DB Lokal');
-					jQuery('#singkron_npd_lokal').on('click', function(){
+					jQuery('#singkron_npd_lokal_bpp').text('Singkron NPD SKPD ke DB Lokal');
+					jQuery('#singkron_npd_lokal_bpp').on('click', function(){
 						if(confirm('Apakah anda yakin melakukan backup data NPD? Data lokal akan diupdate sesuai data terbaru.')){
-							singkron_npd_lokal();						
+							singkron_npd_lokal_bpp();						
 						}
 					});
 				}else{
 					jQuery('.aksi-extension').remove();
 				}				
 			}
+			
 			// DATA PERTANGGUNGJAWABAN NPD
 
 			// DATA Pengeluaran SPP
