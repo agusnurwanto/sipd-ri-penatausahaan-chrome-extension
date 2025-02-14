@@ -135,13 +135,10 @@ function singkron_spp_ke_lokal_skpd(current_data, tipe, status, callback) {
 	}
 
 	new Promise(function (resolve, reject) {
-		jQuery.ajax({
+		relayAjaxApiKey({
 			url: config.service_url + "pengeluaran/strict/spp/pembuatan/cetak/" + current_data.id_spp,
 			type: 'get',
 			dataType: "JSON",
-			beforeSend: function (xhr) {			    
-				xhr.setRequestHeader("Authorization", 'Bearer '+getCookie('X-SIPD-PU-TK'));
-			},
 			success: function (res) {
 				console.log('response detail spp', res);
 				var spp_detail = {
@@ -171,10 +168,6 @@ function singkron_spp_ke_lokal_skpd(current_data, tipe, status, callback) {
 					};
 					pesan_loading("Kirim data SPP detail ID="+current_data.id_spp+" tipe="+tipe);
 				});
-			},
-			error: function(err){
-				console.log('Error get detail SPP! id='+current_data.id_spp, err);
-				resolve();
 			}
 	  	});
   	})

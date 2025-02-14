@@ -85,9 +85,6 @@ function get_tbp(opsi, page=1, limit=50){
 									url: config.service_url + "pengeluaran/strict/tbp/cetak/" + current_data.id_tbp,
 									type: 'get',
 									dataType: "JSON",
-									beforeSend: function (xhr) {			    
-										xhr.setRequestHeader("Authorization", 'Bearer '+getCookie('X-SIPD-PU-TK'));
-									},
 									success: function (res) {
 										console.log('response detail tbp', res);
 										if(res.code == 500){
