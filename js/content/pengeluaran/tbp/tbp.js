@@ -15,9 +15,10 @@ function get_tbp(opsi, page=1, limit=50){
 			url: config.service_url+'pengeluaran/strict/tbp/index?page='+page+'&limit='+limit+'&status='+status,
 			type: 'get',
 			success: function(data_tbp){				
-					var last = data_tbp.length-1;
-					data_tbp.reduce(function(sequence, nextData){
-			            return sequence.then(function(current_data){
+				var last = data_tbp.length-1;
+				data_tbp.reduce(function(sequence, nextData){
+		            return sequence.then(function(current_data){
+	        			return new Promise(function(resolve_reduce, reject_reduce){
 							var tbp = {
 								action: "singkron_tbp",
 								tahun_anggaran: _token.tahun,
@@ -80,138 +81,100 @@ function get_tbp(opsi, page=1, limit=50){
 						  	chrome.runtime.sendMessage(data_back, (resp) => {
 								pesan_loading("Kirim data TBP ID SKPD="+current_data.id_skpd+" jenis="+current_data.jenis_tbp+" nomor="+current_data.nomor_tbp+" halaman="+page);
 						  	});
-		        			return new Promise(function(resolve_reduce, reject_reduce){
+
+	        				var data_detail = {
+	        					details: {},
+	        					cetak_tbp: {
+	        						details: []
+	        					}
+	        				};
+	        				new Promise(function(resolve_detail, reject_detail){
 			        			relayAjaxApiKey({
-									url: config.service_url + "pengeluaran/strict/tbp/cetak/" + current_data.id_tbp,
+									url: config.service_url + "pengeluaran/strict/tbp/detail/" + current_data.id_tbp,
 									type: 'get',
 									dataType: "JSON",
 									success: function (res) {
 										console.log('response detail tbp', res);
-										if(res.code == 500){
-											pesan_loading("Error get data TBP detail ID="+current_data.id_tbp+" = "+res.message);
-											return resolve_reduce(nextData);
-										}
-										pesan_loading("Kirim data TBP detail ID="+current_data.id_tbp+" halaman="+page);
-										res.idSkpd = current_data.id_skpd;
-										res.id_tbp = current_data.id_tbp;
-										res.jenis = current_data.jenis_tbp;
-										opsi.data.push(res);
-										resolve_reduce(nextData);
+										res.details.map(function(b, i){
+											data_detail.details[b.id_detail] = {};
+											data_detail.details[b.id_detail].idSkpd = current_data.id_skpd;
+											data_detail.details[b.id_detail].id_tbp = current_data.id_tbp;
+											data_detail.details[b.id_detail].jenis = current_data.jenis_tbp;
+											data_detail.details[b.id_detail].id_detail = b.id_detail;
+								            data_detail.details[b.id_detail].id_header = b.id_header;
+								            data_detail.details[b.id_detail].id_akun = b.id_akun;
+								            data_detail.details[b.id_detail].kode_akun = b.kode_akun;
+								            data_detail.details[b.id_detail].nama_akun = b.nama_akun;
+								            data_detail.details[b.id_detail].nilai_tbp_detail = b.nilai_tbp_detail;
+								            data_detail.details[b.id_detail].pajak_potongan = b.pajak_potongan;
+										});
+					        			relayAjaxApiKey({
+											url: config.service_url + "pengeluaran/strict/tbp/cetak/" + current_data.id_tbp,
+											type: 'get',
+											dataType: "JSON",
+											success: function (res) {
+												console.log('response cetak tbp', res);
+												if(res.code == 500){
+													pesan_loading("Error get data TBP detail ID="+current_data.id_tbp+" = "+res.message);
+													return resolve_detail();
+												}
+												res.idSkpd = current_data.id_skpd;
+												res.id_tbp = current_data.id_tbp;
+												res.jenis = current_data.jenis_tbp;
+												data_detail.cetak_tbp = res;
+												resolve_detail();
+											}
+										});
 									}
 								});
-			        		})
-			                .catch(function(e){
-			                    console.log(e);
-			                    return Promise.resolve(nextData);
-			                });
-			            })
-			            .catch(function(e){
-			                console.log(e);
-			                return Promise.resolve(nextData);
-			            });
-			        }, Promise.resolve(data_tbp[last]))
-			        .then(function(data_last){
-			        	var data_back = {
-						    message:{
-						        type: "get-url",
-						        content: {
-								    url: config.url_server_lokal,
-								    type: 'post',
-								    data: { 
-										action: 'singkron_tbp_detail',
-										tahun_anggaran: _token.tahun,
-										api_key: config.api_key,
-										type: 'ri',
-										data: opsi.data
-									},
-					    			return: false
-								}
-						    }
-						};
-						chrome.runtime.sendMessage(data_back, function(response) {
-						    console.log('responeMessage', response);
+	        				})
+	        				.then(function(){
+								pesan_loading("Kirim data TBP detail ID="+current_data.id_tbp+" halaman="+page);
+					        	var data_back = {
+								    message:{
+								        type: "get-url",
+								        content: {
+										    url: config.url_server_lokal,
+										    type: 'post',
+										    data: { 
+												action: 'singkron_tbp_detail',
+												tahun_anggaran: _token.tahun,
+												api_key: config.api_key,
+												type: 'ri',
+												data: data_detail
+											},
+							    			return: false
+										}
+								    }
+								};
+								chrome.runtime.sendMessage(data_back, function(response) {
+								    console.log('responeMessage', response);
+								});
+								resolve_reduce(nextData);
+	        				});
+		        		})
+		                .catch(function(e){
+		                    console.log(e);
+		                    return Promise.resolve(nextData);
+		                });
+		            })
+		            .catch(function(e){
+		                console.log(e);
+		                return Promise.resolve(nextData);
+		            });
+		        }, Promise.resolve(data_tbp[last]))
+		        .then(function(data_last){
+					if(data_tbp.length >= limit){
+						page++;
+						get_tbp(opsi, page, limit)
+						.then(function(newdata){
+							resolve();
 						});
-
-						if(data_tbp.length >= limit){
-							// dikosongkan lagi setelah data dikirim ke lokal
-							opsi.data = [];
-							page++;
-							get_tbp(opsi, page, limit)
-							.then(function(newdata){
-								resolve(newdata);
-							});
-						}else{
-							resolve(opsi.data);
-						}
-			        });
-				
+					}else{
+						resolve();
+					}
+		        });
 			}
 		});
-	});
-}
-
-function singkron_tbp_ke_lokal_skpd(data_tbp, page, callback) {
-	console.log('mau kirim data tbp', data_tbp);
-	var tbp = {
-	  	action: "singkron_tbp",
-	  	tahun_anggaran: _token.tahun,
-	  	api_key: config.api_key,
-	  	idSkpd: data_tbp.id_skpd,
-	  	jenis: data_tbp.jenis_tbp,
-	  	sumber: 'ri',
-	  	page: page,
-		data: {}
-	};   
-	tbp.data[0] = {}
-	tbp.data[0].id_tbp = data_tbp.id_tbp;
-	tbp.data[0].id_sp2d_distribusi = data_tbp.id_sp2d_distribusi;
-	tbp.data[0].id_sp2d = data_tbp.id_sp2d;
-	tbp.data[0].tahun = data_tbp.tahun;
-	tbp.data[0].id_daerah = data_tbp.id_daerah;
-	tbp.data[0].id_unit = data_tbp.id_unit;
-	tbp.data[0].id_skpd = data_tbp.id_skpd;
-	tbp.data[0].id_sub_skpd = data_tbp.id_sub_skpd;
-	tbp.data[0].nilai_tbp = data_tbp.nilai_tbp;
-	tbp.data[0].tanggal_tbp = data_tbp.tanggal_tbp;
-	tbp.data[0].keterangan_tbp = data_tbp.keterangan_tbp;
-	tbp.data[0].nilai_materai_tbp = data_tbp.nilai_materai_tbp;
-	tbp.data[0].nomor_kwitansi = data_tbp.nomor_kwitansi;
-	tbp.data[0].id_pegawai_pa_kpa = data_tbp.id_pegawai_pa_kpa;
-	tbp.data[0].jenis_tbp = data_tbp.jenis_tbp;
-	tbp.data[0].jenis_ls_tbp = data_tbp.jenis_ls_tbp;
-	tbp.data[0].is_kunci_rekening_tbp = data_tbp.is_kunci_rekening_tbp;
-	tbp.data[0].is_panjar = data_tbp.is_panjar;
-	tbp.data[0].is_lpj = data_tbp.is_lpj;
-	tbp.data[0].id_lpj = data_tbp.id_lpj;
-	tbp.data[0].id_npd = data_tbp.id_npd;
-	tbp.data[0].is_rekanan_upload = data_tbp.is_rekanan_upload;
-	tbp.data[0].status_aklap = data_tbp.status_aklap;
-	tbp.data[0].nomor_jurnal = data_tbp.nomor_jurnal;
-	tbp.data[0].jurnal_id = data_tbp.jurnal_id;
-	tbp.data[0].metode = data_tbp.metode;
-	tbp.data[0].id_jadwal = data_tbp.id_jadwal;
-	tbp.data[0].id_tahap = data_tbp.id_tahap;
-	tbp.data[0].status_tahap = data_tbp.status_tahap;
-	tbp.data[0].kode_tahap = data_tbp.kode_tahap;
-	tbp.data[0].created_at = data_tbp.created_at;
-	tbp.data[0].created_by = data_tbp.created_by;
-	tbp.data[0].kode_skpd = data_tbp.kode_skpd;
-	tbp.data[0].nama_skpd = data_tbp.nama_skpd;
-	tbp.data[0].kode_sub_skpd = data_tbp.kode_sub_skpd;
-	tbp.data[0].nama_sub_skpd = data_tbp.nama_sub_skpd;
-	tbp.data[0].total_pertanggungjawaban = data_tbp.total_pertanggungjawaban;
-	var data_back = {
-	 	 message: {
-			type: "get-url",
-			content: {
-			  	url: config.url_server_lokal,
-			  	type: "post",
-			  	data: tbp,
-			  	return: false
-			},
-	  	},
-	};
-	chrome.runtime.sendMessage(data_back, (resp) => {
-	  	pesan_loading("Kirim data TBP ID SKPD="+data_tbp.id_skpd+" jenis="+data_tbp.jenis_tbp+" nomor="+data_tbp.nomor_tbp+" halaman="+page);
 	});
 }
