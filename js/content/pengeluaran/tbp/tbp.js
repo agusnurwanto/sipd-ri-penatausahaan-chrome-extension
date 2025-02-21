@@ -31,6 +31,7 @@ function get_tbp(opsi, page=1, limit=50){
 						  	};   
 						  	tbp.data[0] = {}
 						  	tbp.data[0].id_tbp = current_data.id_tbp;
+						  	tbp.data[0].nomor_tbp = current_data.nomor_tbp;
 						  	tbp.data[0].id_sp2d_distribusi = current_data.id_sp2d_distribusi;
 						  	tbp.data[0].id_sp2d = current_data.id_sp2d;
 						  	tbp.data[0].tahun = current_data.tahun;
