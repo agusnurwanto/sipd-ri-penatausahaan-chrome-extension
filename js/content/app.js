@@ -108,15 +108,23 @@ function cekUrl(current_url, nomor=1){
 						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
 							jQuery('#wrap-loading').show();
 							var sub = current_url.split('/');
+							var id_sub_giat = sub.pop();
+							var id_giat = sub.pop();
+							var id_program = sub.pop();
+							var id_bidang_urusan = sub.pop();
+							var id_urusan = sub.pop();
+							var id_sub_skpd = sub.pop();
+							var id_skpd = sub.pop();
+							var id_unit = sub.pop();
 							get_rak({
-								id_unit: sub[9],
-								id_skpd: sub[10],
-								id_sub_skpd: sub[11],
-								id_urusan: sub[12],
-								id_bidang_urusan: sub[13],
-								id_program: sub[14],
-								id_giat: sub[15],
-								id_sub_giat: sub[16]
+								id_unit: id_unit,
+								id_skpd: id_skpd,
+								id_sub_skpd: id_sub_skpd,
+								id_urusan: id_urusan,
+								id_bidang_urusan: id_bidang_urusan,
+								id_program: id_program,
+								id_giat: id_giat,
+								id_sub_giat: id_sub_giat
 							}, function(){
 								alert('Berhasil singkron RAK ke lokal!');
 								jQuery('#wrap-loading').hide();
@@ -128,8 +136,8 @@ function cekUrl(current_url, nomor=1){
 					jQuery('#singkron_rak_sipd_lokal').on('click', function(){
 						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
 							jQuery('#wrap-loading').show();
-							var sub = current_url.split('/');
-							get_sub_keg(sub[9], function(){
+							var sub = current_url.split('/').pop();
+							get_sub_keg(sub, function(){
 								alert('Berhasil singkron RAK ke lokal!');
 								jQuery('#wrap-loading').hide();
 	            			});
@@ -230,15 +238,23 @@ function cekUrl(current_url, nomor=1){
 						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
 							jQuery('#wrap-loading').show();
 							var sub = current_url.split('/');
+							var id_sub_giat = sub.pop();
+							var id_giat = sub.pop();
+							var id_program = sub.pop();
+							var id_bidang_urusan = sub.pop();
+							var id_urusan = sub.pop();
+							var id_sub_skpd = sub.pop();
+							var id_skpd = sub.pop();
+							var id_unit = sub.pop();
 							get_rak({
-								id_unit: sub[9],
-								id_skpd: sub[10],
-								id_sub_skpd: sub[11],
-								id_urusan: sub[12],
-								id_bidang_urusan: sub[13],
-								id_program: sub[14],
-								id_giat: sub[15],
-								id_sub_giat: sub[16]
+								id_unit: id_unit,
+								id_skpd: id_skpd,
+								id_sub_skpd: id_sub_skpd,
+								id_urusan: id_urusan,
+								id_bidang_urusan: id_bidang_urusan,
+								id_program: id_program,
+								id_giat: id_giat,
+								id_sub_giat: id_sub_giat
 							}, function(){
 								alert('Berhasil singkron RAK ke lokal!');
 								jQuery('#wrap-loading').hide();
@@ -251,7 +267,7 @@ function cekUrl(current_url, nomor=1){
 						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
 							jQuery('#wrap-loading').show();
 							var sub = current_url.split('/');
-							get_sub_keg(sub[9], function(){
+							get_sub_keg(sub.pop(), function(){
 								alert('Berhasil singkron RAK ke lokal!');
 								jQuery('#wrap-loading').hide();
 	            			});
@@ -285,15 +301,23 @@ function cekUrl(current_url, nomor=1){
 						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
 							jQuery('#wrap-loading').show();
 							var sub = current_url.split('/');
+							var id_sub_giat = sub.pop();
+							var id_giat = sub.pop();
+							var id_program = sub.pop();
+							var id_bidang_urusan = sub.pop();
+							var id_urusan = sub.pop();
+							var id_sub_skpd = sub.pop();
+							var id_skpd = sub.pop();
+							var id_unit = sub.pop();
 							get_rak({
-								id_unit: sub[9],
-								id_skpd: sub[10],
-								id_sub_skpd: sub[11],
-								id_urusan: sub[12],
-								id_bidang_urusan: sub[13],
-								id_program: sub[14],
-								id_giat: sub[15],
-								id_sub_giat: sub[16]
+								id_unit: id_unit,
+								id_skpd: id_skpd,
+								id_sub_skpd: id_sub_skpd,
+								id_urusan: id_urusan,
+								id_bidang_urusan: id_bidang_urusan,
+								id_program: id_program,
+								id_giat: id_giat,
+								id_sub_giat: id_sub_giat
 							}, function(){
 								alert('Berhasil singkron RAK ke lokal!');
 								jQuery('#wrap-loading').hide();
@@ -306,7 +330,7 @@ function cekUrl(current_url, nomor=1){
 						if(confirm('Apakah anda yakin melakukan backup data anggaran kas? Data lokal akan diupdate sesuai data terbaru.')){
 							jQuery('#wrap-loading').show();
 							var sub = current_url.split('/');
-							get_sub_keg(sub[9], function(){
+							get_sub_keg(sub.pop(), function(){
 								alert('Berhasil singkron RAK ke lokal!');
 								jQuery('#wrap-loading').hide();
 	            			});
