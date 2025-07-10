@@ -14,7 +14,8 @@
 	"content_scripts": [
 		{
 			"matches": [
-				"https://sipd.kemendagri.go.id/penatausahaan/*"
+				"https://sipd.kemendagri.go.id/penatausahaan/*",
+				"https://peta.sipd.kemendagri.go.id/aklapv2/*"
 			],
 			"css": [
 				"css/content.css",
@@ -65,7 +66,8 @@
 				"/css/*"
 			],
 			"matches": [
-				"https://sipd.kemendagri.go.id/*"
+				"https://sipd.kemendagri.go.id/*",
+				"https://peta.sipd.kemendagri.go.id/*"
 			]
 		}
 	],

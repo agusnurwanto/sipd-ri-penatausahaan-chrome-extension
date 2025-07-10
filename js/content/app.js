@@ -81,6 +81,7 @@ function cekUrl(current_url, nomor=1){
 
 		var cek_reload = true;
 		var title_admin = jQuery('#ZEUS main header .items-center.h-full');
+		var title_penatausahaan = jQuery('#__nuxt #__layout .page-container .header.navbar');
 		// jika halaman admin
 		if(title_admin.length >= 1){
 			var aksi_admin = ''
@@ -1233,6 +1234,23 @@ function cekUrl(current_url, nomor=1){
 			cek_reload = false;
 		}else if(current_url == 'https://sipd.kemendagri.go.id/logout'){
 			return window.location = current_url.replace('go.id/logout', 'go.id/penatausahaan/logout');
+		}else if(title_penatausahaan.length >= 1){
+			if(current_url.indexOf('aklapv2/input-transaksi-non-anggaran') != -1){
+				jQuery('.aksi-extension').remove();
+				// var title_tna = jQuery('.css-jw-kc-w-cfpf-21-qf').text();
+				var btn = ''
+					+'<div class="aksi-extension" style="display: inline-block; margin: 20px auto;">'						
+						+'<button style="margin-left: 10px;" class="btn btn-sm btn-primary" id="singkron_rekening_tna_penatausahaan_lokal">Singkron Rekening Transaksi Non Anggaran ke DB Lokal</button>'					
+					+'</div>';
+				jQuery('main.main-content #mainContent .card .tabs .tab-content .tab-pane').first().prepend(btn);
+				// if(title.indexOf(' | Detail Belanja') != -1){
+					jQuery('#singkron_rekening_tna_penatausahaan_lokal').on('click', function(){
+							singkron_rekening_tna_ke_lokal();
+					});
+				// }
+			}
+			cek_reload = false;
+			console.log('Halaman penatausahaan');
 		}
 
 		// ulangi cek url
