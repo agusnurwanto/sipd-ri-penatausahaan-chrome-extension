@@ -89,11 +89,36 @@ function singkron_rekening_tna_ke_lokal(){
 
     if(confirm('Apakah anda yakin melakukan backup data rekening transaksi non anggaran? Data lokal akan diupdate sesuai data terbaru.')){
         jQuery('#wrap-loading').show();
+
+        // nonactivekan rekening existing
+        var data_rekening_tna = {
+			action: 'singkron_rekening_tna',
+			tahun_anggaran: _token.tahun,
+			api_key: config.api_key,
+			jenis_transaksi: '',
+			sumber: 'ri',
+			data: {}
+		};
+		var data_back = {
+			message:{
+				type: "get-url",
+				content: {
+					url: config.url_server_lokal,
+					type: 'post',
+					data: data_rekening_tna,
+					return: true
+				},
+			}
+		};
+		chrome.runtime.sendMessage(data_back, function(response) {
+			console.log('responeMessage', response);
+		});
+		
 		var last = data_rekening.length-1;
-		var page=1;
 		data_rekening.reduce(function(sequence, nextData){
 	        return sequence.then(function(current_data){
 	    		return new Promise(function(resolve_reduce, reject_reduce){
+					var page=1;
 	    			get_data_rekening_tna(current_data.last_url, current_data.jenis_transaksi, current_data.nama_transaksi, page, function(){
 	    				return resolve_reduce(nextData);
 	    			});
@@ -146,70 +171,105 @@ function get_data_rekening_tna(last_url, jenis_transaksi, nama_transaksi, page, 
 				get_data_rekening_tna(last_url, jenis_transaksi, nama_transaksi, page+1, callback, all_data, total_all_rekening);
 			}else{
 				console.log('jenis_transaksi', jenis_transaksi);
-				var data_rekening_tna = {
-					action: 'singkron_rekening_tna',
-					tahun_anggaran: _token.tahun,
-					api_key: config.api_key,
-					jenis_transaksi: jenis_transaksi,
-					sumber: 'ri',
-					data: {},
-					page: page
-				};
+				var all_data_baru = [];
+				var data_sementara = [];
 				all_data.map( function(b, i){
-					if(
-						jenis_transaksi == "beban-dibayar-dimuka" 
-						|| jenis_transaksi == "pendapatan-diterima-dimuka"
-					){
-						data_rekening_tna.data[i] = {
-							kode_akun: b.kodeRekening,
-							id_akun: b.idPopulasi,
-							nama_akun: b.namaRekening
-						};
-					}else{
-						data_rekening_tna.data[i] = {
-							kode_akun: b.code,
-							id_akun: b.id,
-							nama_akun: b.name
-						};
+					data_sementara.push(b);
+					if(data_sementara.length%300 == 0){
+						all_data_baru.push(data_sementara);
+						data_sementara = [];
 					}
 				});
-				new Promise(function(resolveSendMsg, rejectSendMsg){
-					if(jQuery.isEmptyObject(data_rekening_tna.data) == false){
-						var data_back = {
-							message:{
-								type: "get-url",
-								content: {
-									url: config.url_server_lokal,
-									type: 'post',
-									data: data_rekening_tna,
-									return: true
-								},
-							}
-						};
-						chrome.runtime.sendMessage(data_back, function(response) {
-							console.log('responeMessage', response);
+				if(data_sementara.length >= 1){
+					all_data_baru.push(data_sementara);
+				}
 
-							if (chrome.runtime.lastError) {
-								console.error('Error mengirim ke extension:', chrome.runtime.lastError.message);
-								rejectSendMsg(chrome.runtime.lastError);
-								return;
-							}
-
-							if(typeof singkron_rekening_tna == 'undefined'){
-								window.singkron_rekening_tna = {};
-							}
-
-							window.singkron_rekening_tna[jenis_transaksi] = {
-								resolve: resolveSendMsg
+				var last = all_data_baru.length-1;
+		        var new_page=1;
+				all_data_baru.reduce(function(sequence, nextData){
+			        return sequence.then(function(current_data){
+			    		return new Promise(function(resolve_reduce, reject_reduce){
+			    			pesan_loading('Singkron '+nama_transaksi+', page='+new_page+' dari total='+all_data_baru.length);
+			    			
+							var data_rekening_tna = {
+								action: 'singkron_rekening_tna',
+								tahun_anggaran: _token.tahun,
+								api_key: config.api_key,
+								jenis_transaksi: jenis_transaksi,
+								sumber: 'ri',
+								data: {},
+								page: new_page
 							};
-						});
-					}else{
-						resolveSendMsg();
-					}
-				})
-				.then(function(){
+							current_data.map( function(b, i){
+								if(
+									jenis_transaksi == "beban-dibayar-dimuka" 
+									|| jenis_transaksi == "pendapatan-diterima-dimuka"
+								){
+									data_rekening_tna.data[i] = {
+										kode_akun: b.kodeRekening,
+										id_akun: b.idPopulasi,
+										nama_akun: b.namaRekening
+									};
+								}else{
+									data_rekening_tna.data[i] = {
+										kode_akun: b.code,
+										id_akun: b.id,
+										nama_akun: b.name
+									};
+								}
+							});
+							new Promise(function(resolveSendMsg, rejectSendMsg){
+								if(jQuery.isEmptyObject(data_rekening_tna.data) == false){
+									var data_back = {
+										message:{
+											type: "get-url",
+											content: {
+												url: config.url_server_lokal,
+												type: 'post',
+												data: data_rekening_tna,
+												return: true
+											},
+										}
+									};
+									chrome.runtime.sendMessage(data_back, function(response) {
+										console.log('responeMessage', response);
+
+										if (chrome.runtime.lastError) {
+											console.error('Error mengirim ke extension:', chrome.runtime.lastError.message);
+											rejectSendMsg(chrome.runtime.lastError);
+											return;
+										}
+
+										if(typeof singkron_rekening_tna == 'undefined'){
+											window.singkron_rekening_tna = {};
+										}
+
+										window.singkron_rekening_tna[jenis_transaksi] = {
+											resolve: resolveSendMsg
+										};
+									});
+								}else{
+									resolveSendMsg();
+								}
+							})
+							.then(function(){
+								new_page++;
+								resolve_reduce(nextData);
+							});
+			    		})
+			            .catch(function(e){
+			                console.log(e);
+			                return Promise.resolve(nextData);
+			            });
+			        })
+			        .catch(function(e){
+			            console.log(e);
+			            return Promise.resolve(nextData);
+			        });
+			    }, Promise.resolve(all_data_baru[last]))
+			    .then(function(data_last){
 					callback();
-				});
+			    });
 			};
 		}
 	});
