@@ -129,82 +129,88 @@ function get_data_rekening_tna(last_url, jenis_transaksi, nama_transaksi, page, 
 		url: url,
 		type: 'GET',
 		success: function(resp){
-			console.log('jenis_transaksi', jenis_transaksi);
-			var data_rekening_tna = { 
-				action: 'singkron_rekening_tna',
-				tahun_anggaran: _token.tahun,
-				api_key: config.api_key,
-				jenis_transaksi: jenis_transaksi,
-				sumber: 'ri',
-				data: {},
-				page: page
-			};
 			var total_all_rekening = [];
 			if(jenis_transaksi == "beban-dibayar-dimuka" || jenis_transaksi == "pendapatan-diterima-dimuka"){
 				resp.list.map( function(b, i){
 					all_data.push(b);
-					
-					data_rekening_tna.data[i] = {
-						kode_akun: b.kodeRekening,
-						id_akun: b.idPopulasi,
-						nama_akun: b.namaRekening
-					};
 				});
 				total_all_rekening = resp.total;
 			}else{
 				resp.data.data.map( function(b, i){
 					all_data.push(b);
-					
-					data_rekening_tna.data[i] = {
-						kode_akun: b.code,
-						id_akun: b.id,
-						nama_akun: b.name
-					};
 				});
 				total_all_rekening = resp.data.total;
 			}
 
-			new Promise(function(resolveSendMsg, rejectSendMsg){
-				if(jQuery.isEmptyObject(data_rekening_tna.data) == false){
-					var data_back = {
-						message:{
-							type: "get-url",
-							content: {
-								url: config.url_server_lokal,
-								type: 'post',
-								data: data_rekening_tna,
-								return: true
-							},
-						}
-					};
-					chrome.runtime.sendMessage(data_back, function(response) {
-						console.log('responeMessage', response);
-
-						if (chrome.runtime.lastError) {
-							console.error('Error mengirim ke extension:', chrome.runtime.lastError.message);
-							rejectSendMsg(chrome.runtime.lastError);
-							return;
-						}
-
-						if(typeof singkron_rekening_tna == 'undefined'){
-							window.singkron_rekening_tna = {};
-						}
-
-						window.singkron_rekening_tna[jenis_transaksi] = {
-							resolve: resolveSendMsg
+			if(all_data.length < total_all_rekening){
+				get_data_rekening_tna(last_url, jenis_transaksi, nama_transaksi, page+1, callback, all_data, total_all_rekening);
+			}else{
+				console.log('jenis_transaksi', jenis_transaksi);
+				var data_rekening_tna = {
+					action: 'singkron_rekening_tna',
+					tahun_anggaran: _token.tahun,
+					api_key: config.api_key,
+					jenis_transaksi: jenis_transaksi,
+					sumber: 'ri',
+					data: {},
+					page: page
+				};
+				all_data.map( function(b, i){
+					if(
+						jenis_transaksi == "beban-dibayar-dimuka" 
+						|| jenis_transaksi == "pendapatan-diterima-dimuka"
+					){
+						data_rekening_tna.data[i] = {
+							kode_akun: b.kodeRekening,
+							id_akun: b.idPopulasi,
+							nama_akun: b.namaRekening
 						};
-					});
-				}else{
-					resolveSendMsg();
-				}
-			})
-			.then(function(){
-				if(all_data.length < total_all_rekening){
-					get_data_rekening_tna(last_url, jenis_transaksi, nama_transaksi, page+1, callback, all_data, total_all_rekening)
-				}else{
+					}else{
+						data_rekening_tna.data[i] = {
+							kode_akun: b.code,
+							id_akun: b.id,
+							nama_akun: b.name
+						};
+					}
+				});
+				new Promise(function(resolveSendMsg, rejectSendMsg){
+					if(jQuery.isEmptyObject(data_rekening_tna.data) == false){
+						var data_back = {
+							message:{
+								type: "get-url",
+								content: {
+									url: config.url_server_lokal,
+									type: 'post',
+									data: data_rekening_tna,
+									return: true
+								},
+							}
+						};
+						chrome.runtime.sendMessage(data_back, function(response) {
+							console.log('responeMessage', response);
+
+							if (chrome.runtime.lastError) {
+								console.error('Error mengirim ke extension:', chrome.runtime.lastError.message);
+								rejectSendMsg(chrome.runtime.lastError);
+								return;
+							}
+
+							if(typeof singkron_rekening_tna == 'undefined'){
+								window.singkron_rekening_tna = {};
+							}
+
+							window.singkron_rekening_tna[jenis_transaksi] = {
+								resolve: resolveSendMsg
+							};
+						});
+					}else{
+						resolveSendMsg();
+					}
+				})
+				.then(function(){
 					callback();
-				}
-			});
+				});
+			};
 		}
 	});
 }
