@@ -136,6 +136,10 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 			}else if(res.run == "proses_hapus_modal_renja"){
 				proses_hapus_modal_renja(res, true);
 			};
+		}else if(res.action == 'singkron_rekening_tna'){
+			_alert = false;
+			cek_hide_loading = false;
+			singkron_rekening_tna[res.jenis_transaksi].resolve();
 		}
 		if(cek_hide_loading){
 			hide_loading();
