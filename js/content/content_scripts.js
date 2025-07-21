@@ -140,6 +140,12 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 			_alert = false;
 			cek_hide_loading = false;
 			singkron_rekening_tna[res.jenis_transaksi].resolve();
+		}else if(res.action == 'cek_lisensi_ext_bn'){
+			_alert = false;
+			cek_hide_loading = false;
+			if(res.run == 'afterCekLisensi2'){
+				afterCekLisensi2(res);
+			}
 		}
 		if(cek_hide_loading){
 			hide_loading();
