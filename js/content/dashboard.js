@@ -14,10 +14,33 @@ function singkron_dashboard_ke_lokal(val) {
 	}
 }
 
+function parseIndonesianDate(tanggalStr) {
+  	const bulanMap = {
+	    januari: 0,
+	    februari: 1,
+	    maret: 2,
+	    april: 3,
+	    mei: 4,
+	    juni: 5,
+	    juli: 6,
+	    agustus: 7,
+	    september: 8,
+	    oktober: 9,
+	    november: 10,
+	    desember: 11
+  	};
+  	const [tgl, bulan, tahun] = tanggalStr.split(" ");
+  	const monthIndex = bulanMap[bulan.toLowerCase()];
+  	if (monthIndex === undefined) {
+    	throw new Error("Nama bulan tidak dikenali: " + bulan);
+ 	}
+	return new Date(tahun, monthIndex, parseInt(tgl, 10));
+}
+
 function singkron_belanja_dashboard_ke_lokal() {    
     jQuery('#wrap-loading').show();
 	arrbulan = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-	date = new Date(jQuery('.flatpickr-input').val().split('(')[1].split(')')[0]);
+	date = parseIndonesianDate(jQuery('.flatpickr-input').val().split('(')[1].split(')')[0]);
     millisecond = date.getMilliseconds();
     detik = date.getSeconds();
     menit = date.getMinutes();
@@ -144,7 +167,7 @@ function singkron_pembiayaan_dashboard_ke_lokal() {
 
 function get_sub_skpd(id_skpd, callback){
 	arrbulan = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-	date = new Date(jQuery('.flatpickr-input').val().split('(')[1].split(')')[0]);
+	date = parseIndonesianDate(jQuery('.flatpickr-input').val().split('(')[1].split(')')[0]);
     millisecond = date.getMilliseconds();
     detik = date.getSeconds();
     menit = date.getMinutes();
@@ -195,7 +218,7 @@ function get_sub_skpd(id_skpd, callback){
 
 function get_bidang_urusan(id_skpd, id_sub_skpd, callback){
 	arrbulan = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-	date = new Date(jQuery('.flatpickr-input').val().split('(')[1].split(')')[0]);
+	date = parseIndonesianDate(jQuery('.flatpickr-input').val().split('(')[1].split(')')[0]);
     millisecond = date.getMilliseconds();
     detik = date.getSeconds();
     menit = date.getMinutes();
@@ -242,7 +265,7 @@ function get_bidang_urusan(id_skpd, id_sub_skpd, callback){
 
 function get_program(id_skpd, id_sub_skpd, id_bidang_urusan, callback){
 	arrbulan = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-	date = new Date(jQuery('.flatpickr-input').val().split('(')[1].split(')')[0]);
+	date = parseIndonesianDate(jQuery('.flatpickr-input').val().split('(')[1].split(')')[0]);
     millisecond = date.getMilliseconds();
     detik = date.getSeconds();
     menit = date.getMinutes();
@@ -289,7 +312,7 @@ function get_program(id_skpd, id_sub_skpd, id_bidang_urusan, callback){
 
 function get_kegiatan(id_skpd, id_sub_skpd, id_bidang_urusan, id_program, callback){
 	arrbulan = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-	date = new Date(jQuery('.flatpickr-input').val().split('(')[1].split(')')[0]);
+	date = parseIndonesianDate(jQuery('.flatpickr-input').val().split('(')[1].split(')')[0]);
     millisecond = date.getMilliseconds();
     detik = date.getSeconds();
     menit = date.getMinutes();
@@ -336,7 +359,7 @@ function get_kegiatan(id_skpd, id_sub_skpd, id_bidang_urusan, id_program, callba
 
 function get_subgiat(id_skpd, id_sub_skpd, id_bidang_urusan, id_program, id_giat, callback){
 	arrbulan = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-	date = new Date(jQuery('.flatpickr-input').val().split('(')[1].split(')')[0]);
+	date = parseIndonesianDate(jQuery('.flatpickr-input').val().split('(')[1].split(')')[0]);
     millisecond = date.getMilliseconds();
     detik = date.getSeconds();
     menit = date.getMinutes();
@@ -419,7 +442,7 @@ function update_bl_realisasi_nonactive(id_skpd, type){
 
 function get_realisasi(sub, callback){	
 	arrbulan = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-	date = new Date(jQuery('.flatpickr-input').val().split('(')[1].split(')')[0]);
+	date = parseIndonesianDate(jQuery('.flatpickr-input').val().split('(')[1].split(')')[0]);
     millisecond = date.getMilliseconds();
     detik = date.getSeconds();
     menit = date.getMinutes();
